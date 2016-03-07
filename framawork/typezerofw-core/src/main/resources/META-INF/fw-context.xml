@@ -1,0 +1,95 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/beans    
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/util 
+        http://www.springframework.org/schema/util/spring-util-4.0.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        ">
+
+	<aop:aspectj-autoproxy />
+	<context:component-scan base-package="br.com.depro.fw" />
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${datasource.driver}" />
+		<property name="url" value="${datasource.url}" />
+		<property name="username" value="${datasource.username}" />
+		<property name="password" value="${datasource.password}" />
+	</bean>
+
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="packagesToScan" value="br.com.depro" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="jpaProperties" ref="jpaProperties" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="exceptionTranslation" class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+
+	<util:properties id="jpaProperties">
+		<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+		<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+		<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+		<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+	</util:properties>
+
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<!-- all methods starting with 'get' are read-only -->
+			<tx:method name="get*" read-only="true" propagation="SUPPORTS" />
+			<tx:method name="read*" read-only="true" propagation="SUPPORTS" />
+
+			<tx:method name="insert*" read-only="false" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="inseri*" read-only="false" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			
+			<tx:method name="update*" read-only="false" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="atualiza*" read-only="false" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="altera*" read-only="false" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="efetua*" read-only="false" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			
+			<tx:method name="save*" read-only="false" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="salva*" read-only="false" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			
+			<tx:method name="delete*" read-only="false" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="deleta*" read-only="false" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="exclui*" read-only="false" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="remove*" read-only="false" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+
+			<tx:method name="refresh*" read-only="false" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="reativar*" read-only="false" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+
+			<tx:method name="extrai*" read-only="false" propagation="SUPPORTS" rollback-for="java.lang.Exception" />
+
+			<tx:method name="busca*" read-only="true" propagation="SUPPORTS" />
+			<tx:method name="lista*" read-only="true" propagation="SUPPORTS" />
+			<tx:method name="obte*" read-only="true" propagation="SUPPORTS" />
+		</tx:attributes>
+	</tx:advice>
+
+	<bean id="inteceptorService" class="br.com.depro.fw.typezero.infrastructure.aop.AOPInterceptorService" />
+
+	<tx:annotation-driven transaction-manager="transactionManager" order="1" />
+	
+	<aop:config>
+		<aop:pointcut id="serviceOperation" expression="execution(* *..service..*Service*.*(..)) and !@annotation(org.springframework.transaction.annotation.Transactional)" />
+		<aop:pointcut id="pointcutBaseService" expression="execution(* *..service..*Service*.*(..)) and !execution(* *..service..*Service*.get*(..))" />
+
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" order="2" />
+		<aop:aspect id="aspectService" ref="inteceptorService" order="3">
+			<aop:around method="around" pointcut-ref="pointcutBaseService" />
+		</aop:aspect>
+	</aop:config>
+	
+</beans>
