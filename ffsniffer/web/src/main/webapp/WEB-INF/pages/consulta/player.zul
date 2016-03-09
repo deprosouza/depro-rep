@@ -1,0 +1,39 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+     xmlns:zk="zk"
+     xmlns:x="xhtml" 
+     xmlns:n="native"
+     xmlns:c="client"
+     xmlns:h="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <div sclass="panel panel-primary content" apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('br.com.depro.ffsniffer.web.viewmodel.ConsultaPlayerVM')">
+        <div class="panel-heading">
+            <n:h3 class="panel-title">Consulta de Players</n:h3>
+        </div>
+        <div class="panel-body">
+            <textbox id="txtQueryPlayer" width="150px" tabindex="1" />
+            <button label="Buscar" onClick="@command('buscarPlayers', nome=txtQueryPlayer.value)" width="100px" height="30px" />
+
+
+            <grid id="gridPlayers" mold="paging" pagingPosition="both" >
+                <columns>
+                    <column width="15%">ID</column>
+                    <column width="15%">ID Lodesotne</column>
+                    <column width="70%">Nome</column>
+                </columns>
+                <rows>
+                    <template name="model">
+                        <row >
+                            <label value="${each.id}" />
+                            <label value="${each.idLodestone}" />
+                            <label value="${each.nome}" />
+                        </row>
+                    </template>
+                </rows>
+            </grid>
+        </div>
+    </div>
+</zk>

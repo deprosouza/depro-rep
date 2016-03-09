@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:XMLRootMenu xmlns:ns2="br.com.depro.ffsnifer.web.view.zk">
+
+    <!-- ######################################################### -->
+    <!-- #################### possible Tags ###################### -->
+    <!-- ######################################################### -->
+    <!-- menu:           a parent menu that have child nodes.      -->
+    <!-- menuItem:       the menu item.                            -->
+    <!-- zulNavigation:  the path and name of the zul-file.        -->
+    <!-- iconName:       the path and name to an icon.             -->
+    <!-- rightName:      if it's declared, than the rightname must -->
+    <!--                 be the same as in the securityContext for -->
+    <!--                 creating this menuitem.                   -->
+    <!-- open:           (true/false opens a menu at creation time -->
+    <!-- ######################################################### -->
+
+    <!-- ################################################################# -->
+    <!-- ######## MENU CONSULTA -->
+    <!-- ################################################################# -->
+    <menu id="menuConsulta" rightName="RM_MENU_CONSULTA">
+        <menuItem id="itemConsultaPlayer" rightName="RM_CONSULTA_PLAYER" zulNavigation="CONSULTA_PLAYER" />
+    </menu>
+
+</ns2:XMLRootMenu>
