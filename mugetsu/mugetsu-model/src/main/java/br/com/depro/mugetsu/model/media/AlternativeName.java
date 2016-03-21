@@ -7,6 +7,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.depro.fw.typezero.infrastructure.model.EntidadeBase;
@@ -29,7 +30,8 @@ public class AlternativeName extends EntidadeBase {
 	@Id
 	@Override
 	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "SEQ_ALTERNATIVE_NAME")
+	@SequenceGenerator(name = "SEQ_ALTERNATIVE_NAME", sequenceName = "SEQ_ALTERNATIVE_NAME")
 	public Long getId() {
 		return id;
 	}

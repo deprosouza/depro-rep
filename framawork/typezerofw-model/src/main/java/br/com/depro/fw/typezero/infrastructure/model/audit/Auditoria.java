@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.depro.fw.typezero.infrastructure.model.EntidadeBase;
@@ -22,7 +23,7 @@ import br.com.depro.fw.typezero.infrastructure.model.EntidadeBase;
  * @version 1.0 - versao iniciao - 26.10.2015
  */
 @Entity
-@Table(name = "AUDITORIA")
+@Table(name = "FW_AUDIT")
 public class Auditoria extends EntidadeBase {
 
 	/** Numero de serie da classe */
@@ -38,7 +39,8 @@ public class Auditoria extends EntidadeBase {
 	@Id
 	@Override
 	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "SEQ_FW_AUDIT")
+	@SequenceGenerator(name = "SEQ_FW_AUDIT", sequenceName = "SEQ_FW_AUDIT")
 	public Long getId() {
 		return id;
 	}

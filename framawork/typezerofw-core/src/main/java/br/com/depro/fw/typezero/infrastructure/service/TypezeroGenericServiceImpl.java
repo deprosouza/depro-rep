@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import br.com.depro.fw.typezero.infrastructure.annotation.Audit;
 import br.com.depro.fw.typezero.infrastructure.dao.GenericDAO;
 import br.com.depro.fw.typezero.infrastructure.dao.helper.TypezeroCriteria;
@@ -22,7 +24,10 @@ public abstract class TypezeroGenericServiceImpl<T extends EntidadeBase, DAO ext
 
     private DAO dao;
 
-    public abstract void initDAO(DAO dao);
+    @Autowired
+    public void initDAO(DAO dao) {
+    	this.setDAO(dao);
+    }
 
     /**
      * Construtor padrao da classe

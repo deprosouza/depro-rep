@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.depro.fw.typezero.infrastructure.model.EntidadeBase;
@@ -32,7 +33,8 @@ public class Conteudo extends EntidadeBase {
 	@Id
 	@Override
 	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "SEQ_CONTEUDO")
+	@SequenceGenerator(name = "SEQ_CONTEUDO", sequenceName = "SEQ_CONTEUDO")
 	public Long getId() {
 		return id;
 	}

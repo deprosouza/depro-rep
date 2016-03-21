@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.depro.fw.typezero.infrastructure.model.EntidadeBase;
@@ -24,7 +25,8 @@ public class Genero extends EntidadeBase  {
 	@Id
 	@Override
 	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "SEQ_GENERO")
+	@SequenceGenerator(name = "SEQ_GENERO", sequenceName = "SEQ_GENERO")
 	public Long getId() {
 		return id;
 	}

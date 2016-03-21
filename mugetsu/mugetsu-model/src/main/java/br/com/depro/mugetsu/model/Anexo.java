@@ -1,4 +1,4 @@
-package br.com.depro.mugetsu.model.media;
+package br.com.depro.mugetsu.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,30 +15,21 @@ import br.com.depro.fw.typezero.infrastructure.model.EntidadeBase;
  * @version 1.0 -Versao Inicial - 10.03.2016
  */
 @Entity
-@Table(name = "TAG")
-public class Tag  extends EntidadeBase  {
+@Table(name = "ANEXO")
+public class Anexo extends EntidadeBase {
 
 	/** Numero serial da classe */
-	private static final long serialVersionUID = -2039656547676677956L;
-	private String key;
+	private static final long serialVersionUID = -8413804473375937080L;
 	private String nome;
+	private Boolean isCapa;
 
 	@Id
 	@Override
 	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "SEQ_TAG")
-	@SequenceGenerator(name = "SEQ_TAG", sequenceName = "SEQ_TAG")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "SEQ_ANEXO")
+	@SequenceGenerator(name = "SEQ_ANEXO", sequenceName = "SEQ_ANEXO")
 	public Long getId() {
 		return id;
-	}
-
-	@Column(name = "KEY")
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
 	}
 
 	@Column(name = "NOME")
@@ -49,5 +40,21 @@ public class Tag  extends EntidadeBase  {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
+	@Column(name = "IS_CAPA")
+	public Boolean getIsCapa() {
+		return isCapa;
+	}
+
+	public void setIsCapa(Boolean isCapa) {
+		this.isCapa = isCapa;
+	}
 	
+	public enum TipoImagemEnum {
+		
+		MEDIA,
+		CONTEUDO,
+		USUARIO,
+		GRUPO;
+	}
 }
