@@ -1,0 +1,117 @@
+
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+     xmlns:x="xhtml" xmlns:zk="zk"
+     xmlns:n="native"
+     xmlns:h="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <div sclass="conteudo-bloco">
+        <zscript>
+            <![CDATA[
+                import br.com.depro.mugetsu.model.media.vo.FormatoMedia;
+                import br.com.depro.mugetsu.model.media.vo.FormatoAnime;
+                import br.com.depro.mugetsu.model.media.vo.FormatoDorama;
+
+                List listFormatoMedia = FormatoMedia.getListValues();
+                List listFormatoAnime = FormatoAnime.getListValues();
+                List listFormatoDorama = FormatoDorama.getListValues();
+                List listGeneros = generoServiceImpl.listarTodas();
+            ]]>
+        </zscript>
+        <vlayout>
+            <div align="center">
+                <hlayout id="boxLetras">
+                    <button label="#" sclass="btn btn-default btnLetra" />
+                    <button label="A" sclass="btn btn-default btnLetra" />
+                    <button label="B" sclass="btn btn-default btnLetra" />
+                    <button label="C" sclass="btn btn-default btnLetra" />
+                    <button label="D" sclass="btn btn-default btnLetra" />
+                    <button label="E" sclass="btn btn-default btnLetra" />
+                    <button label="F" sclass="btn btn-default btnLetra" />
+                    <button label="G" sclass="btn btn-default btnLetra" />
+                    <button label="H" sclass="btn btn-default btnLetra" />
+                    <button label="I" sclass="btn btn-default btnLetra" />
+                    <button label="J" sclass="btn btn-default btnLetra" />
+                    <button label="K" sclass="btn btn-default btnLetra" />
+                    <button label="L" sclass="btn btn-default btnLetra" />
+                    <button label="M" sclass="btn btn-default btnLetra" />
+                    <button label="N" sclass="btn btn-default btnLetra" />
+                    <button label="O" sclass="btn btn-default btnLetra" />
+                    <button label="P" sclass="btn btn-default btnLetra" />
+                    <button label="Q" sclass="btn btn-default btnLetra" />
+                    <button label="R" sclass="btn btn-default btnLetra" />
+                    <button label="S" sclass="btn btn-default btnLetra" />
+                    <button label="T" sclass="btn btn-default btnLetra" />
+                    <button label="U" sclass="btn btn-default btnLetra" />
+                    <button label="V" sclass="btn btn-default btnLetra" />
+                    <button label="W" sclass="btn btn-default btnLetra" />
+                    <button label="X" sclass="btn btn-default btnLetra" />
+                    <button label="Y" sclass="btn btn-default btnLetra" />
+                    <button label="Z" sclass="btn btn-default btnLetra" />
+                </hlayout>
+		
+                <vlayout>
+                    <hlayout style="padding: 10px;">
+                        <textbox id="txtFiltroNome" width="700px" sclass="field-text" placeholder="Digite um nome para filtrar" />
+                        <button label="Buscar" tooltiptext="Buscar" sclass="btn btn-primary filtar" />
+                        <button label="Limpar" tooltiptext="Limpar" sclass="btn btn-danger limpar" />
+                    </hlayout>
+                    <checkbox id="chkNomeImagem" label="Nome Imagem" value="${each.prefixo}" />
+                </vlayout>
+            </div>
+            <hlayout style="padding-right: 45px">
+                <div>
+                    <vlayout>
+                        <groupbox id="groupFormatos" mold="3d" closable="false" draggable="false" droppable="false"> 
+                            <caption label="Formato" image="/imagens/icones/funnel.png" />
+                            <hlayout>
+                                <vlayout id="vlFormatoMedia">
+                                    <checkbox forEach="${listFormatoMedia}" id="fm${each.prefixo}" label="${c:l(each.prefixo)}" value="${each.prefixo}" sclass="checkMedia" />
+                                </vlayout>
+                                <vlayout id="vlFormatoAnime" >
+                                    <checkbox disabled="true" forEach="${listFormatoAnime}" label="${c:l(each.prefixo)}" value="${each.prefixo}" sclass="filtar" />
+                                </vlayout>
+                                <vlayout id="vlFormatoDorama">
+                                    <checkbox disabled="true" forEach="${listFormatoDorama}" label="${c:l(each.prefixo)}" value="${each.prefixo}" sclass="filtar" />
+                                </vlayout>
+                            </hlayout>
+                        </groupbox>
+						
+                        <groupbox mold="3d" closable="false" draggable="false" droppable="false"> 
+                            <caption label="Generos" image="/imagens/icones/funnel.png" />
+                            <vlayout id="vlGeneros">
+                                <checkbox forEach="${listGeneros}" label="${c:l(each.prefixo)}" value="${each.prefixo}" sclass="filtar" />
+                            </vlayout>
+                        </groupbox>
+                    </vlayout>
+                </div>
+                <groupbox id="gblbMidia" mold="3d" closable="false" width="100%" visible="false">
+                    <caption id="capList" image="/imagens/icones/historico.png" label="Midias:  " />
+                    <listbox id="lbMedia" width="740px" mold="paging" pagingPosition="both" pageSize="20">
+                        <listhead>
+                            <listheader sclass="headProjetoUsuario" label="${c:l('label.tipo.media')}" width="90px" align="center" />
+                            <listheader sclass="headProjetoUsuario" label="${c:l('label.nome.media')}" width="50%" />
+                            <listheader sclass="headProjetoUsuario" label="Ranking" width="60px"  align="center" />
+                            <listheader sclass="headProjetoUsuario" label="Status" width="80px" align="center" />
+                            <listheader sclass="headProjetoUsuario" label="Tempo Decorrido" width="200px" align="center" />
+                            <listheader sclass="headMediaTituloConsulta" label="${c:l('label.tipo.media')}" width="120px" align="center" />
+                            <listheader sclass="headMediaTituloConsulta" label="${c:l('label.nome.media')}" />
+                            <listheader sclass="headMediaTituloConsulta" label="Conteudo" width="100px" align="center" />
+                            <listheader sclass="headMediaRecomentada" label="${c:l('label.tipo.media')}" width="120px" align="center" />
+                            <listheader sclass="headMediaRecomentada" label="${c:l('label.nome.media')}" width="200px" />
+                            <listheader sclass="headMediaRecomentada" label="Imagem" />
+                        </listhead>
+                    </listbox>
+                </groupbox>
+			
+                <div id="msgErro" class="alert alert-warning " visible="false" width="100%">
+                    <n:strong>
+                        <image src="/imagens/icones/error-icon.png" />
+                        Esta combinacao de filtros nao retornou resultados.
+                    </n:strong>
+                </div>
+            </hlayout>
+        </vlayout>
+    </div>
+</zk>

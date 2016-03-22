@@ -1,0 +1,47 @@
+<!-- View of customized component DualListbox -->
+<hlayout  style="padding:10px">
+	
+    <listbox id="notGrantedLb" vflex="true" checkmark="true" width="540px" multiple="true" rows="20">
+        <auxhead>
+            <auxheader align="center" label="Sem permissão" colspan="2" />
+        </auxhead>
+        <listhead>
+            <listheader label="ID Permissao" width="50%"></listheader>
+            <listheader label="Descrição" width="50%"></listheader>
+        </listhead>
+        <template name="model">
+            <listitem>
+                <listcell label="${each.prefixo}" />
+                <listcell label="${each.descricao}" />
+            </listitem>
+        </template>
+    </listbox>
+
+    <zscript><![CDATA[
+		String imgPath = "/imagens/icones";
+	]]></zscript>
+    <vbox spacing="10px">
+        <image style="cursor:pointer" id="grantAllBtn" src="${imgPath}/todos-direita.png" />
+        <image style="cursor:pointer" id="grantBtn" src="${imgPath}/seta-direita.png" />
+        <image style="cursor:pointer" id="removeBtn" src="${imgPath}/seta-esquerda.png" />
+        <image style="cursor:pointer" id="removeAllBtn" src="${imgPath}/todos-esquerda.png" />
+        <image style="cursor:pointer" id="salveBtn" src="${imgPath}/caixa-salvar.png" />
+    </vbox>
+	
+    <listbox id="grantedLb" vflex="true" width="540px" checkmark="true" multiple="true" rows="20">
+        <auxhead>
+            <auxheader align="center" label="Com permissão" colspan="2" />
+        </auxhead>
+        <listhead>
+            <listheader label="ID Permissao" width="50%"></listheader>
+            <listheader label="Descrição" width="50%"></listheader>
+        </listhead>
+        <template name="model">
+            <listitem>
+                <listcell label="${each.prefixo}" />
+                <listcell label="${each.descricao}" />
+            </listitem>
+        </template>
+    </listbox>
+	
+</hlayout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk>
+    <device-config>
+        <device-type>ajax</device-type>
+        <timeout-uri></timeout-uri>
+    </device-config>
+    
+    <system-config>
+        <label-location>/WEB-INF/labels/geral.properties</label-location>
+        <label-location>/WEB-INF/labels/geral_pt_BR.properties</label-location>
+    </system-config>
+    
+</zk>

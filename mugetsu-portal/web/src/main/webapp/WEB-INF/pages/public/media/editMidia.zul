@@ -1,0 +1,47 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+     xmlns:zk="zk"
+     xmlns:x="xhtml" 
+     xmlns:n="native"
+     xmlns:c="client"
+     xmlns:h="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    
+    <div sclass="panel panel-danger content" apply="org.zkoss.bind.BindComposer" 
+    		viewModel="@id('vm') @init('br.com.depro.mugetsu.web.vm.media.EditarMidiaViewModel')">
+        <div class="panel-heading">
+            <n:h3 class="panel-title">
+                Editar : ${vm.midia.tituloPrincipal.nome}
+                <n:span class="label label-warning">${c:l(vm.midia.tipoMedia)}</n:span>
+            </n:h3>
+        </div>
+        <div class="panel-body">
+            <radiogroup id="radioNome"  />
+            <zk></zk>
+            <div forEach="${vm.midia.titulos}" class="rowTitulo">
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        <textbox id="nomeMidia-${each.id}" class="form-control" value="${each.nome}" constraint="no empty" />
+                        <n:span if="${each.principal}" class="label label-info span-atual">Padrão</n:span>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <radio id="principal-${each.id}" radiogroup="radioNome" checked="${each.principal}" />
+                        </span>
+                        <combobox id="idioma-${each.id}" model="@load(vm.localidades)" value="${c:l(each.localidade.prefixo)}">
+                            <template name="model" var="idioma">
+                                <comboitem label="${c:l(idioma.prefixo)}" value="@load(idioma)" />
+                            </template>
+                        </combobox>
+                    </div>
+                </div>
+            </div>
+            <button label="voltar" image="/imagens/icones/voltar.png" onClick="@command('voltarTelaAnterior')" class="btn btn-default" />
+            <button label="Salvar" image="/imagens/icones/salvar.png" onClick="@command('salvar')" class="btn btn-success" />
+        </div>
+    </div>
+    
+</zk>

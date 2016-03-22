@@ -1,0 +1,86 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="listconteudo" class="br.com.depro.mugetsu.web.composite.ListConteudo" ?>
+
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+     xmlns:x="xhtml" xmlns:zk="zk"
+     xmlns:n="native"
+     xmlns:c="client"
+     xmlns:h="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('br.com.depro.mugetsu.web.vm.media.DetalheMediaViewModel')">
+        <div class="alert alert-success" if="${vm.projetoExistente and vm.sessaoValida}">
+            <div class="content">
+                <n:strong>
+                    <image src="/imagens/icones/check.png" />
+                    Voce ja possiu este ${c:l(vm.media.formatoMedia.prefixo)}
+                </n:strong>
+            </div>
+        </div>
+        <div sclass="panel panel-primary content">
+            <div class="panel-heading">
+                <n:h3 class="panel-title">
+                    ${vm.media.tituloPrincipal.nome}
+                    <n:span class="label label-warning">${c:l(vm.media.tipoMedia)}</n:span>
+                </n:h3>
+            </div>
+            <div class="panel-body">
+                <div sclass="z-toolbar" style="padding:0;">
+                    <hbox pack="stretch" sclass="hboxRemoveWhiteStrips">				
+                        <!-- Botoes -->
+                        <toolbar align="end" style="float:right; border-style: none;">
+                            <toolbarbutton label="voltar" image="/imagens/icones/voltar.png" onClick="@command('voltar')" />
+                            <toolbarbutton id="adicionarProjeto" if="${!vm.projetoExistente and vm.sessaoValida}" label="Adiconar a Minhas Midias" image="/imagens/icones/adicionar.png" onClick="@command('adicionarMinhasMedias')" />
+                            <toolbarbutton id="editarMidia" label="Editar Midia" onClick="@command('editarMidia')" />
+                            <toolbarbutton id="atualziarMedia" label="Atualizar Media" onClick="@command('atualuzarMediaOrigem')" />
+                        </toolbar>
+                    </hbox>
+                </div>
+			
+                <div>
+                    <image sclass="float-left mb10" content="@load(vm.imagem)" align="center" style="max-width: 600px;" />
+                    <div sclass="float-right" width="350px">
+                        <vlayout>
+                            <div sclass="bloco-info" if="${not empty vm.media.generos}">
+                                <label value="Titulos Alternativos" sclass="desc" />
+                                <separator />
+                                <div forEach="${vm.media.titulos}">
+                                    ${each.nome} 
+                                    <label value="(${c:l(each.localidade.prefixo)})" if="${not empty each.localidade.prefixo}" />
+                                </div>
+                            </div>
+                            <separator />
+                            <a href="http://www.animenewsnetwork.com/encyclopedia/anime.php?id=${vm.media.idOrigem}" target="_blank">Fonte Anime News Network</a>
+                        </vlayout>
+                    </div>
+                    
+                    <div sclass="bloco-info clear-both mt10">
+                        <label value="ID:" sclass="desc" />
+                        <label value="@load(vm.media.id)" />
+                    </div>
+                   
+                    <div sclass="bloco-info" if="${not empty vm.media.generos}">
+                        <label value="Genero:" sclass="desc" />
+                        <zk forEach="${vm.media.generos}">
+                            <n:span class="label label-warning">${c:l(each.prefixo)}</n:span>
+                        </zk>
+                    </div>
+                    <div sclass="bloco-info" if="${not empty vm.media.temas}">
+                        <label value="Tema:" sclass="desc" />
+                        <zk forEach="${vm.media.temas}">
+                            <n:span class="label label-danger">${each.prefixo}</n:span>
+                        </zk>
+                    </div>
+                    <div sclass="bloco-info text-align-justify clear-both" visible="@load(not empty vm.media.sinopse)">
+                        <label value="Sinopse: " sclass="desc"/>
+                        <label value="@load(vm.media.sinopse)" />
+                    </div>
+                    <div sclass="clear-both">
+                        <listconteudo id="lbConteudo" conteudoFromMedia="@load(vm.media)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </window>
+</zk>

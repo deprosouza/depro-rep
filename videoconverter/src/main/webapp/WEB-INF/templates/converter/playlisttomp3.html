@@ -1,0 +1,62 @@
+
+<div ng-controller="youtubeplaylisttomp3" th:fragment="content">
+	<div class="page-header">
+		<h1>
+			From YouTube Playlist to MP3 <small> insert a link from a playlist to start</small>
+		</h1>
+	</div>
+	<form class="form-horizontal" ng-submit="youtubeplaylisttomp3Retrieveurls()">
+
+		<div class="form-group">
+			<label for="urlPlaylist" class="col-sm-2 control-label">URL Playlist</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" id="urlPlaylist" placeholder="URL Playlist" ng-model="urlPlaylist" />
+			</div>
+			<button type="submit" class="btn btn-success">Retrieve</button>
+		</div>
+		
+		<div class="form-group">
+			<label for="videoOutput" class="col-sm-2 control-label">Videos Output</label> 
+			<div class="col-sm-6">
+				<input type="text" class="form-control" id="videoOutput" placeholder="Videos Output" ng-model="videoOutput" />
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label for="mp3OutPut" class="col-sm-2 control-label">MP3 Output</label> 
+			<div class="col-sm-6">
+				<input type="text" class="form-control" id="mp3OutPut" placeholder="MP3 Output"  ng-model="mp3Output" />
+			</div>
+		</div>
+	</form>
+	
+	<form id="formyoutubeplaylisttomp3DownloadAndConvert" class="form-horizontal" ng-submit="youtubeplaylisttomp3DownloadAndConvert()" style="display: none">	
+
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th class="col-md-1" style="text-align: center"><input type="checkbox" ng-model="mainCheck" ng-click="checkAll(mainCheck)"  /></th>
+					<th class="col-md-8">Nome</th>
+					<th class="col-md-2">Progresso Download</th>
+					<th class="col-md-1">Status MP3</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="video in videos">
+					<td style="text-align: center">
+						<input type="checkbox" class="chieldCheck" ng-model="video.download" ng-if="!video.hasDownload" />
+						<i class="glyphicon glyphicon-ok" ng-if="video.hasDownload"></i>
+					</td>
+					<td><a href="{{video.url}}" target="_blank">{{video.nome}}</a></td>
+					<td><uib-progressbar class="progress-striped active" max="100" value="video.porcentagem"><span style="color:white; white-space:nowrap;">{{video.porcentagem}}%</span></uib-progressbar></td>
+					<td style="text-align: center">
+						<i class="glyphicon glyphicon-remove" ng-if="!video.hasMp3"></i>
+						<i class="glyphicon glyphicon-ok" ng-if="video.hasMp3"></i>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<button type="submit" class="btn btn-success">Start</button>
+	</form>
+</div>

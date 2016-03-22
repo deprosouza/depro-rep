@@ -1,0 +1,26 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="listmedia" class="br.com.depro.mugetsu.web.view.zk.composite.ListMedia" ?>
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+     xmlns:x="xhtml" xmlns:zk="zk"
+     xmlns:n="native"
+     xmlns:h="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('br.com.depro.mugetsu.web.vm.media.ConsultaMidiaPublicaViewModel')">
+        <div sclass="panel panel-primary content">
+            <div class="panel-heading">
+                <n:h3 class="panel-title">${c:l('service.consulta.media')}</n:h3>
+            </div>
+            <div class="panel-body">
+                <n:div class="btn-group btn-group-justified">
+                    <a forEach="${vm.formatos}" label="${c:l(each.prefixo)}" sclass="btn btn-info formatos ${each}" style="color: white !important;" 
+                       onClick="@command('selecionaForamtoMedia', formatoMedia=formato)">
+                        <custom-attributes formato="${each}" /> 
+                    </a>
+                </n:div>
+                <div id="divLista" />
+            </div>
+        </div>
+    </window>
+</zk>

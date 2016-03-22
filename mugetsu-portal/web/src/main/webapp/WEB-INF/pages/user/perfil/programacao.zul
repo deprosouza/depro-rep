@@ -1,0 +1,62 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="listmedia" class="br.com.depro.mugetsu.web.composite.ListMedia" ?>
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+     xmlns:zk="zk"
+     xmlns:x="xhtml" 
+     xmlns:n="native"
+     xmlns:h="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:d="http://www.zkoss.org/2005/zk/client/attribute"
+     xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <window id="modalProgramacao" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('br.com.depro.mugetsu.web.vm.perfil.DetalheProgramacaoViewModel')">
+        <div id="divModalProgramacao" class="modal fade in display-block">
+            <div class="modal-dialog width-700">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <n:h4 class="modal-title">
+                            Minha Programacao
+                        </n:h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-info">
+                            <n:strong>Quantidade : ${vm.projetosNaoAssistidos.size()}</n:strong>
+                        </div>
+                        <n:div id="accordion" class="panel-group">
+                            <div forEach="${vm.projetosNaoAssistidos}"  class="panel">
+                                <custom-attributes projeto="${each}" />
+                                <div class="panel-heading">
+                                    <n:h3 class="panel-title">
+                                        <n:a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse${each.id}">
+                                            ${each.media.nomePrincipal} - ${c:l(each.media.tipoMedia)}
+                                            <span class="badge pull-right">${each.quantidadeAssistidos} / ${each.conteudosProjeto.size()}</span>
+                                        </n:a>
+                                    </n:h3>
+                                </div>
+                                <n:div id="collapse${each.id}" class="panel-collapse collapse out">
+                                    <div class="panel-body">
+                                        <zk forEach="${each.conteudosProjeto}">
+                                            <div id="parent${each.id}" unless="${each.assistido}" if="${each.baixado}" class="float-left">
+                                                <button class="btn btn-primary" image="/imagens/icones/check.png" 
+                                                        onClick="@command('marcarAssistido', idComponente=parentId, conteudo=conteudo, accordion=divModalProgramacao)"
+                                                        label="${projeto.conteudosProjeto.size() ge 100 and each.conteudo.numeroEpisodio lt 10 ?  '00'.concat(each.conteudo.numeroEpisodio)
+                                                        : projeto.conteudosProjeto.size() ge 100 and each.conteudo.numeroEpisodio lt 100 ?  '0'.concat(each.conteudo.numeroEpisodio) 
+                                                        : projeto.conteudosProjeto.size() ge 10 and projeto.conteudosProjeto.size() lt 100 and each.conteudo.numeroEpisodio lt 10 ?  '0'.concat(each.conteudo.numeroEpisodio)
+                                                        :  each.conteudo.numeroEpisodio}">
+                                                    <custom-attributes parentId="${each.id}" conteudo="${each}" />
+                                                </button>
+                                            </div>
+                                        </zk>
+                                    </div>
+                                </n:div>
+                            </div>
+                        </n:div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" onClick="@command('fecharModalProgramacao', modal=modalProgramacao)" label="Fechar" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </window>
+</zk>

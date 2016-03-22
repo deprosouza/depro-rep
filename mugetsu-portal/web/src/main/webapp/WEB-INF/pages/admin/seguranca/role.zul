@@ -1,0 +1,31 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="duallistbox" class="br.com.depro.mugetsu.web.composite.DualListboPermissao" ?>
+
+<window width="100%">
+	<div apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('br.com.depro.mugetsu.web.controllers.RoleController')">
+				
+		<div sclass="z-toolbar" style="padding:0;">
+			<hbox pack="stretch" sclass="hboxRemoveWhiteStrips">				
+				<!-- Botoes -->
+				<toolbar align="end" style="float:right; border-style: none;">
+					<button label="${c:l('btn.inserir.role')}" height="24px" image="/imagens/icones/adicionar.png" />
+				</toolbar>
+			</hbox>
+		</div>
+		
+		<groupbox mold="3d" style="padding: 10px;">
+			<caption label="ROLES" />
+			<hlayout>
+				<label value="Selecione: "/>
+				<separator />
+				<combobox id="comboRoles" mold="rounded" model="@load(vm.roles)" selectedItem="@bind(vm.roleSelecionado)" >
+					<template name="model">
+	                	<comboitem label="@load(each.prefixo)" value="@load(each)" />
+	               	</template>
+				</combobox>
+			</hlayout>
+		</groupbox>
+	
+		<duallistbox id="dualBox" />
+	</div>
+</window>

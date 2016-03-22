@@ -1,0 +1,38 @@
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+     xmlns:x="xhtml" xmlns:zk="zk"
+     xmlns:n="native"
+     xmlns:h="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <div sclass="bloco-lista-conteudo">
+        <groupbox mold="3d" open="true">
+            <caption id="capList" image="/imagens/icones/historico.png" label="Conteudo:  ">
+                <label id="lConteudoSize" style="text-align: right; padding-right: 15px" />
+            </caption>
+
+            <div id="divToolbar">
+                <div class="btn-toolbar">
+                    <div class="btn-group">
+                        <button image="/imagens/icones/adicionar.png" id="btnAddUmConteudo" sclass="btn btn-success mt4" label="1"  />
+                        <button image="/imagens/icones/adicionar.png" id="btnAddConteudo"   sclass="btn btn-success mt4" label="Adicionar Em Lote" />
+                    </div>
+                    <div class="btn-group">
+                        <button image="/imagens/icones/check.png" id="btnCompleto"           sclass="btn btn-primary mt4" label="Media Completa" />
+                        <button image="/imagens/icones/check.png" id="btnCompletarBaixado"   sclass="btn btn-primary mt4" label="Marcar Baixados" />            
+                        <button image="/imagens/icones/check.png" id="btnCompletarAssistido" sclass="btn btn-primary mt4" label="Marcar Assistidos" />
+                    </div>
+                </div>
+            </div>
+            <listbox id="lbConteudos" mold="paging" pagingPosition="both" pageSize="20">
+                <listhead>
+                    <listheader width="60px" label="${c:l('label.numero')}" align="center" />
+                    <listheader label="${c:l('label.titulo')}" />
+                    <listheader width="50px" label="${c:l('label.filler')}" align="center" />
+                    <listheader sclass="headerConteudo" width="60px" label="${c:l('label.downloaded')}" align="center" />
+                    <listheader sclass="headerConteudo" width="65px" label="${c:l('label.assitido')}" align="center" />
+                </listhead>
+            </listbox>
+        </groupbox>
+    </div>
+</zk>

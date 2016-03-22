@@ -1,0 +1,41 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+     xmlns:zk="zk"
+     xmlns:x="xhtml" 
+     xmlns:n="native"
+     xmlns:c="client"
+     xmlns:h="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    
+    <window id="formLogin" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('br.com.depro.mugetsu.web.vm.perfil.AcessoVM')">
+        
+        <div class="modal fade in display-block">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <n:button class="close" data-dismiss="modal" aria-hidden="true"></n:button>
+                        <n:h4 class="modal-title">
+                            Efetuar Login
+                        </n:h4>
+                    </div>
+                    <div class="modal-body">
+                        <div sclass="box-campos">
+                            <hlayout>
+                                <textbox id="userNameOrEmail" value="@bind(vm.usernameOrEmail)" constraint="no empty" focus="true" 
+                                         c:onFocus="this.select()" onOK="userPwd.focus = true" placeholder="Username ou Email" sclass="field-text" />
+            
+                                <textbox id="userPwd" value="@bind(vm.password)" type="password" constraint="no empty" c:onFocus="this.select()" 
+                                         onOK="@command('finalizarProcessoLogin')" placeholder="Senha" sclass="field-text" />
+                            </hlayout>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" label="Fechar" onClick="@command('fecharModalLogin', formLogin=formLogin)" />
+                        <button sclass="btn btn-primary" label="Logar" onClick="@command('finalizarProcessoLogin')" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </window>
+</zk>

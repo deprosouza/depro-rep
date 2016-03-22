@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+    
+<beans>
+
+	<!-- CONFIGURAÇÃO DO TIPO DE MEDIA ANIME -->
+	<bean id="TYPE.ANIME" class="br.com.depro.mugetsu.model.media.MediaConfiguration">
+		<property name="campoQuantidadeEpisodios" value="true" />
+		<property name="campoQuantidadeTemporadas" value="true" />
+		<property name="campoDuracao" value="true" />
+		<property name="campoFormatoAnime" value="true" />
+		<property name="campoBroadcast" value="true" />
+		<property name="campoGenero" value="true" />
+		<property name="mapGenerosPermitidos">
+			<map>
+				<entry key="G.TYPE.ACAO" 		value="true" />
+				<entry key="G.TYPE.AVENTURA" 	value="true" />
+				<entry key="G.TYPE.COMEDIA" 	value="true" />
+				<entry key="G.TYPE.DRAMA" 		value="true" />
+				<entry key="G.TYPE.ECCHI" 		value="true" />
+				<entry key="G.TYPE.FANTASIA"	value="true" />
+				<entry key="G.TYPE.FICC" 		value="true" />
+				<entry key="G.TYPE.HEN" 		value="true" />
+				<entry key="G.TYPE.HIS" 		value="true" />
+				<entry key="G.TYPE.HOR" 		value="true" />
+				<entry key="G.TYPE.MAGIA" 		value="true" />
+				<entry key="G.TYPE.MECHA" 		value="true" />
+				<entry key="G.TYPE.MILITAR" 	value="true" />
+				<entry key="G.TYPE.MISTERIO"	value="true" />
+				<entry key="G.TYPE.MUSICA"		value="true" />
+				<entry key="G.TYPE.POLICE" 		value="true" />
+				<entry key="G.TYPE.PSY" 		value="true" />
+				<entry key="G.TYPE.ROMANCE" 	value="true" />
+				<entry key="G.TYPE.SHOUJO" 		value="true" />
+				<entry key="G.TYPE.SHOUJOAI" 	value="true" />
+				<entry key="G.TYPE.SHOUNEN" 	value="true" />
+				<entry key="G.TYPE.SHOUNENAI" 	value="true" />
+				<entry key="G.TYPE.SLL" 		value="true" />
+				<entry key="G.TYPE.ESPORTE" 	value="true" />
+				<entry key="G.TYPE.SUPERN" 		value="true" />
+				<entry key="G.TYPE.TORNEIO" 	value="true" />
+				<entry key="G.TYPE.YAOI" 		value="true" />
+				<entry key="G.TYPE.YURI" 		value="true" />
+			</map>
+		</property>
+	</bean>
+	
+	<!-- CONFIGURAÇÃO DO TIPO DE MEDIA MANGA -->
+	<bean id="TYPE.MANGA" class="br.com.depro.mugetsu.model.media.MediaConfiguration">
+		<property name="campoQuantidadeCapitulos" value="true" />
+		<property name="campoQuantidadeVolumes" value="true" />
+		<property name="campoBroadcast" value="true" />
+		<property name="campoGenero" value="true" />
+		<property name="mapGenerosPermitidos">
+			<map>
+				<entry key="G.TYPE.ACAO" 		value="true" />
+				<entry key="G.TYPE.AVENTURA" 	value="true" />
+				<entry key="G.TYPE.COMEDIA" 	value="true" />
+				<entry key="G.TYPE.DRAMA" 		value="true" />
+				<entry key="G.TYPE.ECCHI" 		value="true" />
+				<entry key="G.TYPE.FANTASIA"	value="true" />
+				<entry key="G.TYPE.FICC" 		value="true" />
+				<entry key="G.TYPE.HEN" 		value="true" />
+				<entry key="G.TYPE.HIS" 		value="true" />
+				<entry key="G.TYPE.HOR" 		value="true" />
+				<entry key="G.TYPE.MAGIA" 		value="true" />
+				<entry key="G.TYPE.MECHA" 		value="true" />
+				<entry key="G.TYPE.MILITAR" 	value="true" />
+				<entry key="G.TYPE.MISTERIO"	value="true" />
+				<entry key="G.TYPE.POLICE" 		value="true" />
+				<entry key="G.TYPE.PSY" 		value="true" />
+				<entry key="G.TYPE.ROMANCE" 	value="true" />
+				<entry key="G.TYPE.SHOUJO" 		value="true" />
+				<entry key="G.TYPE.SHOUNEN" 	value="true" />
+				<entry key="G.TYPE.SLL" 		value="true" />
+				<entry key="G.TYPE.ESPORTE" 	value="true" />
+				<entry key="G.TYPE.SUPERN" 		value="true" />
+				<entry key="G.TYPE.TORNEIO" 	value="true" />
+				<entry key="G.TYPE.YAOI" 		value="true" />
+				<entry key="G.TYPE.YURI" 		value="true" />
+			</map>
+		</property>
+	</bean>
+
+	<!-- CONFIGURAÇÃO DO TIPO DE MEDIA DORAMA -->
+	<bean id="TYPE.DORAMA" class="br.com.depro.mugetsu.model.media.MediaConfiguration">
+		<property name="campoQuantidadeEpisodios" value="true" />
+		<property name="campoQuantidadeTemporadas" value="true" />
+		<property name="campoForamtoDorama" value="true" />
+		<property name="campoDuracao" value="true" />
+		<property name="campoBroadcast" value="true" />
+		<property name="campoGenero" value="true" />
+		<property name="mapGenerosPermitidos">
+			<map>
+				<entry key="G.TYPE.AVENTURA" 	value="true" />
+				<entry key="G.TYPE.COMEDIA" 	value="true" />
+				<entry key="G.TYPE.DRAMA" 		value="true" />
+				<entry key="G.TYPE.FANTASIA"	value="true" />
+				<entry key="G.TYPE.FICC" 		value="true" />
+				<entry key="G.TYPE.HIS" 		value="true" />
+				<entry key="G.TYPE.HOR" 		value="true" />
+				<entry key="G.TYPE.MILITAR" 	value="true" />
+				<entry key="G.TYPE.MISTERIO"	value="true" />
+				<entry key="G.TYPE.MUSICA"		value="true" />
+				<entry key="G.TYPE.POLICE" 		value="true" />
+				<entry key="G.TYPE.PSY" 		value="true" />
+				<entry key="G.TYPE.ROMANCE" 	value="true" />
+				<entry key="G.TYPE.ESPORTE" 	value="true" />
+				<entry key="G.TYPE.SUPERN" 		value="true" />
+				<entry key="G.TYPE.TORNEIO" 	value="true" />
+			</map>
+		</property>
+	</bean>
+
+	<!-- CONFIGURAÇÃO DO TIPO DE MEDIA SERIE -->
+	<bean id="TYPE.SERIE" class="br.com.depro.mugetsu.model.media.MediaConfiguration">
+		<property name="campoQuantidadeEpisodios" value="true" />
+		<property name="campoQuantidadeTemporadas" value="true" />
+		<property name="campoDuracao" value="true" />
+		<property name="campoBroadcast" value="true" />
+		<property name="campoGenero" value="true" />
+		<property name="mapGenerosPermitidos">
+			<map>
+				<entry key="G.TYPE.ACAO" 		value="true" />
+				<entry key="G.TYPE.ADULTO" 		value="true" />
+				<entry key="G.TYPE.AVENTURA" 	value="true" />
+				<entry key="G.TYPE.COMEDIA" 	value="true" />
+				<entry key="G.TYPE.DRAMA" 		value="true" />
+				<entry key="G.TYPE.FICC" 		value="true" />
+				<entry key="G.TYPE.HIS" 		value="true" />
+				<entry key="G.TYPE.HOR" 		value="true" />
+				<entry key="G.TYPE.MILITAR" 	value="true" />
+				<entry key="G.TYPE.MISTERIO"	value="true" />
+				<entry key="G.TYPE.MUSICA"		value="true" />
+				<entry key="G.TYPE.POLICE" 		value="true" />
+				<entry key="G.TYPE.PSY" 		value="true" />
+				<entry key="G.TYPE.ROMANCE" 	value="true" />
+				<entry key="G.TYPE.ESPORTE" 	value="true" />
+				<entry key="G.TYPE.SUPERN" 		value="true" />
+				<entry key="G.TYPE.TORNEIO" 	value="true" />
+			</map>
+		</property>
+	</bean>
+
+	<!-- CONFIGURAÇÃO DO TIPO DE MEDIA FILME -->
+	<bean id="TYPE.FILME" class="br.com.depro.mugetsu.model.media.MediaConfiguration">
+		<property name="campoDuracao" value="true" />
+		<property name="campoAno" value="true" />
+		<property name="campoGenero" value="true" />
+		<property name="mapGenerosPermitidos">
+			<map>
+				<entry key="G.TYPE.ACAO" 		value="true" />
+				<entry key="G.TYPE.ADULTO" 		value="true" />
+				<entry key="G.TYPE.AVENTURA" 	value="true" />
+				<entry key="G.TYPE.COMEDIA" 	value="true" />
+				<entry key="G.TYPE.DRAMA" 		value="true" />
+				<entry key="G.TYPE.DOC" 		value="true" />
+				<entry key="G.TYPE.ECCHI" 		value="false" />
+				<entry key="G.TYPE.FANTASIA"	value="false" />
+				<entry key="G.TYPE.FICC" 		value="true" />
+				<entry key="G.TYPE.HEN" 		value="false" />
+				<entry key="G.TYPE.HIS" 		value="false" />
+				<entry key="G.TYPE.HOR" 		value="true" />
+				<entry key="G.TYPE.MAGIA" 		value="false" />
+				<entry key="G.TYPE.MECHA" 		value="false" />
+				<entry key="G.TYPE.MILITAR" 	value="true" />
+				<entry key="G.TYPE.MISTERIO"	value="true" />
+				<entry key="G.TYPE.MUSICA"		value="true" />
+				<entry key="G.TYPE.POLICE" 		value="true" />
+				<entry key="G.TYPE.PSY" 		value="false" />
+				<entry key="G.TYPE.ROMANCE" 	value="true" />
+				<entry key="G.TYPE.SHOUJO" 		value="false" />
+				<entry key="G.TYPE.SHOUJOAI" 	value="false" />
+				<entry key="G.TYPE.SHOUNEN" 	value="false" />
+				<entry key="G.TYPE.SHOUNENAI" 	value="false" />
+				<entry key="G.TYPE.SLL" 		value="false" />
+				<entry key="G.TYPE.ESPORTE" 	value="true" />
+				<entry key="G.TYPE.SUPERN" 		value="true" />
+				<entry key="G.TYPE.TORNEIO" 	value="true" />
+				<entry key="G.TYPE.YAOI" 		value="false" />
+				<entry key="G.TYPE.YURI" 		value="false" />
+			</map>
+		</property>
+	</bean>
+	
+	<!-- CONFIGURAÇÃO DO TIPO DE MEDIA TOKUSATSU -->
+	<bean id="TYPE.TOKUSATSU" class="br.com.depro.mugetsu.model.media.MediaConfiguration">
+		<property name="campoQuantidadeEpisodios" value="true" />
+		<property name="campoQuantidadeTemporadas" value="true" />
+		<property name="campoDuracao" value="true" />
+		<property name="campoBroadcast" value="true" />
+		<property name="mapGenerosPermitidos">
+			<map>
+				<entry key="G.TYPE.ACAO" 		value="false" />
+				<entry key="G.TYPE.ADULTO" 		value="false" />
+				<entry key="G.TYPE.AVENTURA" 	value="false" />
+				<entry key="G.TYPE.COMEDIA" 	value="false" />
+				<entry key="G.TYPE.DRAMA" 		value="false" />
+				<entry key="G.TYPE.DOC" 		value="false" />
+				<entry key="G.TYPE.ECCHI" 		value="false" />
+				<entry key="G.TYPE.FANTASIA"	value="false" />
+				<entry key="G.TYPE.FICC" 		value="false" />
+				<entry key="G.TYPE.HEN" 		value="false" />
+				<entry key="G.TYPE.HIS" 		value="false" />
+				<entry key="G.TYPE.HOR" 		value="false" />
+				<entry key="G.TYPE.MAGIA" 		value="false" />
+				<entry key="G.TYPE.MECHA" 		value="false" />
+				<entry key="G.TYPE.MILITAR" 	value="false" />
+				<entry key="G.TYPE.MISTERIO"	value="false" />
+				<entry key="G.TYPE.MUSICA"		value="false" />
+				<entry key="G.TYPE.POLICE" 		value="false" />
+				<entry key="G.TYPE.PSY" 		value="false" />
+				<entry key="G.TYPE.ROMANCE" 	value="false" />
+				<entry key="G.TYPE.SHOUJO" 		value="false" />
+				<entry key="G.TYPE.SHOUJOAI" 	value="false" />
+				<entry key="G.TYPE.SHOUNEN" 	value="false" />
+				<entry key="G.TYPE.SHOUNENAI" 	value="false" />
+				<entry key="G.TYPE.SLL" 		value="false" />
+				<entry key="G.TYPE.ESPORTE" 	value="false" />
+				<entry key="G.TYPE.SUPERN" 		value="false" />
+				<entry key="G.TYPE.TORNEIO" 	value="false" />
+				<entry key="G.TYPE.YAOI" 		value="false" />
+				<entry key="G.TYPE.YURI" 		value="false" />
+			</map>
+		</property>
+	</bean>
+</beans>

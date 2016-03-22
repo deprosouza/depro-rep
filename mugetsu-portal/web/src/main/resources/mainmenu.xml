@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:XMLRootMenu xmlns:ns2="br.com.mugetsu.web.view.zk">
+
+    <!-- ######################################################### -->
+    <!-- #################### possible Tags ###################### -->
+    <!-- ######################################################### -->
+    <!-- menu:           a parent menu that have child nodes.      -->
+    <!-- menuItem:       the menu item.                            -->
+    <!-- zulNavigation:  the path and name of the zul-file.        -->
+    <!-- iconName:       the path and name to an icon.             -->
+    <!-- rightName:      if it's declared, than the rightname must -->
+    <!--                 be the same as in the securityContext for -->
+    <!--                 creating this menuitem.                   -->
+    <!-- open:           (true/false opens a menu at creation time -->
+    <!-- ######################################################### -->
+
+    <menu id="menu_Media" rightName="RM_MEDIA" iconName="">
+        <menuItem id="menu_Itme_Media_Consulta" rightName="RM_IM_MEDIA_CONSULTA"
+                  zulNavigation="PAGE_CONSULTA_MIDIA_PUBLIC" iconName="" />			
+    </menu>
+
+    <!-- ######################################################################################################### -->
+    <!-- #################### MENU ADMIN -->
+    <!-- ######################################################################################################### -->
+    <menu id="menu_Admin" rightName="RM_ADMIN" iconName="imagens/icones/administracao.png">
+        <menu id="item_menu_Admin_Midia" rightName="RM_IM_ADMIN_MIDIA"
+              iconName="imagens/icones/administracao.png">
+			
+            <menuItem id="item_menu_InseriMidia" rightName="RM_IMIM_INSERIR_MIDIA"
+                      zulNavigation="viewFormCadPasso1"
+                      iconName="imagens/icones/adicionar.png" />
+
+            <menuItem id="item_menu_Pendente" rightName="RM_IMIM_PENDENTE"
+                      zulNavigation="/WEB-INF/zuls/admin/midia/pendente/lista.zul"
+                      iconName="imagens/icones/adicionar.png" />
+        </menu>
+
+    </menu>
+
+    <!-- ######################################################################################################### -->
+    <!-- #################### MENU SEGURANÇA -->
+    <!-- ######################################################################################################### -->
+    <menu id="menu_Security" rightName="RM_SECURITY" iconName="imagens/icones/chave.png">
+        <menuItem id="item_menu_Role" rightName="RM_IM_ROLE"
+                  zulNavigation="zulmgDetalheRole" 
+                  iconName="imagens/icones/chave.png" />
+    </menu>
+
+</ns2:XMLRootMenu>

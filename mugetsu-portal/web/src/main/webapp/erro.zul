@@ -1,0 +1,12 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="serviceName" class="br.com.dsphere.mugetsu.web.view.zk.composite.ServiceNameComposite" ?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:n="native"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	
+	ERRO
+	
+</zk>

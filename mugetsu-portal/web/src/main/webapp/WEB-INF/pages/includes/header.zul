@@ -1,0 +1,57 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+     xmlns:zk="zk"
+     xmlns:x="xhtml" 
+     xmlns:n="native"
+     xmlns:h="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:d="http://www.zkoss.org/2005/zk/client/attribute"
+     xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    
+    <div sclass="header no-selection" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('br.com.depro.mugetsu.web.vm.perfil.MainProfileViewModel')">
+        
+        <div sclass="header-conteudo content">
+            <x:a sclass="header-tittle link float-left">
+                <x:span>Mugetsu </x:span>Animes
+            </x:a>
+            <div sclass="divisor-vertical" />
+            <div sclass="search-box">
+                <textbox sclass="field-text" id="buscaRapida" placeholder="Pesquise uma midia" />
+            </div>
+            
+            <div sclass="float-right">
+                <div sclass="divisor-vertical" />
+                <div sclass="divisor-vertical float-right" />
+                
+                <div sclass="comandos mt10" unless="${vm.sessaoValida}">
+                    <a sclass="link" onClick="@command('renderModalLogin')" label="Login" />
+                    <a sclass="link" onClick="@command('cadastroUsuario')" label="Cadastre" />
+                </div>
+                
+                <div sclass="comandos" if="${vm.sessaoValida}">
+                    
+                    <n:div class="btn-group">
+                        <n:button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                            <n:span class="glyphicon glyphicon-user"></n:span>
+                            <label value="@load(vm.credenciaisUsuario.username)" />
+                            <n:span class="caret"></n:span>
+                        </n:button>
+                        <n:ul class="dropdown-menu">
+                            <n:li>
+                                <a label="Minhas Midias" onClick="@command('verMinhasMidas')" />
+                                <a id="linkQuantidadeNaoAssistidos" label="Programacao" onClick="@command('verMinhasProgramacao')">
+                                    <label id="labelNaoAssistidos" class="badge pull-right" value="@load(vm.quantidadeNaoAssistidos)" />
+                                </a>
+                                <timer onTimer="@command('obtemQuantidadeNaoAssistidos')" delay="10000" repeats="false" />
+                            </n:li> 
+                            <n:li class="divider"></n:li>
+                            <n:li>
+                                <a label="${c:l('label.logout')}" onClick="@command('encerrarSessao')" />
+                            </n:li>
+                        </n:ul>
+                    </n:div>
+                </div>
+            </div>
+        </div>
+    </div>
+</zk>

@@ -1,0 +1,44 @@
+<?page title="dsphere.mugetsuweb"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<!DOCTYPE html>
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:n="native"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	
+    <div id="winPrincipal">
+        <zscript>
+            <![CDATA[
+              import br.com.depro.mugetsu.web.utils.NavigateEnum;
+              import br.com.depro.mugetsu.web.vm.MainViewModel;
+
+              final String pathHeader = NavigateEnum.INCLUSE_HEADER.getUri();
+            ]]>
+        </zscript>
+
+        <div id="mainLayout">
+            <include mode="instant" src="${pathHeader}" />
+            <div sclass="z-menubar-hor clear-both" style="margin-top: 40px;padding-top: 0px;padding-bottom: 37px;">
+                <menubar sclass="content" id="menuSuperior" style="height: 37px;" />
+                <space />
+            </div>
+            
+            <div id="agrupadorConteudo">
+                <div id="conteudoPrincipal" sclass="center-content" />
+            </div>
+        </div>
+        
+        <zscript>
+            <![CDATA[
+                MainViewModel.renderMenuPrincipal(menuSuperior);
+            ]]>
+        </zscript>
+    </div>
+    <style src="/conteudo/css/bootstrap.css"/>
+    <style src="/conteudo/css/bootstrap-responsive.css"/>
+    <style src="/conteudo/css/components.css"/>
+    <style src="/conteudo/css/main.css"/>
+    <script src="/conteudo/js/jquery.js" />
+    <script src="/conteudo/js/bootstrap.min.js" />
+</zk>

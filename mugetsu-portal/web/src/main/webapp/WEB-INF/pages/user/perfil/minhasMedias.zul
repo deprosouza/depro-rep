@@ -1,0 +1,19 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?component name="listmedia" class="br.com.depro.mugetsu.web.composite.ListMedia" ?>
+
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+     xmlns:x="xhtml" xmlns:zk="zk"
+     xmlns:n="native"
+     xmlns:h="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    <div sclass="panel panel-warning content" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('br.com.depro.mugetsu.web.vm.media.ConsultaMidiaUsuarioViewModel')">
+        <div class="panel-heading">
+            <n:h3 class="panel-title">Minhas Midias</n:h3>
+        </div>
+        <div class="panel-body">
+            <listmedia id="lmProjetos" />
+        </div>
+    </div>
+</zk>

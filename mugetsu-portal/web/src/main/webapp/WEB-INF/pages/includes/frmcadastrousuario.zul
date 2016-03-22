@@ -1,0 +1,48 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+     xmlns:x="xhtml" xmlns:zk="zk"
+     xmlns:n="native"
+     xmlns:h="http://www.w3.org/1999/xhtml"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+
+    <window id="formCadastro" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('br.com.depro.mugetsu.web.controllers.CadastroUsuarioController')">
+
+        <div class="modal fade in display-block">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <n:button class="close" data-dismiss="modal" aria-hidden="true"></n:button>
+                        <n:h4 class="modal-title">
+                            Cadastrar Usuário
+                        </n:h4>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div sclass="box-campos">
+                            <vlayout>
+                                <textbox placeholder="${c:l('label.primeiro.nome')}" constraint="no empty" value="@bind(vm.login.usuario.primeiroNome)" sclass="field-text" />
+                                <textbox placeholder="${c:l('label.ultimo.nome')}" constraint="no empty" value="@bind(vm.login.usuario.ultimoNome)" sclass="field-text" />
+                                <textbox id="campoUsername" placeholder="${c:l('label.nick')}" constraint="no empty" value="@bind(vm.login.username)" onBlur="@command('validarUsernameExistente')" sclass="field-text" />
+                                <datebox placeholder="${c:l('label.dt.nascimento')}" value="@bind(vm.login.usuario.dataNascimento)" sclass="field-text"  />
+                                <textbox id="campoEmail" placeholder="${c:l('label.email')}" constraint="no empty" value="@bind(vm.login.email)" onBlur="@command('validarEmailExistente')" sclass="field-text" />
+                                <textbox placeholder="${c:l('label.senha')}" constraint="no empty" type="password" value="@bind(vm.login.senha)" sclass="field-text" />
+                                <combobox sclass="field-text" value="@bind(vm.login.usuario.sexo)">
+                                    <comboitem label="${c:l('label.sexo.masculino')}" value="M" />
+                                    <comboitem label="${c:l('label.sexo.feminino')}" value="F" />
+                                </combobox>
+                            </vlayout>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" label="Fechar" onClick="@command('fecharModalCadastro', formCadastro=formCadastro)" />
+                        <button sclass="btn btn-primary" label="Cadastrar" onClick="@command('efetuarCadastro')" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </window>
+</zk>
