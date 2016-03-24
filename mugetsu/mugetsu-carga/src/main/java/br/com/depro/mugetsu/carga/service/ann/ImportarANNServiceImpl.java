@@ -1,4 +1,4 @@
-package br.com.depro.mugetsu.carga.ann.service;
+package br.com.depro.mugetsu.carga.service.ann;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -22,29 +22,33 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import br.com.depro.fw.typezero.infrastructure.exception.ApplicationException;
-import br.com.depro.fw.typezero.infrastructure.service.TypezeroGenericServiceImpl;
 import br.com.depro.fw.typezero.infrastructure.spring.TypezeroSpringUtils;
 import br.com.depro.fw.typezero.infrastructure.utils.ExtracaoUtils;
 import br.com.depro.fw.typezero.infrastructure.utils.PropConfig;
-import br.com.depro.mugetsu.carga.anime.model.FormatoANN;
-import br.com.depro.mugetsu.carga.anime.model.GeneroANN;
-import br.com.depro.mugetsu.carga.anime.model.IdiomaANNEnum;
-import br.com.depro.mugetsu.core.media.dao.MediaDAO;
+import br.com.depro.mugetsu.carga.handler.ann.FormatoANN;
+import br.com.depro.mugetsu.carga.handler.ann.GeneroANN;
+import br.com.depro.mugetsu.carga.handler.ann.IdiomaANNEnum;
+import br.com.depro.mugetsu.carga.utils.ImportacaoUtils;
+import br.com.depro.mugetsu.core.media.service.AlternativeNameService;
 import br.com.depro.mugetsu.core.media.service.GeneroService;
 import br.com.depro.mugetsu.core.media.service.MediaService;
 import br.com.depro.mugetsu.core.media.service.TagService;
+import br.com.depro.mugetsu.model.Anexo;
+import br.com.depro.mugetsu.model.Anexo.TipoAnexo;
+import br.com.depro.mugetsu.model.LocaleEnum;
+import br.com.depro.mugetsu.model.media.AlternativeName;
 import br.com.depro.mugetsu.model.media.Genero;
 import br.com.depro.mugetsu.model.media.Media;
 import br.com.depro.mugetsu.model.media.Tag;
 import br.com.depro.mugetsu.model.media.util.FormatoMedia;
+import br.com.depro.mugetsu.model.media.util.OrigemEnum;
 
 /**
- *
  * @author rsouza
  * @version 1.0 - Versao Inicial - 05.08.2012
  */
 @Service
-public class ImportarANNServiceImpl extends TypezeroGenericServiceImpl<Media, MediaDAO> implements ImportarANNService {
+public class ImportarANNServiceImpl implements ImportarANNService {
 
     private static final String PATH_OUTPUT_TXT = "dir.path.output.carga.anime";
     private static final String PATH_OUTPUT_FORMATO = "dir.path.output.carga";
@@ -60,15 +64,12 @@ public class ImportarANNServiceImpl extends TypezeroGenericServiceImpl<Media, Me
     @Autowired
     private GeneroService generoService;
     @Autowired
-    private LocalidadeService localidadeService;
-    @Autowired
-    private MediaTituloService mediaTituloService;
+    private AlternativeNameService alternativeNameService;
     @Autowired
     private TagService tagService;
     @Autowired
     private PropConfig propConfig;
     private Map<String, Genero> mapGeneros;
-    private Map<String, Localidade> mapIdiomas;
     private Map<String, Tag> mapTags;
     
 	public Media atualizarDadosMedia(Media media) throws ApplicationException {
@@ -88,7 +89,7 @@ public class ImportarANNServiceImpl extends TypezeroGenericServiceImpl<Media, Me
 	            if (FormatoMedia.MANGA.equals(mediaNova.getFormatoMedia())) {
 	            	mediaNova.setQuantidadeVolumes(extrairQuantidades(linhas, media.getFormatoMedia()));
 	            } else if (!FormatoMedia.FILME.equals(mediaNova.getFormatoMedia())) {
-	            	mediaNova.setQuantidedaEpisodios(extrairQuantidades(linhas, media.getFormatoMedia()));
+	            	mediaNova.setQuantidadeEpisodios(extrairQuantidades(linhas, media.getFormatoMedia()));
 	            }
 	            
 	            if (media.getPathImagem() == null) {
@@ -101,9 +102,7 @@ public class ImportarANNServiceImpl extends TypezeroGenericServiceImpl<Media, Me
 			}
 			
 		} catch (ApplicationException e) {
-			super.logger.error(e.getMessage());
         } catch (IOException e) {
-        	super.logger.error(e.getMessage());
 		}
 		return media;
 	}
@@ -115,7 +114,6 @@ public class ImportarANNServiceImpl extends TypezeroGenericServiceImpl<Media, Me
             try {
                 importacao.doRequest(URL_ENCYCLOPEDIA + i, i, false);
             } catch (ApplicationException e) {
-                this.logger.error(e.getMessage());
                 importacao.getResumo().addQuantidadeErro();
             }
         }
@@ -174,9 +172,9 @@ public class ImportarANNServiceImpl extends TypezeroGenericServiceImpl<Media, Me
                 }
             } catch (Exception e) {
                 if (media != null) {
-                    super.logger.error(media.getNomePrincipal() + " - " + media.getIdOrigem() + " = " + e.getMessage());
+//                    super.logger.error(media.getNomePrincipal() + " - " + media.getIdOrigem() + " = " + e.getMessage());
                 } else {
-                    super.logger.error(e.getMessage());
+//                    super.logger.error(e.getMessage());
                 }
             }
         }
@@ -284,7 +282,6 @@ public class ImportarANNServiceImpl extends TypezeroGenericServiceImpl<Media, Me
                 }
 
             } catch (Exception e) {
-                super.logger.error(e.getMessage());
             }
         }
 
@@ -292,7 +289,6 @@ public class ImportarANNServiceImpl extends TypezeroGenericServiceImpl<Media, Me
             ExtracaoUtils extracaoUtils = new ExtracaoUtils(propConfig, PATH_OUTPUT_FORMATO, "formatosANN", true);
             extracaoUtils.criarArquivo(new ArrayList<String>(tipos));
         } catch (ApplicationException e) {
-            super.logger.error(e.getMessage());
         }
     }
 
@@ -309,7 +305,7 @@ public class ImportarANNServiceImpl extends TypezeroGenericServiceImpl<Media, Me
             Matcher matcher = executeRegex("<h1 id=\"page_header\">(.*.)\\((.*.)\\)</h1>", linha);
             if (matcher.find()) {
                 media = new Media();
-                MediaNome mediaNome = new MediaNome();
+                AlternativeName mediaNome = new AlternativeName();
                 mediaNome.setPrincipal(true);
                 mediaNome.setNome(matcher.group(1).trim());
                 media.getNomes().add(mediaNome);
@@ -319,7 +315,7 @@ public class ImportarANNServiceImpl extends TypezeroGenericServiceImpl<Media, Me
                 media.setFormatoMedia(formatoANN.getFormatoMedia());
                 media.setFormatoAnime(formatoANN.getFormatoAnime());
                 media.setFormatoDorama(formatoANN.getFormatoDorama());
-                media.setOrigem(Origem.ANN);
+                media.setOrigem(OrigemEnum.ANN);
                 break;
             }
         }
@@ -360,8 +356,8 @@ public class ImportarANNServiceImpl extends TypezeroGenericServiceImpl<Media, Me
      * @throws IOException
      * @throws ApplicationException 
      */
-    private List<MediaNome> extrairTitulosAlternativos(List<String> linhas) throws ApplicationException {
-        List<MediaNome> titulos = new ArrayList<MediaNome>();
+    private List<AlternativeName> extrairTitulosAlternativos(List<String> linhas) throws ApplicationException {
+        List<AlternativeName> titulos = new ArrayList<AlternativeName>();
         int status = 0;
         for (String linha : linhas) {
             if (status == 0) {
@@ -371,9 +367,9 @@ public class ImportarANNServiceImpl extends TypezeroGenericServiceImpl<Media, Me
             } else if (status == 2) {
                 Matcher matcher = executeRegex("(^<div.*>(([\\p{L}\\d!,:\"'$%#\\.*\\-\\+@\\?\\\\/;=\\| ]+)(\\((.*)\\))*)</div>$)", linha);
                 if (matcher.find()) {
-                    MediaNome titulo = new MediaNome();
+                	AlternativeName titulo = new AlternativeName();
                     titulo.setNome(matcher.group(3).trim());
-                    titulo.setLocalidade(obterLocalidadeTitulo(matcher.group(5)));
+                    titulo.setLocale(obterLocalidadeTitulo(matcher.group(5)));
                     titulos.add(titulo);
                 } else {
                     break;
@@ -391,15 +387,14 @@ public class ImportarANNServiceImpl extends TypezeroGenericServiceImpl<Media, Me
      * @return Entidade {@link Localidade} do titulo em questao
      * @throws ApplicationException 
      */
-    private Localidade obterLocalidadeTitulo(String bruteValue) throws ApplicationException {
-        Localidade localidadeRetorno = null;
+    private LocaleEnum obterLocalidadeTitulo(String bruteValue) throws ApplicationException {
+        LocaleEnum localidadeRetorno = null;
         if (StringUtils.isNotBlank(bruteValue)) {
             String strEnum = bruteValue.trim().replaceAll(" |\\(|\\)", "");
             try {
                 IdiomaANNEnum annEnum = IdiomaANNEnum.valueOf(strEnum);
-                localidadeRetorno = getMapIdiomas().get(annEnum.getPrefixo());
+                localidadeRetorno = annEnum.getLocale();
             } catch (Exception exp) {
-            	super.logger.error("Nao foi achada chave a localidade " + strEnum);
             }
         }
         return localidadeRetorno;
@@ -434,12 +429,12 @@ public class ImportarANNServiceImpl extends TypezeroGenericServiceImpl<Media, Me
 	                if (matcher.matches()) {
 	                    String url = URL_BASE_ANN + (isBigImage ? matcher.group(2) : matcher.group(2).replaceAll("/thumbnails/(.*.)/", "/images/encyc/"));
 						retorno = downloadFromURL(url);
-	                    Galeria galeria = new Galeria();
-	                    galeria.setPathImagem(retorno);
-	                    galeria.setDataUpload(new Date());
-	                    galeria.setFormatoImagem(FormatoImagem.IMG_MEDIA);
-	                    galeria.setImagemAtual(true);
-	                    media.getGaleriaImagens().add(galeria);
+	                    Anexo anexo = new Anexo();
+	                    anexo.setNome(retorno);
+	                    anexo.setDataCriacao(new Date());
+	                    anexo.setTipoAnexo(TipoAnexo.IMAGEM);
+	                    anexo.setPrincipal(true);
+	                    media.getAnexos().add(anexo);
 	                    break;
 	                }
 	            }
@@ -536,7 +531,7 @@ public class ImportarANNServiceImpl extends TypezeroGenericServiceImpl<Media, Me
                     media.getTags().add(getMapTags().get(item.toLowerCase()));
                 } else {
                     Tag tag = new Tag();
-                    tag.setTag((item));
+                    tag.setKey(item);
                     media.getTags().add(tag);
                 }
             }
@@ -606,24 +601,11 @@ public class ImportarANNServiceImpl extends TypezeroGenericServiceImpl<Media, Me
 	private Map<String, Genero> getMapGeneros() {
 		if (mapGeneros == null) {
 			mapGeneros = new HashMap<String, Genero>();
-			for (Genero genero : generoService.buscarTodas()) {
-				mapGeneros.put(genero.getPrefixo(), genero);
+			for (Genero genero : generoService.buscarTodos()) {
+				mapGeneros.put(genero.getKey(), genero);
 			}
 		}
 		return mapGeneros;
-	}
-
-	/**
-	 * @return the mapIdiomas
-	 */
-	private Map<String, Localidade> getMapIdiomas() {
-		if (mapIdiomas == null) {
-			mapIdiomas = new HashMap<String, Localidade>();
-			for (Localidade localidade : localidadeService.buscarTodas()) {
-				mapIdiomas.put(localidade.getPrefixo(), localidade);
-			}
-		}
-		return mapIdiomas;
 	}
 
 	/**
@@ -638,8 +620,4 @@ public class ImportarANNServiceImpl extends TypezeroGenericServiceImpl<Media, Me
 		}
 		return mapTags;
 	}
-
-	@Override
-    public void initDAO(MediaDAO arg0) {
-    }
 }

@@ -48,9 +48,10 @@ public class AOPInterceptorService {
     		EntidadeBase de = buscarValorOriginal(joinPoint, event);
     		Object result = joinPoint.proceed();
 			auditar(joinPoint, event, de, result);
-    		gerarLinhaLog(joinPoint, startTime, result);
+    		gerarLinhaLog(joinPoint, startTime, result, null);
     		return result;
     	} catch (Throwable t) {
+    		gerarLinhaLog(joinPoint, startTime, null, t);
     		throw t;
     	}
     }
@@ -208,7 +209,7 @@ public class AOPInterceptorService {
     }
 
     
-	private void gerarLinhaLog(ProceedingJoinPoint joinPoint, long startTime, Object result) {
+	private void gerarLinhaLog(ProceedingJoinPoint joinPoint, long startTime, Object result, Throwable t) {
 		String metodo = "".concat(joinPoint.getSignature().getDeclaringType().getSimpleName()).concat(".").concat(joinPoint.getSignature().getName()).concat(" << ");
         this.log = Logger.getLogger(joinPoint.getTarget().getClass());
         
@@ -233,6 +234,8 @@ public class AOPInterceptorService {
 				int size = ((Collection) result).size();
             	message = metodo + params + size + (size > 1 ? " registros" : " registro");
             }
+        } else if (t != null) {
+        	message = metodo + params + "Erro : " + t.getMessage();
         } else {
         	message = metodo + params + "VOID";
         }

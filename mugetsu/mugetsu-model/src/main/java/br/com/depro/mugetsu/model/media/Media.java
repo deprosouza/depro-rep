@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +21,9 @@ import javax.persistence.Table;
 import br.com.depro.fw.typezero.infrastructure.model.EntidadeBase;
 import br.com.depro.mugetsu.model.Anexo;
 import br.com.depro.mugetsu.model.media.util.FormatoAnime;
+import br.com.depro.mugetsu.model.media.util.FormatoDorama;
 import br.com.depro.mugetsu.model.media.util.FormatoMedia;
+import br.com.depro.mugetsu.model.media.util.OrigemEnum;
 
 /**
  * @author rsouza
@@ -31,6 +35,7 @@ public class Media extends EntidadeBase {
 
 	/** Numero serial da classe */
 	private static final long serialVersionUID = 1884364187471843431L;
+	private String idOrigem;
 	private String sinopse;
 	private String nomePrincipal;
 	private Integer duracao;
@@ -41,6 +46,8 @@ public class Media extends EntidadeBase {
 	private Integer ano;
 	private FormatoMedia formatoMedia;
 	private FormatoAnime formatoAnime;
+	private FormatoDorama formatoDorama;
+	private OrigemEnum origem;
 	private Set<Tag> tags;
 	private Set<Genero> generos;
 	private List<AlternativeName> nomes;
@@ -53,6 +60,11 @@ public class Media extends EntidadeBase {
 	@SequenceGenerator(name = "SEQ_MEDIA", sequenceName = "SEQ_MEDIA")
 	public Long getId() {
 		return id;
+	}
+
+	@Column(name = "ID_ORIGEM", length = 200)
+	public String getIdOrigem() {
+		return idOrigem;
 	}
 
 	@Column(name = "SINOPSE", length = 5000)
@@ -96,13 +108,27 @@ public class Media extends EntidadeBase {
 	}
 
 	@Column(name = "FORMATO_MEDIA")
+	@Enumerated(EnumType.STRING)
 	public FormatoMedia getFormatoMedia() {
 		return formatoMedia;
 	}
 
 	@Column(name = "FORMATO_ANIME")
+	@Enumerated(EnumType.STRING)
 	public FormatoAnime getFormatoAnime() {
 		return formatoAnime;
+	}
+
+	@Column(name = "FORMATO_DORAMA")
+	@Enumerated(EnumType.STRING)
+	public FormatoDorama getFormatoDorama() {
+		return formatoDorama;
+	}
+
+	@Column(name = "ORIGEM")
+	@Enumerated(EnumType.STRING)
+	public OrigemEnum getOrigem() {
+		return origem;
 	}
 
 	@ManyToMany
@@ -131,6 +157,10 @@ public class Media extends EntidadeBase {
 
 	public void setSinopse(String sinopse) {
 		this.sinopse = sinopse;
+	}
+
+	public void setIdOrigem(String idOrigem) {
+		this.idOrigem = idOrigem;
 	}
 
 	public void setNomePrincipal(String nomePrincipal) {
@@ -167,6 +197,14 @@ public class Media extends EntidadeBase {
 
 	public void setFormatoAnime(FormatoAnime formatoAnime) {
 		this.formatoAnime = formatoAnime;
+	}
+
+	public void setFormatoDorama(FormatoDorama formatoDorama) {
+		this.formatoDorama = formatoDorama;
+	}
+
+	public void setOrigem(OrigemEnum origem) {
+		this.origem = origem;
 	}
 
 	public void setTags(Set<Tag> tags) {

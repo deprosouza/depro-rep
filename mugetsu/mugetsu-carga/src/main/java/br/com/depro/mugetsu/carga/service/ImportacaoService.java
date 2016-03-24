@@ -1,4 +1,4 @@
-package br.com.depro.mugetsu.carga.anime.service;
+package br.com.depro.mugetsu.carga.service;
 
 import br.com.depro.fw.typezero.infrastructure.exception.ApplicationException;
 

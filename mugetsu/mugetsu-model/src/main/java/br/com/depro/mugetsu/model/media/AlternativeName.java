@@ -24,7 +24,7 @@ public class AlternativeName extends EntidadeBase {
 	/** Numero serial da classe */
 	private static final long serialVersionUID = -8274039030525558913L;
 	private String nome;
-	private Boolean isPrincipal = Boolean.FALSE;
+	private Boolean principal = Boolean.FALSE;
 	private LocaleEnum locale;
 
 	@Id
@@ -46,12 +46,12 @@ public class AlternativeName extends EntidadeBase {
 	}
 
 	@Column(name = "IS_PRINCIPAL")
-	public Boolean getIsPrincipal() {
-		return isPrincipal;
+	public Boolean getPrincipal() {
+		return principal;
 	}
 
-	public void setIsPrincipal(Boolean isPrincipal) {
-		this.isPrincipal = isPrincipal;
+	public void setPrincipal(Boolean isPrincipal) {
+		this.principal = isPrincipal;
 	}
 
 	@Column(name = "LOCALE")

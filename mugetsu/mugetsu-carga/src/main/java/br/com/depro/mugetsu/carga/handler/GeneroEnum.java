@@ -1,4 +1,4 @@
-package br.com.depro.mugetsu.carga.anime.model;
+package br.com.depro.mugetsu.carga.handler;
 
 /**
  * @author rsouza

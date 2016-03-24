@@ -1,4 +1,6 @@
-package br.com.depro.mugetsu.carga.anime.model;
+package br.com.depro.mugetsu.carga.handler.ann;
+
+import br.com.depro.mugetsu.carga.handler.GeneroEnum;
 
 public enum GeneroANN {
 
