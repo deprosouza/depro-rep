@@ -1,8 +1,7 @@
 package br.com.depro.mugetsu.carga.anime.service;
 
-import br.com.depro.fw.typezero.infrastructure.exception.ApplicationException;
-import br.com.depro.fw.typezero.infrastructure.service.TypezeroGenericService;
-import br.com.depro.mugetsu.model.media.Media;
+import javax.print.attribute.standard.Media;
+
 
 /**
  * 

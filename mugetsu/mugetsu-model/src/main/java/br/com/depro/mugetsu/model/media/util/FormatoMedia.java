@@ -10,6 +10,8 @@ public enum FormatoMedia {
 	FILME,
 	SERIE,
 	MANGA,
+	DORAMA,
 	HQ,
+	TOKUSATSU,
 	LIVRO;
 }
