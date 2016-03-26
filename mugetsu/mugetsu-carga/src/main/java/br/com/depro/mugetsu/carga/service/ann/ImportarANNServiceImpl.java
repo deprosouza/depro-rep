@@ -440,7 +440,6 @@ public class ImportarANNServiceImpl implements ImportarANNService {
 	            }
 	        }
     	} catch (ApplicationException e) {
-    		super.logger.error(media.getNomePrincipal() + " - Falha em obter imagem - " + media.getIdOrigem());
     	}
     }
 
@@ -570,24 +569,16 @@ public class ImportarANNServiceImpl implements ImportarANNService {
      * @throws IOException
      */
 	private void compararImagens(Media media, Media mediaNova) throws IOException {
-		if (mediaNova.getPathImagem() != null) {
-			ExtracaoUtils imgOriginalExt = new ExtracaoUtils(propConfig, PATH_OUTPUT_IMG, null, media.getPathImagem());
-			ExtracaoUtils imgNovaExt = new ExtracaoUtils(propConfig, PATH_OUTPUT_IMG, null, mediaNova.getPathImagem());
+		Anexo iamgemPrincipal = mediaNova.getImagemPrincipal();
+		if (iamgemPrincipal != null) {
+			ExtracaoUtils imgOriginalExt = new ExtracaoUtils(propConfig, PATH_OUTPUT_IMG, null, media.getImagemPrincipal().getNome());
+			ExtracaoUtils imgNovaExt = new ExtracaoUtils(propConfig, PATH_OUTPUT_IMG, null, mediaNova.getImagemPrincipal().getNome());
 			
 			if (imgNovaExt.exists()) {
 		    	boolean isImagensIguais = imgOriginalExt.exists() ? FileUtils.contentEquals(imgOriginalExt.getFile(), imgNovaExt.getFile()) : false;
 		    	if (!isImagensIguais) {
-		    		if (!CollectionUtils.isEmpty(media.getGaleriaImagens())) {
-		        		for (Galeria galeria : media.getGaleriaImagens()) {
-		        			if (galeria.getPathImagem().equals(media.getPathImagem())) {
-		        				galeria.setImagemAtual(false);
-		        			}
-		        		}
-					}
-		        		
-	        		Galeria galeria = mediaNova.getGaleriaImagens().get(0);
-	        		media.setPathImagem(galeria.getPathImagem());
-	        		media.getGaleriaImagens().add(galeria);
+		    		media.getImagemPrincipal().setPrincipal(false);
+	        		media.getAnexos().add( mediaNova.getImagemPrincipal());
 		    	} else {
 		    		imgNovaExt.removeFile();
 		    	}

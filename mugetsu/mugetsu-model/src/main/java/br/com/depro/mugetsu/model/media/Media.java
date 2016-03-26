@@ -1,5 +1,6 @@
 package br.com.depro.mugetsu.model.media;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -17,6 +18,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.apache.commons.collections.CollectionUtils;
 
 import br.com.depro.fw.typezero.infrastructure.model.EntidadeBase;
 import br.com.depro.mugetsu.model.Anexo;
@@ -153,6 +157,29 @@ public class Media extends EntidadeBase {
 	@JoinColumn(name = "FK_MEDIA")
 	public List<Anexo> getAnexos() {
 		return anexos;
+	}
+	
+	@Transient
+	public List<Anexo> getImagens() {
+		List<Anexo> anexos = new ArrayList<Anexo>();
+		if (CollectionUtils.isNotEmpty(getAnexos())) {
+			for (Anexo anexo : getAnexos()) {
+				if (anexo.isImagem()) {
+					anexos.add(anexo);
+				}
+			}
+		}
+		return anexos;
+	}
+	
+	@Transient
+	public Anexo getImagemPrincipal() {
+		for (Anexo anexo : getImagens()) {
+			if (anexo.getPrincipal()) {
+				return anexo;
+			}
+		}
+		return null;
 	}
 
 	public void setSinopse(String sinopse) {

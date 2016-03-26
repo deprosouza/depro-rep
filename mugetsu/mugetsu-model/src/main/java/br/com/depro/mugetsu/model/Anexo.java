@@ -13,6 +13,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import br.com.depro.fw.typezero.infrastructure.model.EntidadeBase;
 
@@ -62,6 +63,11 @@ public class Anexo extends EntidadeBase {
 		return tipoAnexo;
 	}
 
+	@Transient
+	public boolean isImagem() {
+		return TipoAnexo.IMAGEM.equals(getTipoAnexo());
+	}
+	
 	public void setNome(String nome) {
 		this.nome = nome;
 	}

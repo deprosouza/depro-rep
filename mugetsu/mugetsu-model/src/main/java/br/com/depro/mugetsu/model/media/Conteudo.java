@@ -28,6 +28,7 @@ public class Conteudo extends EntidadeBase {
 	private static final long serialVersionUID = -5546821980020586992L;
 	private String nomePrincipal;
 	private String sequencia;
+	private Integer paginas;
 	private List<AlternativeName> nomes;
 
 	@Id
@@ -44,17 +45,14 @@ public class Conteudo extends EntidadeBase {
 		return nomePrincipal;
 	}
 
-	public void setNomePrincipal(String nomePrincipal) {
-		this.nomePrincipal = nomePrincipal;
-	}
-
 	@Column(name = "SEQUENCIA")
 	public String getSequencia() {
 		return sequencia;
 	}
 
-	public void setSequencia(String sequencia) {
-		this.sequencia = sequencia;
+	@Column(name = "PAGINAS")
+	public Integer getPaginas() {
+		return paginas;
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -63,8 +61,20 @@ public class Conteudo extends EntidadeBase {
 		return nomes;
 	}
 
+	public void setNomePrincipal(String nomePrincipal) {
+		this.nomePrincipal = nomePrincipal;
+	}
+
+	public void setSequencia(String sequencia) {
+		this.sequencia = sequencia;
+	}
+
+	public void setPaginas(Integer paginas) {
+		this.paginas = paginas;
+	}
+
 	public void setNomes(List<AlternativeName> nomes) {
 		this.nomes = nomes;
 	}
-	
+
 }
