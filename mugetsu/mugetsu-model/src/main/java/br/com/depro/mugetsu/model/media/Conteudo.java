@@ -30,6 +30,7 @@ public class Conteudo extends EntidadeBase {
 	private String sequencia;
 	private Integer paginas;
 	private List<AlternativeName> nomes;
+	private List<Broadcast> broadcasts;
 
 	@Id
 	@Override
@@ -61,6 +62,12 @@ public class Conteudo extends EntidadeBase {
 		return nomes;
 	}
 
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "FK_CONTEUDO")
+	public List<Broadcast> getBroadcasts() {
+		return broadcasts;
+	}
+
 	public void setNomePrincipal(String nomePrincipal) {
 		this.nomePrincipal = nomePrincipal;
 	}
@@ -77,4 +84,7 @@ public class Conteudo extends EntidadeBase {
 		this.nomes = nomes;
 	}
 
+	public void setBroadcasts(List<Broadcast> broadcasts) {
+		this.broadcasts = broadcasts;
+	}
 }

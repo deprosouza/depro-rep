@@ -10,13 +10,12 @@ public enum FormatoDorama {
 	KDRAMA, JDRAMA, CDRAMA, TDRAMA, SGDRAMA, HKDRAMA;
 
 	public static FormatoDorama getEnum(String name) {
-		FormatoDorama enumm = null;
-		for (FormatoDorama item : FormatoDorama.values()) {
-			if (item.name().equalsIgnoreCase(name)) {
-				enumm = item;
-				break;
+		FormatoDorama formatoRetorno = null;
+		for (FormatoDorama formato : FormatoDorama.values()) {
+			if (formato.name().equalsIgnoreCase(name)) {
+				formatoRetorno = formato;
 			}
 		}
-		return enumm;
+		return formatoRetorno;
 	}
 }

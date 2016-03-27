@@ -14,4 +14,14 @@ public enum FormatoMedia {
 	HQ,
 	TOKUSATSU,
 	LIVRO;
+	
+	public static FormatoMedia getEnum(String name) {
+		FormatoMedia formatoMedia = null;
+		for (FormatoMedia formato : FormatoMedia.values()) {
+			if (formato.name().equalsIgnoreCase(name)) {
+				formatoMedia = formato;
+			}
+		}
+		return formatoMedia;
+	}
 }

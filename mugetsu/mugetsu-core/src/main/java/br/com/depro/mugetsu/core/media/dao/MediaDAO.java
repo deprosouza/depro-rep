@@ -1,6 +1,7 @@
 package br.com.depro.mugetsu.core.media.dao;
 
 import br.com.depro.fw.typezero.infrastructure.dao.GenericDAO;
+import br.com.depro.mugetsu.core.utils.CriteriaHelper;
 import br.com.depro.mugetsu.model.media.Media;
 
 /**
@@ -8,5 +9,10 @@ import br.com.depro.mugetsu.model.media.Media;
  * @version 1.0 -Versao Inicial - 20.03.2016
  */
 public interface MediaDAO extends GenericDAO<Media> {
-	
+
+	/**
+	 * @param criteria
+	 * @return
+	 */
+	Media findIfMediaExists(CriteriaHelper criteria);
 }

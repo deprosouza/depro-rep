@@ -1,4 +1,4 @@
-package br.com.depro.mugetsu.model.broadcast;
+package br.com.depro.mugetsu.model.media;
 
 import java.util.Date;
 
@@ -24,7 +24,7 @@ import br.com.depro.mugetsu.model.LocaleEnum;
  */
 @Entity
 @Table(name = "BROADCAST")
-public class BroadcastBase extends EntidadeBase {
+public class Broadcast extends EntidadeBase {
 
 	/** Numero de serie da classe */
 	private static final long serialVersionUID = 2277789579846296467L;
@@ -129,7 +129,7 @@ public class BroadcastBase extends EntidadeBase {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BroadcastBase other = (BroadcastBase) obj;
+		Broadcast other = (Broadcast) obj;
 		if (emissora == null) {
 			if (other.emissora != null)
 				return false;

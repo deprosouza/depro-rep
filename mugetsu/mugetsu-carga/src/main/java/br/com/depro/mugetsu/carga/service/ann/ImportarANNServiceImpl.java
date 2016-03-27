@@ -19,7 +19,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import br.com.depro.fw.typezero.infrastructure.exception.ApplicationException;
 import br.com.depro.fw.typezero.infrastructure.spring.TypezeroSpringUtils;
@@ -29,7 +28,6 @@ import br.com.depro.mugetsu.carga.handler.ann.FormatoANN;
 import br.com.depro.mugetsu.carga.handler.ann.GeneroANN;
 import br.com.depro.mugetsu.carga.handler.ann.IdiomaANNEnum;
 import br.com.depro.mugetsu.carga.utils.ImportacaoUtils;
-import br.com.depro.mugetsu.core.media.service.AlternativeNameService;
 import br.com.depro.mugetsu.core.media.service.GeneroService;
 import br.com.depro.mugetsu.core.media.service.MediaService;
 import br.com.depro.mugetsu.core.media.service.TagService;
@@ -37,6 +35,8 @@ import br.com.depro.mugetsu.model.Anexo;
 import br.com.depro.mugetsu.model.Anexo.TipoAnexo;
 import br.com.depro.mugetsu.model.LocaleEnum;
 import br.com.depro.mugetsu.model.media.AlternativeName;
+import br.com.depro.mugetsu.model.media.Broadcast;
+import br.com.depro.mugetsu.model.media.Conteudo;
 import br.com.depro.mugetsu.model.media.Genero;
 import br.com.depro.mugetsu.model.media.Media;
 import br.com.depro.mugetsu.model.media.Tag;
@@ -56,21 +56,16 @@ public class ImportarANNServiceImpl implements ImportarANNService {
     private static final String PREFIXO_ANN = "-animenewsnetwork";
     private static final String URL_BASE_ANN = "http://www.animenewsnetwork.com";
     private static final String URL_ENCYCLOPEDIA = URL_BASE_ANN + "/encyclopedia/anime.php?id=";
-    private static final int TIPO_EPI = 0;
-    private static final int TIPO_VOL = 1;
-    private static final int TIPO_CAP = 1;
     @Autowired
     private MediaService mediaService;
     @Autowired
     private GeneroService generoService;
     @Autowired
-    private AlternativeNameService alternativeNameService;
-    @Autowired
     private TagService tagService;
     @Autowired
     private PropConfig propConfig;
-    private Map<String, Genero> mapGeneros;
     private Map<String, Tag> mapTags;
+    private Map<String, Genero> mapGeneros;
     
 	public Media atualizarDadosMedia(Media media) throws ApplicationException {
 		try {
@@ -92,13 +87,13 @@ public class ImportarANNServiceImpl implements ImportarANNService {
 	            	mediaNova.setQuantidadeEpisodios(extrairQuantidades(linhas, media.getFormatoMedia()));
 	            }
 	            
-	            if (media.getPathImagem() == null) {
+	            if (media.getImagemPrincipal() == null) {
 	            	extrairImagem(linhas, mediaNova);
 	            }
 	            media = ImportacaoUtils.mergeMedia(media, mediaNova);
 	            compararImagens(media, mediaNova);
 	            
-	            //mediaService.salvar(media);
+	            mediaService.salvar(media);
 			}
 			
 		} catch (ApplicationException e) {
@@ -132,7 +127,7 @@ public class ImportarANNServiceImpl implements ImportarANNService {
             	ExtracaoUtils importacao = new ExtracaoUtils(propConfig, PATH_OUTPUT_TXT, + i + PREFIXO_ANN, false);
                 List<String> linhas = importacao.obterLinhas();
                 media = extrairDadosMedia(linhas);
-                if (media != null /*&& !mediaTituloService.validarMediaTitulos(media)*/) {
+                if (media != null && !mediaService.isMediaExistente(media)) {
                 	media.setIdOrigem(i + "");
                     media.getNomes().addAll(extrairTitulosAlternativos(linhas));
                     media.setSinopse(extrairSinopse(linhas));
@@ -143,7 +138,7 @@ public class ImportarANNServiceImpl implements ImportarANNService {
                     	case MANGA:
                     		break;
                     	case ANIME:
-                    		media.setEpisodios(extrairEpisodios(i));
+                    		media.setConteudos(extrairEpisodios(i));
                     		break;
                     	case FILME:
                     		break;
@@ -153,21 +148,20 @@ public class ImportarANNServiceImpl implements ImportarANNService {
                     		break;
                     	case SERIE:
                     		break;
-                    		
                     }
                     
                     if (FormatoMedia.MANGA.equals(media.getFormatoMedia())) {
                         media.setQuantidadeVolumes(extrairQuantidades(linhas, media.getFormatoMedia()));
                     } else if (!FormatoMedia.FILME.equals(media.getFormatoMedia())) {
-                        media.setQuantidedaEpisodios(extrairQuantidades(linhas, media.getFormatoMedia()));
+                        media.setQuantidadeEpisodios(extrairQuantidades(linhas, media.getFormatoMedia()));
                     }
                     
-//                    media.setBroadcasts(extrairBroadcast(linhas));
-                    //extrairImagem(linhas, media);
-                    //this.mediaService.salvar(media);
+                    media.setBroadcasts(extrairBroadcast(linhas));
+                    extrairImagem(linhas, media);
+                    this.mediaService.salvar(media);
                     
                     for (Tag tag : media.getTags()) {
-                    	mapTags.put(tag.getTag().toLowerCase(), tag);
+                    	mapTags.put(tag.getKey().toLowerCase(), tag);
                     }
                 }
             } catch (Exception e) {
@@ -180,8 +174,8 @@ public class ImportarANNServiceImpl implements ImportarANNService {
         }
     }
     
-    private List<Episodio> extrairEpisodios(long id) throws ApplicationException, ParseException {
-		List<Episodio> episodios = new ArrayList<Episodio>();
+    private List<Conteudo> extrairEpisodios(long id) throws ApplicationException, ParseException {
+		List<Conteudo> episodios = new ArrayList<Conteudo>();
 		ExtracaoUtils importacao = new ExtracaoUtils(propConfig);
         List<String> linhas = importacao.doRequest(URL_ENCYCLOPEDIA + id + "&page=25");
         
@@ -192,7 +186,7 @@ public class ImportarANNServiceImpl implements ImportarANNService {
         
         int tipoConteudo = NADA;
         boolean inTable = false;
-        Episodio episodio = new Episodio();
+        Conteudo conteudo = new Conteudo();
         for (String linha : linhas) {
         	if (linha.contains("class=\"episode-list\"") || inTable) {
         		inTable = true;
@@ -213,34 +207,34 @@ public class ImportarANNServiceImpl implements ImportarANNService {
         			case BROADCAST:
         				matcher = Pattern.compile("<div>(.*.)</div>").matcher(linha);
         				if (matcher.find()) {
-        					EpisodiosBroadcast broadcast = new EpisodiosBroadcast();
+        					Broadcast broadcast = new Broadcast();
         					broadcast.setLacamento(new SimpleDateFormat("yyyy-MM-dd").parse(matcher.group(1)));
         					broadcast.setLocalidade(obterLocalidadeTitulo(IdiomaANNEnum.Japanese.name()));
-        					episodio.getBroadcasts().add(broadcast);
+        					conteudo.getBroadcasts().add(broadcast);
         					tipoConteudo = NADA;
         				}
         				break;
         			case SEQUENCIA:
         				matcher = Pattern.compile("\\d+").matcher(linha);
         				if (matcher.find()) {
-        					episodio.setNumero(Integer.valueOf(matcher.group()));
+        					conteudo.setSequencia(matcher.group());
         					tipoConteudo = NADA;
         				}
         				break;
         			case NOMES:
         				matcher = Pattern.compile("<div>(.*.)</div>").matcher(linha);
         				if (matcher.find()) {
-        					EpisodioNome nome = new EpisodioNome();
-        					nome.setPrincipal(episodio.getNomes().isEmpty());
+        					AlternativeName nome = new AlternativeName();
+        					nome.setPrincipal(conteudo.getNomes().isEmpty());
         					nome.setNome(matcher.group(1));
-        					episodio.getNomes().add(nome);
+        					conteudo.getNomes().add(nome);
         				}
         			case NADA:
         				matcher = Pattern.compile("</tr>|</table>").matcher(linha);
         				if (matcher.find()) {
-        					episodios.add(episodio);
+        					episodios.add(conteudo);
         					if (linha.contains("tr")) {
-	        					episodio = new Episodio();
+	        					conteudo = new Conteudo();
         					} else {
         						break;
         					}
@@ -460,7 +454,6 @@ public class ImportarANNServiceImpl implements ImportarANNService {
             		case MANGA:
             			if (linha.contains("infotype-5\"")) extract = true;
             			break;
-            		
             	}
             } else {
                 Matcher matcher = executeRegex("<span>(\\d+)</span>", linha);
@@ -473,8 +466,8 @@ public class ImportarANNServiceImpl implements ImportarANNService {
         return numero;
     }
     
-    public List<BroadcastBase> extrairBroadcast(List<String> linhas) {
-    	List<BroadcastBase> broadcasts = new ArrayList<BroadcastBase>();
+    public List<Broadcast> extrairBroadcast(List<String> linhas) {
+    	List<Broadcast> broadcasts = new ArrayList<Broadcast>();
     	boolean find = false;
     	for (String linha : linhas) {
     		if (linha.contains("infotype-7")) {

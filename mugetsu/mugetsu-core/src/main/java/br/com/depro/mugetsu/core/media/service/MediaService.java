@@ -9,4 +9,9 @@ import br.com.depro.mugetsu.model.media.Media;
  */
 public interface MediaService extends TypezeroGenericService<Media> {
 
+	/**
+	 * @param media
+	 * @return
+	 */
+	boolean isMediaExistente(Media media);
 }

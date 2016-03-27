@@ -10,5 +10,15 @@ public enum FormatoAnime {
 	OAV,
 	ONA,
 	ESPECIAL,
-	
+	;
+
+	public static FormatoAnime getEnum(String name) {
+		FormatoAnime formatoRetorno = null;
+		for (FormatoAnime formato : FormatoAnime.values()) {
+			if (formato.name().equalsIgnoreCase(name)) {
+				formatoRetorno = formato;
+			}
+		}
+		return formatoRetorno;
+	}
 }

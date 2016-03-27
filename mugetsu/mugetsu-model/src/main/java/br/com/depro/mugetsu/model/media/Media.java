@@ -56,6 +56,8 @@ public class Media extends EntidadeBase {
 	private Set<Genero> generos;
 	private List<AlternativeName> nomes;
 	private List<Anexo> anexos;
+	private List<Conteudo> conteudos;
+	private List<Broadcast> broadcasts;
 
 	@Id
 	@Override
@@ -147,18 +149,30 @@ public class Media extends EntidadeBase {
 		return generos;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "FK_MEDIA")
 	public List<AlternativeName> getNomes() {
 		return nomes;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "FK_MEDIA")
 	public List<Anexo> getAnexos() {
 		return anexos;
 	}
 	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "FK_MEDIA")
+	public List<Conteudo> getConteudos() {
+		return conteudos;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "FK_MEDIA")
+	public List<Broadcast> getBroadcasts() {
+		return broadcasts;
+	}
+
 	@Transient
 	public List<Anexo> getImagens() {
 		List<Anexo> anexos = new ArrayList<Anexo>();
@@ -181,7 +195,7 @@ public class Media extends EntidadeBase {
 		}
 		return null;
 	}
-
+	
 	public void setSinopse(String sinopse) {
 		this.sinopse = sinopse;
 	}
@@ -248,6 +262,14 @@ public class Media extends EntidadeBase {
 
 	public void setAnexos(List<Anexo> anexos) {
 		this.anexos = anexos;
+	}
+
+	public void setConteudos(List<Conteudo> conteudos) {
+		this.conteudos = conteudos;
+	}
+
+	public void setBroadcasts(List<Broadcast> broadcasts) {
+		this.broadcasts = broadcasts;
 	}
 
 }

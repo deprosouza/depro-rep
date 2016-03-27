@@ -19,5 +19,4 @@ public class AlternativeNameDAOImpl extends TypezeroGenericJPADAO<AlternativeNam
 	public List<AlternativeName> findByAttrs(TypezeroCriteria criteriaRaw) {
 		return null;
 	}
-
 }
