@@ -1,0 +1,52 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html ng-app="mugetsuweb" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+		integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
+		crossorigin="anonymous"/>
+	
+	<!-- Optional theme -->
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"
+		integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX"
+		crossorigin="anonymous"/>
+		
+	<link type="text/css"  rel="stylesheet" th:href="@{/css/main.css}"></link>
+	
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script type="text/javascript" th:src="@{/angularjs/jquery.bootpag.js}"></script>
+		
+	<script type="text/javascript" th:src="@{/angularjs/angular.min.js}"></script>
+	<script type="text/javascript" th:src="@{/angularjs/angular-animate.js}"></script>
+	
+	<script type="text/javascript" th:src="@{/angularjs/ui-bootstrap-tpls-0.14.3.js}"></script>
+	
+	<script type="text/javascript" th:src="@{/angularjs/app.js}"></script>
+	<script type="text/javascript" th:src="@{/controllers/mediaConsultaController.js}"></script>
+	<script type="text/javascript" th:src="@{/controllers/mediaEditController.js}"></script>
+	
+	<style type="text/css">
+		.page-header {margin: 65px 0 20px !important;}
+	</style>
+	
+	<title>Mugetsu Animes</title>
+</head>
+<body>
+
+   <div th:replace="layouts/menu :: menuContent"></div>
+   
+   <div th:replace="${uri} :: content">Content</div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        Powered by DEPRO
+    </footer>
+
+
+</body>
+</html>

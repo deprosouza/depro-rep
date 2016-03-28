@@ -1,0 +1,101 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<div th:fragment="content" ng-controller="mediaConsultaController">
+
+	<div class="container">
+		<div class="page-header">
+			
+			<div class="row">
+				<h1 class="col-md-10">Consulta de Media <small>busque qualquer tipo de media</small></h1>
+				<div class="form-group col-md-1 text-right">
+					<button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+						Busca Avançada
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="collapse" id="collapseExample">
+			<div class="well">
+				<div class="group-check col-md-4">
+					<fieldset>
+						<legend>Generos</legend>
+						<div th:each="genero : ${generos}">
+							<input type="checkbox" class="generos" th:attr="value=''+${genero.id}+''" th:text="${genero.key}" />
+						</div>
+					</fieldset>
+				</div>
+				
+				<div class="group-check col-md-1">
+					<fieldset>	
+						<legend>Medias</legend>
+						<div th:each="fmedia : ${formatosMedias}">
+							<input type="checkbox" th:text="${fmedia}" ng-model="criteria.fmedias" />
+						</div>
+					</fieldset>
+				</div>
+				
+				<div class="group-check col-md-1">
+					<fieldset>
+						<legend>Animes</legend>
+						<div th:each="fanime : ${formatosAnimes}">
+							<input type="checkbox" th:text="${fanime}" />
+						</div>
+					</fieldset>
+				</div>
+				
+				<div class="group-check col-md-1">
+					<fieldset>
+						<legend>Doramas</legend>
+						<div th:each="fdorama : ${formatosDoramas}">
+							<input type="checkbox" th:text="${fdorama}" />
+						</div>
+					</fieldset>
+				</div>
+				
+				<div class="cb row">
+					<!-- div class="form-group">
+						<label for="nomePrincipal">Nome Imagem</label>
+						<input type="text" class="form-control" placeholder="Nome Imagem" ng-model="criteria.pathImagem" />
+					</div-->
+				</div>
+			</div>
+		</div>
+
+
+		<div class="row">
+			<div class="col-md-12 center">
+				<div class="btn-group" role="group" aria-label="...">
+					<button type="button" class="btn " ng-class="l === gLetra ? 'btn-primary' : 'btn-default'"  ng-repeat="l in alfabeto" ng-click="executaBuscaPorLetra(l, criteria)">{{l}}</button>
+				</div>
+			</div>
+		</div>
+		<div id="mediaPaginator_top" class="center"></div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default" ng-if="medias != null">
+		  			<div class="panel-heading">Medias encontradas: <small class="text-right">{{size}}</small></div>
+		  			
+					<div class="table-responsive">
+						<table class="table table-striped">
+							<tr>
+								<th class="col-md-1">ID</th>
+								<th>Nome</th>
+								<th class="col-md-1">Tipo</th>
+								<th class="col-md-1">Ação</th>
+							</tr>
+							<tr ng-repeat="media in medias">
+								<td>{{media.id}}</td>
+								<td>{{media.nomePrincipal}}</td>
+								<td>{{media.formatoMedia}}</td>
+								<td>
+									<a href="/mugetsu-web/media/{{media.id}}">visualizar</a>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="mediaPaginator_bottom" class="center"></div>
+	</div>
+</div>

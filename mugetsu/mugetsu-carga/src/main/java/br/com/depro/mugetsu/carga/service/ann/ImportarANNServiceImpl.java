@@ -122,7 +122,7 @@ public class ImportarANNServiceImpl implements ImportarANNService {
      * @throws ApplicationException
      */
     public void importarFromCarga(int quantidadeInteracao) throws ApplicationException {
-        for (long i = 4882; i <= quantidadeInteracao; i++) {
+        for (long i = 0; i <= quantidadeInteracao; i++) {
             Media media = null;
             try {
             	ExtracaoUtils importacao = new ExtracaoUtils(propConfig, PATH_OUTPUT_TXT, + i + PREFIXO_ANN, false);
@@ -159,11 +159,11 @@ public class ImportarANNServiceImpl implements ImportarANNService {
                     
                     media.setBroadcasts(extrairBroadcast(linhas));
                     extrairImagem(linhas, media);
-//                    Media mediaSalva = this.mediaService.salvar(media);
-//                    
-//                    for (Tag tag : mediaSalva.getTags()) {
-//                    	mapTags.put(tag.getKey().toLowerCase(), tag);
-//                    }
+                    Media mediaSalva = this.mediaService.salvar(media);
+                    
+                    for (Tag tag : mediaSalva.getTags()) {
+                    	mapTags.put(tag.getKey().toLowerCase(), tag);
+                    }
                 }
             } catch (Exception e) {
                 if (media != null) {
@@ -243,7 +243,6 @@ public class ImportarANNServiceImpl implements ImportarANNService {
         					}
         					conteudo.getNomes().add(nome);
         				}
-        				break;
         			case NADA:
         				matcher = Pattern.compile("</tr>|</table>").matcher(linha);
         				if (matcher.find()) {

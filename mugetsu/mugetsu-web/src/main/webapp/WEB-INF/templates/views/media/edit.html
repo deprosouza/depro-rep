@@ -1,0 +1,112 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" th:fragment="content"
+	ng-controller="mediaEditController">
+
+
+	<div class="container"
+		th:attr="ng-init='initVisualizaMedia('+${id}+');'">
+		<div class="page-header">
+			<h1>
+				{{media.nomePrincipal}} <small class="label label-default">{{media.tipoMedia}}</small>
+			</h1>
+			<div class="row"></div>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<button type="button" class="btn btn-info"
+					ng-click="updateFromOrign(media.id)">
+					<i class="glyphicon glyphicon-refresh"></i> Atualizar na Origem
+				</button>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-xs-6 col-md-9">
+						<div class="row" ng-if="media.sinopse != null">
+							<fieldset class="col-md-12 mb15">
+								<legend>Sinopse</legend>
+								<p>{{media.sinopse}}</p>
+							</fieldset>
+						</div>
+
+						<div class="row" ng-if="media.generos.length > 0">
+							<fieldset class="col-md-12 mb15">
+								<legend>Generos</legend>
+								<span class="label label-primary"
+									ng-repeat="genero in media.generos">{{genero.key}}</span>
+							</fieldset>
+						</div>
+
+						<div class="row" ng-if="media.temas.length > 0">
+							<fieldset class="col-md-12 mb15">
+								<legend>Tags</legend>
+								<span class="label label-danger" ng-repeat="tag in media.tags">{{tag.tag}}</span>
+							</fieldset>
+						</div>
+
+						<div class="row" ng-if="media.conteudos != null">
+							<fieldset class="col-md-12 mb15">
+								<legend>{{media.formatoMedia === 'ANIME' ? 'Episodios'
+									: media.formatoMedia === 'MANGA' ? 'Volumes' : media.ano}}</legend>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<small class="text-right">{{media.conteudos.length}}</small>
+									</div>
+
+									<div class="table-responsive">
+										<table class="table table-striped">
+											<tr>
+												<th class="col-md-1">Numero</th>
+												<th class="col-md-9">Titulos</th>
+												<th class="col-md-3">Datas</th>
+												<th class="col-md-1">Filter</th>
+											</tr>
+											<tr ng-repeat="conteudo in media.conteudos">
+												<td>{{conteudo.sequencia}}</td>
+												<td>
+													<table class="col-md-8">
+														<tr>
+															<th class="col-md-11"></th>
+															<th class="col-md-2"></th>
+														</tr>
+														<tr ng-repeat="nome in conteudo.nomes">
+															<td ><p >{{nome.nome}}</p></td>
+															<td ><small class="label label-default">{{nome.localidade.descricao}}</small>	</td>
+														</tr>
+													</table>
+												</td>
+												<td><p ng-repeat="data in conteudo.broadcasts">{{data.lacamento | date : 'dd/MM/yyyy'}}</p></td>
+												<td>{{conteudo.filler}}</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+					</div>
+
+					<div class="col-xs-6 col-md-3">
+						<div class="row" ng-if="imagem64 != null">
+							<a href="#" class="thumbnail"> <img src="{{imagem64}}" />
+							</a>
+						</div>
+
+						<div class="row">
+							<fieldset class="col-md-12 text-right">
+								<p ng-repeat="titulo in media.nomes">
+									{{titulo.nome}} <small class="label label-default">{{titulo.localidade.descricao}}</small>
+								</p>
+							</fieldset>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="panel-footer">
+				Fonte: <a target="_blank"
+					href="http://www.animenewsnetwork.com/encyclopedia/anime.php?id={{media.idOrigem}}">{{media.nomeOrigem}}</a>
+			</div>
+		</div>
+	</div>
+</div>
