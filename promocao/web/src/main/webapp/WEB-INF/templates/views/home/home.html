@@ -1,0 +1,94 @@
+<div th:fragment="content" ng-controller="HomeController">
+	<eterm-cabecalho icon="fa-home" title="Home"></eterm-cabecalho>
+	<div class="container">
+		<div class="page-section">
+			<div class="row">
+			
+	           <div th:if="${user.contains('ACCESS_CONSULTA')}" class="item col-xs-4 col-lg-4">
+	               <div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated="">
+	                   <div class="panel-body">
+	                       <div class="media media-clearfix-xs">
+	                           <div class="media-left">
+	                               <div class="cover width-90 width-100pc-xs overlay cover-image-full hover">
+	                                   <span class="img icon-block s90 bg-primary"></span>
+	                                   <span class="overlay overlay-full padding-none icon-block s90 bg-primary">
+	                                       <span class="v-center">
+	                                           <i class="fa fa-search"></i>
+	                                       </span>
+	                                   </span>
+	                                   <a th:href="@{/consulta/}" class="overlay overlay-full overlay-hover overlay-bg-white">
+	                                       <span class="v-center">
+	                                           <span class="btn btn-circle btn-primary btn-lg"><i class="fa fa-search"></i></span>
+	                                       </span>
+	                                   </a>
+	                               </div>
+	                           </div>
+	                           <div class="media-body">
+	                               <h2 class="media-heading margin-v-15-5"><a th:href="@{/consulta/}">Consulta</a></h2>
+	                               <p class="text-subhead text-light">Consulta Terminologias</p>
+	                           </div>
+	                       </div>
+	                   </div>
+	               </div>
+	           </div>
+	           
+	           <div th:if="${user.contains('ACCESS_MAP_TERMO')}" class="item col-xs-4 col-lg-4">
+	               <div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated="">
+	                   <div class="panel-body">
+	                       <div class="media media-clearfix-xs">
+	                           <div class="media-left">
+	                               <div class="cover width-90 width-100pc-xs overlay cover-image-full hover">
+	                                   <span class="img icon-block s90 bg-primary"></span>
+	                                   <span class="overlay overlay-full padding-none icon-block s90 bg-primary">
+	                                       <span class="v-center">
+	                                           <i class="fa fa-sitemap"></i>
+	                                       </span>
+	                                   </span>
+	                                   <a th:href="@{/mapeamento/}" class="overlay overlay-full overlay-hover overlay-bg-white">
+	                                       <span class="v-center">
+	                                           <span class="btn btn-circle btn-primary btn-lg"><i class="fa fa-sitemap"></i></span>
+	                                       </span>
+	                                   </a>
+	                               </div>
+	                           </div>
+	                           <div class="media-body">
+	                               <h2 class="media-heading margin-v-15-5"><a th:href="@{/mapeamento/}">Mapeamento</a></h2>
+	                               <p class="text-subhead text-light">Mapeamento de Terminologias</p>
+	                           </div>
+	                       </div>
+	                   </div>
+	               </div>
+	           </div>
+	           
+	           <div th:if="${user.contains('MANAGER_ETERM')}" class="item col-xs-4 col-lg-4">
+	               <div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated="">
+	                   <div class="panel-body">
+	                       <div class="media media-clearfix-xs">
+	                           <div class="media-left">
+	                               <div class="cover width-90 width-100pc-xs overlay cover-image-full hover">
+	                                   <span class="img icon-block s90 bg-primary"></span>
+	                                   <span class="overlay overlay-full padding-none icon-block s90 bg-primary">
+	                                       <span class="v-center">
+	                                           <i class="fa fa-cogs"></i>
+	                                       </span>
+	                                   </span>
+	                                   <a th:href="@{/manutencao/}" class="overlay overlay-full overlay-hover overlay-bg-white">
+	                                       <span class="v-center">
+	                                           <span class="btn btn-circle btn-primary btn-lg"><i class="fa fa-cogs"></i></span>
+	                                       </span>
+	                                   </a>
+	                               </div>
+	                           </div>
+	                           <div class="media-body">
+	                               <h2 class="media-heading margin-v-15-5"><a th:href="@{/manutencao/}">Manutenção</a></h2>
+	                               <p class="text-subhead text-light">Manutenção de Terminologias</p>
+	                           </div>
+	                       </div>
+	                   </div>
+	               </div>
+	           </div>
+	           
+	       </div>
+	    </div>
+	</div>
+</div>

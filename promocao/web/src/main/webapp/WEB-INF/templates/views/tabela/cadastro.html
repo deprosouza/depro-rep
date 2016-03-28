@@ -1,0 +1,245 @@
+<div th:fragment="content" ng-controller="TabelaCadastroController">
+	<eterm-cabecalho icon="fa-cogs" title="	Cadastro de Tabela"></eterm-cabecalho>
+	<div class="container" th:attr="ng-init='initController(\''+${id}+'\');'">
+        <div class="page-section">
+            <div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h4 class="text-headline margin-none">Cadastro de Tabela</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group" ng-class="{ 'has-error' : form.nomeRequired || form.tabelaExistente }">
+                                        <label for="descricao">Nome</label>
+                                        <input type="text" placeholder="Nome" id="nome" class="form-control" ng-model="tabela.nome"/>
+                                        <p ng-show="form.nomeRequired" class="help-block">Nome da tebala é obrigatório.</p>
+                                        <p ng-show="form.tabelaExistente" class="help-block">Já existe uma tabela com o mesmo nome e versao informados.</p>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group" ng-class="{ 'has-error' : form.versaoRequired }">
+                                        <label for="descricao">Versão</label>
+                                        <input type="text" placeholder="Versão" id="versao" class="form-control" ng-model="tabela.versao"/>
+                                        <p ng-show="form.versaoRequired" class="help-block">Versão da tebala é obrigatório.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group" ng-class="{ 'has-error' : form.tipoCompartilhamentoRequired }">
+                                        <label for="tipoCompartilhamento">	Tipo de Compartilhamento</label>
+                                        <select id="tipo" name="select" class="form-control" ng-model="tabela.tipoCompartilhamento" ng-options="tipo for tipo in tipos">
+											<option value="">: : TODOS OS TIPOS : :</option>
+										</select>
+										<p ng-show="form.tipoCompartilhamentoRequired" class="help-block">Nome da tebala é obrigatório.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="form-group" ng-class="{ 'has-error' : form.versaoRequired }">
+                                        <label for="descricao">Versão Atual</label>
+                                        <input type="checkbox" class="form-control" style="width: 38px !important" ng-model="tabela.versaoAtual"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                            	<div class="col-md-4">
+                                    <div class="form-group">
+										<label for="atributo">Início de Vigência</label>
+										<div class="input-group">
+											<span class="input-group-addon" id="icon-inicio-vigenca"><i class="glyphicon glyphicon-calendar"></i></span> 
+											<input type="text"
+												esb-mask-date=""
+												class="form-control"
+												ng-model="tabela.inicioVigenciaFormatada" id="buscaInicioVigencia"
+												placeholder="Início de Vigência"
+												aria-describedby="icon-inicio-vigenca" />
+										</div>
+									</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group" ng-class="{ 'has-error' : form.fimVigenciaRequired }">
+										<label for="atributo">Fim de Vigência</label>
+										<div class="input-group">
+											<span class="input-group-addon" id="icon-inicio-vigenca"><i class="glyphicon glyphicon-calendar"></i></span> 
+											<input type="text"
+												esb-mask-date=""
+												class="form-control"
+												ng-model="tabela.fimVigenciaFormatada" id="buscaFimVigencia"
+												placeholder="Fim de Vigência"
+												aria-describedby="icon-inicio-vigenca" />
+										</div>
+										<p ng-show="form.fimVigenciaRequired" class="help-block">Fim de vigencia da tebala é obrigatório.</p>
+									</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="tipoCompartilhamento">Herdar Template?</label>
+                                        <select id="herdarTemplate" class="form-control" ng-model="tabela.templateMetadado" ng-options="template.nome for template in templates" ng-change="selecionarTemplate()">
+											<option value="">: : SELECIONE : :</option>
+										</select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h4 class="text-headline margin-none">Atributos</h4>
+                        </div>
+                        <div class="panel-body">
+                        	<div class="row">
+                        		<div class="item col-xs-8 col-lg-8">
+									<div class="form-group" ng-if="customTemplate">
+                                        <label for="descricao">Nome Novo Template</label>
+                                        <input type="text" placeholder="Nome Novo Template" id="Nome Novo Template" class="form-control" ng-model="tabela.templateMetadado.nome"/>
+                                    </div>
+								</div>
+								<div class="item col-xs-4 col-lg-4">
+									<a data-animated="" data-hover-z="1" data-z="0" class="btn btn-blue-800 paper-shadow relative pull-right" data-toggle="modal" data-target="#modalAddAtrbuto"> Adicionar Atributo</a>
+								</div>
+							</div>
+                        	<div class="row">
+								<div class="item col-xs-12 col-lg-12">
+									<div class="panel panel-default">
+										<div class="table-responsive">
+										    <table class="table v-middle">
+										        <thead>
+										            <tr class="bg-blue-800 text-white">
+										                <th class="text-center">Obrigatório</th>
+										                <th>Apresentação</th>
+										                <th>Chave</th>
+										                <th>Tipo</th>
+										                <th class="text-center">Tamanho</th>
+										                <th>Números Decimais</th>
+										                <th class="text-center">Ação</th>
+										            </tr>
+										        </thead>
+										        <tbody id="responsive-table-body">
+										            <tr ng-repeat="atributo in metasParams">
+										            	  <td class="text-center">
+										            	  	<input type="checkbox" ng-model="atributo.obrigatorio" /> 
+										            	  </td>
+										                <td>{{atributo.metadado.apresentacao}}</td>
+										                <td>{{atributo.metadado.nome}}</td>
+										                <td>{{atributo.metadado.tipo}}</td>
+										                <td class="text-center">{{atributo.metadado.tamanho}}</td>
+										                <td>{{atributo.metadado.numerosDecimais}}</td>
+										                <td class="text-center">
+										                	<div>
+										                     <a ng-click="exluirAtributo($index)" title="Selecionar" data-placement="top" class="btn btn-danger btn-xs">Excluir</a>
+										                 </div>
+										                </td>
+										            </tr>
+										        </tbody>
+										    </table>
+										</div>
+							            <div class="panel-footer padding-none text-center">
+							                <div class="pagination"></div>
+							            </div>
+							        </div>
+							    </div>
+							</div>
+							
+                        </div>
+                        <div class="panel-footer text-center">
+                            <a class="btn btn-blue-800 paper-shadow relative" ng-click="salvar(descricao)"> Salvar</a>
+                            <a class="btn btn-white paper-shadow relative" th:href="@{/tabela/}" id="cancelar"> Cancelar</a>
+                        </div>
+					</div>
+				</div>
+			</div>							
+        </div>
+    </div>
+    
+	<div class="modal fade" id="modalAddAtrbuto" tabindex="-1" role="dialog" aria-labelledby="modalAddAtrbutoLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content modal-lg">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="modalAddAtrbutoLabel">Adicionar Atributo</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-4">
+						    <div class="form-group">
+						        <label for="descricao">Apresentação</label>
+						        <input type="text" placeholder="Apresetação" id="apresentacao" ng-model="filtro.apresentacao" class="form-control"/>
+						    </div>
+						</div>
+						<div class="col-md-3">
+						    <div class="form-group">
+						        <label for="descricao">Nome</label>
+						        <input type="text" placeholder="Nome" id="nome" ng-model="filtro.nome" class="form-control"/>
+						    </div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="descricao">Tipo</label>
+								<select id="status" name="select" class="form-control" ng-model="filtro.tipo" ng-options="tipo for tipo in tiposMetadados">
+									<option value="">: : TODOS OS TIPOS : :</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="" style="padding-top:25px;">
+								<button type="button" class="btn btn-primary" ng-click="buscarAtributos(filtro, 0)"><i class="fa fa-search"></i></button>
+								<button type="button" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></button>
+							</div>
+						</div>
+					</div>
+	
+					<div class="row">
+						<div class="item col-xs-12 col-lg-12">
+							<div class="panel panel-default">
+								<div class="table-responsive">
+								    <table class="table v-middle">
+								        <thead>
+								            <tr class="bg-blue-800 text-white">
+								                <th>Apresentação</th>
+								                <th>Nome</th>
+								                <th>Tipo</th>
+								                <th>Tamanho</th>
+								                <th>Números Decimais</th>
+								                <th class="text-right">Ação</th>
+								            </tr>
+								        </thead>
+								        <tbody id="responsive-table-body">
+								            <tr ng-repeat="atributo in atributos">
+								                <td>{{atributo.apresentacao}}</td>
+								                <td>{{atributo.nome}}</td>
+								                <td>{{atributo.tipo}}</td>
+								                <td>{{atributo.tamanho}}</td>
+								                <td>{{atributo.numerosDecimais}}</td>
+								                <td class="text-right">
+								                	<div ng-if="!atributo.selecionado">
+								                     <a ng-click="selecionarAtributo($index)" title="Selecionar" data-placement="top" class="btn btn-default btn-xs"> Selecionar</a>
+								                 </div>
+								                </td>
+								            </tr>
+								        </tbody>
+								    </table>
+								</div>
+					            <div class="panel-footer padding-none text-center">
+					                <div class="paginationBuscaAtributos"></div>
+					            </div>
+					        </div>
+					    </div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

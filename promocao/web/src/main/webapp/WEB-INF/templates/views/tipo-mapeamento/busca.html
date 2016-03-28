@@ -1,0 +1,86 @@
+<div th:fragment="content" ng-controller="TipoMapeamentoBuscaController">
+	<eterm-cabecalho icon="fa-cogs" title="Tipo de Mapeamento"></eterm-cabecalho>
+	<div class="container" ng-init="initController()">
+        <div class="page-section">
+            <div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h4 class="text-headline margin-none">Filtro de Busca</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="descricao">Descrição</label>
+                                        <input type="text" placeholder="Descrição" id="descricao" ng-model="filtro.descricao" class="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <select id="status" name="select" class="form-control" ng-model="filtro.status" ng-options="status for status in statuss">
+											<option value="">: : TODOS OS STATUS : :</option>
+										</select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-1 text-left">
+                                    <a data-animated="" data-hover-z="1" data-z="0" class="btn btn-blue-800 paper-shadow relative" th:href="@{/tipo-mapeamento/cadastro}"> Adicionar</a>
+                                </div>
+                                <div class="col-md-10 text-center">
+                                    <a class="btn btn-blue-800 paper-shadow relative" ng-Click="buscar(filtro)"> Buscar</a>
+                                <a class="btn btn-white paper-shadow relative" ng-click="reset()"> Limpar</a>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- Progress table -->
+                        <div class="table-responsive">
+                            <table class="table v-middle">
+                                <thead>
+                                    <tr class="bg-blue-800 text-white">
+                                        <th>Código</th>
+                                        <th>Descrição</th>
+                                        <th>Status</th>
+                                        <th>Início de Vigência</th>
+                                        <th>Fim de Vigência</th>
+                                        <th class="text-right">Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="responsive-table-body">
+                                    <tr ng-repeat="tipo in tiposMapeamentos">
+                                        <td>{{tipo.id}}</td>
+                                        <td>{{tipo.descricao}}</td>
+                                        <td>{{tipo.status}}</td>
+                                        <td>{{tipo.inicioVigenciaFormatada}}</td>
+                                        <td>{{tipo.fimVigenciaFormatada}}</td>
+                                        <td class="text-right">
+                                        	<div ng-if="!tipo.oficial">
+	                                            <a ng-click="trocarStatus($index)" title="Inativar" data-placement="top" class="btn btn-danger btn-xs" ng-if="tipo.status == 'ATIVO'"> Inativar</a>
+	                                            <a ng-click="trocarStatus($index)" title="Ativar" data-placement="top" class="btn btn-success btn-xs" ng-if="tipo.status == 'INATIVO' || tipo.status == null"> Ativar</a>
+	                                        </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- // Progress table -->
+                        <div class="panel-footer padding-none text-center">
+                            <div class="pagination"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

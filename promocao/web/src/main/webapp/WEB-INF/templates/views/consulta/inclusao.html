@@ -1,0 +1,365 @@
+<div th:fragment="content" ng-controller="ConsultaInclusaoController">
+	<eterm-cabecalho icon="fa-cogs" th:title="${title}"></eterm-cabecalho>
+	<div class="container" th:attr="ng-init='initControllerInclusao(\''+${id}+'\');'">
+		<div class="page-section">
+			<div class="row">
+				<div class="item col-xs-12 col-lg-12">
+					<div data-z="0.5" class="panel panel-default paper-shadow">
+						<div class="panel-heading">
+							<h5 class="text-headline margin-none">Terminologia</h5>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="codigo">Código</label> 
+										<input type="text" placeholder="Código" id="codigo" class="form-control" ng-model="terminologiaBase.codigo" />
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="tabela">Tabela</label>
+										<select name="select" class="form-control" id="tabela" ng-model="terminologiaBase.tabela" ng-options="tabela.nome + ' - ' + tabela.versao for tabela in tabelas">
+											<option value="">: : SELECIONE : :</option>
+										</select>
+										
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="versao">Versão</label> 
+										<input type="text" placeholder="Versão" id="varsao" disabled="disabled" class="form-control" value="{{terminologiaBase.tabela.versao}}" />
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="termo">Termo</label>
+										<textarea name="termo" placeholder="Termo" id="termo" class="form-control" cols="30" rows="3"  ng-model="terminologiaBase.termo"></textarea>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label f-or="descricao">Descrição</label>
+										<textarea name="descricao" placeholder="Descrição" id="descricao" class="form-control" cols="30" rows="3" ng-model="terminologiaBase.definicao"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row" ng-if="terminologiaBase.tabela != null">
+				<div class="item col-xs-12 col-lg-12">
+					<div data-z="0.5" class="panel panel-default paper-shadow">
+						<div class="panel-heading">
+							<h5 class="text-headline margin-none">Atributos</h5>
+						</div>
+						<div class="panel-body">
+							<div class="dados-metadados">
+								<div class="col-md-4" ng-repeat="attr in terminologiaBase.tabela.templateMetadado.metadados" ng-if="attr.metadado.visivel">
+									<div class="form-group">
+										<label>{{attr.metadado.apresentacao}}</label>
+										<input type="text" placeholder="{{attr.metadado.apresentacao}}" ng-model="meta[attr.metadado.nome]" class="form-control" />
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="item col-xs-12 col-lg-12">
+					<div data-z="0.5" class="panel panel-default paper-shadow">
+						<div data-target="#ocupacao-1" data-toggle="collapse"
+							class="panel-heading panel-heading-gray">
+							<div class="media">
+								<div class="media-body">
+									<h4 class="text-headline">Mapeamento</h4>
+								</div>
+							</div>
+						</div>
+						<div class="panel-body">
+							<div>
+								<fieldset>
+									<legend>Busca de Terminologia</legend>
+									<div class="row">
+										<div class="col-md-3">
+											<div class="form-group">
+												<label for="tiposCompartilhamentos">Tipo de Compartilhamento</label>
+												<select id="tiposCompartilhamentos" class="form-control" ng-model="data.tipoCompartilhamento" ng-options="tipo for tipo in tiposCompartilhamentos">
+													<option value="">: : TODOS OS TIPOS : :</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-md-3">
+											<div class="form-group">
+												<label for="tabela">Tabela</label> 
+												<select name="select" class="form-control" id="tabela" ng-model="data.tabela" ng-options="tabela.nome for tabela in tabelasDistinct">
+													<option value="">: : TODAS AS TABELAS : :</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-md-3">
+											<div class="form-group">
+												<label for="versao">Versão</label> 
+												<input type="text" placeholder="Versão" id="varsao" class="form-control" ng-model="data.versao" />
+											</div>
+										</div>
+										<div class="col-md-3">
+											<div class="form-group">
+												<label for="codigo">Código</label>
+												<input type="text" placeholder="Código" id="codigo" class="form-control" ng-model="data.codigo" />
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-2">
+											<div class="form-group">
+												<label for="atributo">Início de Vigência</label>
+												<div class="input-group">
+													<span class="input-group-addon" id="icon-inicio-vigenca"><i
+														class="fa fa-calendar"></i></span> 
+														
+														<input type="text"
+														class="form-control"
+														placeholder="Início de Vigência"
+														ng-model="data.inicioVigencia"
+														aria-describedby="icon-inicio-vigenca" />
+												</div>
+											</div>
+										</div>
+										<div class="col-md-2">
+											<div class="form-group">
+												<label for="atributo">Fim de Vigência</label>
+												<div class="input-group">
+													<span class="input-group-addon" id="icon-fim-vigenca"><i
+														class="fa fa-calendar"></i></span>
+														
+														<input type="text"
+														class="form-control"
+														placeholder="Fim de Vigência"
+														ng-model="data.fimVigencia"
+														aria-describedby="icon-inicio-vigenca" />
+												</div>
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="form-group">
+												<label for="termo">Termo</label>
+												<input type="text" placeholder="Termo" id="termo" class="form-control" ng-model="data.termo" />
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="form-group">
+												<label for="descricao">Descrição</label>
+												<input type="text" placeholder="Descrição" id="descricao" class="form-control" ng-model="data.descricao" />
+											</div>
+										</div>
+									</div>
+									<div class="text-center">
+										<a data-animated="" data-hover-z="1" data-z="0" ng-click="buscar(data)" class="btn btn-blue-800 paper-shadow relative">Buscar</a>
+									</div>
+									<br />
+									<div class="table-responsive">
+										<table class="table v-middle">
+											<thead>
+												<tr>
+													<th>Código</th>
+													<th>Termo</th>
+													<th>Descrição</th>
+													<th>Tabela</th>
+													<th>Versão</th>
+													<th>Início de Vigência</th>
+													<th>Fim de Vigência</th>
+													<th>Competência</th>
+													<th>Tipo de Compartilhamento</th>
+													<th class="text-right">Ação</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="term in terminologias">
+													<td>{{term.codigo}}</td>
+													<td>{{term.termo}}</td>
+													<td>{{term.definicao}}</td>
+													<td>{{term.tabela.nome}}</td>
+													<td>{{term.tabela.versao}}</td>
+													<td>{{term.inicioVigenciaFormatada}}</td>
+													<td>{{term.fimVigenciaFormatada}}</td>
+													<td></td>
+													<td>{{term.tabela.tipoCompartilhamento}}</td>
+													<td class="text-right">
+														<a title="Mapear" data-placement="top" class="btn btn-default btn-xs" ng-if="!term.selecionado" ng-click="selecionar($index)" data-toggle="modal" data-target="#myModal">
+															<i class="fa fa-plus"></i> Selecionar
+														</a>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="text-center">
+										<div class="paginationMap" />
+									</div>
+								</fieldset>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="item col-xs-12 col-lg-12">
+					<div class="panel panel-default">
+						<!-- Progress table -->
+						<div class="table-responsive">
+							<table class="table v-middle">
+								<thead>
+									<tr class="bg-blue-800 text-white">
+										<th>Código</th>
+										<th>Termo</th>
+										<th>Descrição</th>
+										<th>Tabela</th>
+										<th>Versão</th>
+										<th>Início de Vigência</th>
+										<th>Fim de Vigência</th>
+										<th>Competência</th>
+										<th>Tipo de Compartilhamento</th>
+										<th>Tipo de Mapeamento</th>
+										<th class="text-right">Ação</th>
+									</tr>
+								</thead>
+								<tbody id="responsive-table-body">
+									<tr ng-repeat="map in terminologiaBase.terminologiasPara"> 
+										<td>{{map.terminologiaPara.codigo}}</td>
+										<td>{{map.terminologiaPara.termo}}</td>
+										<td>{{map.terminologiaPara.definicao}}</td>
+										<td>{{map.terminologiaPara.tabela.nome}}</td>
+										<td>{{map.terminologiaPara.tabela.versao}}</td>
+										<td>{{map.terminologiaPara.inicioVigenciaFormatada}}</td>
+										<td>{{map.terminologiaPara.fimVigenciaFormatada}}</td>
+										<td></td>
+										<td>{{map.terminologiaPara.tipoCompartilhamento}}</td>
+										<td>{{map.tipoMapeamento.descricao}}</td>
+										<td class="text-right">
+											<a title="Excluir" data-placement="top" class="btn btn-danger btn-xs" data-original-title="Delete" ng-click="excluirMapeamento($index)">
+												<i class="fa fa-times"></i>	Excluir
+											</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h5 class="text-headline margin-none">Histórico de Mudanças</h5>
+                        </div>
+                        <div class="panel-body">
+                            <!-- Progress table -->
+                            <div class="table-responsive">
+                                <table class="table v-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Usuário</th>
+                                            <th>Motivo</th>
+                                            <th>Descrição</th>
+                                            <th class="text-right">Ação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="hist in terminologiaBase.historicoMudancas">
+                                        <tr>
+                                            <td>{{hist.dataEventoFormatado}}</td>
+                                            <td>{{hist.usuario.nome}}</td>
+                                            <td>{{hist.motivo.descricao}}</td>
+                                            <td>{{hist.descricao}}</td>
+                                            <td class="text-right">
+                                                <a title="Ver Histórico" data-toggle="modal" data-placement="top" class="btn btn-default btn-sm" data-target="#modalHistoricoMudancaDetalhe" ng-click="initControllerViaMapeamento(hist.id)" ><i class="fa fa-eye"></i> Ver Histórico</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			
+			<div class="text-center">
+				<a th:if="${isEhEdicao == false}" class="btn btn-blue-800 paper-shadow relative" ng-click="salvar()"> Salvar</a>
+				<a th:if="${isEhEdicao == false}" id="cancelar" class="btn btn-white paper-shadow relative" th:href="@{/consulta/}"> Cancelar</a>
+				
+				<a th:if="${isEhEdicao == true}" class="btn btn-blue-800 paper-shadow relative" ng-click="salvar()"> Salvar</a>
+				<a th:if="${isEhEdicao == true}" id="cancelar" class="btn btn-white paper-shadow relative" th:href="@{/consulta/alterar-inativar}"> Cancelar</a>
+			</div>
+		</div>
+
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancelarMapeamento()">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title">Mapeamento</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="tipoMapeamento">Tipo Mapeamento</label>
+									<select name="select" class="form-control" id="tipoMapeamento" ng-model="tipoMapeamento" ng-options="tipo.descricao for tipo in tiposMapeamentos">
+										<option value="">: : SELECIONE : :</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="equivalencia">Equivalência</label>
+									<select name="select" class="form-control" id="equivalencia" ng-model="equivalencia" ng-options="k as v for (k, v) in equivalencias">
+										<option value="">: : SELECIONE : :</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancelarMapeamento()">Cancelar</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="adicionarMapeamento()">Adicionar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- ############################################################################################################################################################################## -->
+        <!-- MODAL VER HISTORICO -->
+        <!-- ############################################################################################################################################################################## -->
+        <div class="modal fade" id="modalHistoricoMudancaDetalhe" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Histórico de Mudança</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div th:replace="views/consulta/visualizacaocontent :: termConsulta"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+	</div>
+</div>

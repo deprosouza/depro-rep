@@ -1,0 +1,101 @@
+<div th:fragment="content" ng-controller="AtributoBuscaController">
+	<eterm-cabecalho icon="fa-cogs" title="Atributo"></eterm-cabecalho>
+	<div class="container" ng-init="initController()">
+        <div class="page-section">
+            <div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h4 class="text-headline margin-none">Filtro de Busca</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="descricao">Apresentação</label>
+                                        <input type="text" placeholder="Apresetação" id="apresentacao" ng-model="filtro.apresentacao" class="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="descricao">Nome</label>
+                                        <input type="text" esb-chave="" placeholder="Nome" id="nome" ng-model="filtro.nome" class="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="descricao">Tipo</label>
+                                        <select id="tipo" name="select" class="form-control" ng-model="filtro.tipo" ng-options="tipo for tipo in tipos">
+											<option value="">: : TODOS OS TIPOS : :</option>
+										</select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <select id="status" name="select" class="form-control" ng-model="filtro.status" ng-options="status for status in statuss">
+											<option value="">: : TODOS OS STATUS : :</option>
+										</select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-1 text-left">
+                                    <a data-animated="" data-hover-z="1" data-z="0" class="btn btn-blue-800 paper-shadow relative" th:href="@{/atributo/cadastro}"> Adicionar</a>
+                                </div>
+                                <div class="col-md-10 text-center">
+                                    <a class="btn btn-blue-800 paper-shadow relative" ng-Click="buscar(filtro)"> Buscar</a>
+                                <a class="btn btn-white paper-shadow relative" ng-click="reset()"> Limpar</a>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- Progress table -->
+                        <div class="table-responsive">
+                            <table class="table v-middle">
+                                <thead>
+                                    <tr class="bg-blue-800 text-white">
+                                        <th>Apresentação</th>
+                                        <th>Nome</th>
+                                        <th>Tipo</th>
+                                        <th>Tamanho</th>
+                                        <th>Números Decimais</th>
+                                        <th>Status</th>
+                                        <th class="text-right">Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="responsive-table-body">
+                                    <tr ng-repeat="atributo in atributos">
+                                        <td>{{atributo.apresentacao}}</td>
+                                        <td>{{atributo.nome}}</td>
+                                        <td>{{atributo.tipo}}</td>
+                                        <td>{{atributo.tamanho}}</td>
+                                        <td>{{atributo.numerosDecimais}}</td>
+                                        <td>{{atributo.status}}</td>
+                                        <td class="text-right">
+                                        	<a title="Editar Atributo" class="btn btn-default btn-xs" th:href="@{/atributo/editar/{{atributo.id}}}"> Editar</a>
+                                            <a ng-click="trocarStatus($index)" class="btn btn-danger btn-xs" ng-if="atributo.status == 'ATIVO'"> Inativar</a>
+                                            <a ng-click="trocarStatus($index)" class="btn btn-success btn-xs" ng-if="atributo.status == 'INATIVO' || atributo.status == null"> Ativar</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- // Progress table -->
+                        <div class="panel-footer padding-none text-center">
+                            <div class="pagination"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

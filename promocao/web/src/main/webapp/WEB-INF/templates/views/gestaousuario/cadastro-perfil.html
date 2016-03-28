@@ -1,0 +1,153 @@
+<div th:fragment="content" ng-controller="GerenciarPerfilController">
+	<eterm-cabecalho icon="fa-search" title="Gerênciar Perfil"></eterm-cabecalho>
+	<div class="container"  ng-init="initController()">
+		<div class="page-section">
+			<div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h5 class="text-headline margin-none">Perfil</h5>
+                        </div>
+                        <div class="panel-body">
+                        	<div class="row">
+	                        	 <div class="col-md-6 form-group">
+	                        	 	<label>Perfil</label>
+									<select name="selectPerfil" class="form-control" ng-model="filtroPerfil" ng-options="perfil.descricao for perfil in perfis">
+							            <option value="">: : SELECIONE : :</option>
+							        </select>
+								</div>
+							</div>
+							
+                        </div>
+                        <div class="panel-footer">
+							<a class="btn btn-primary paper-shadow relative" ng-click="incluir()">Novo Perfil</a>					
+							<a class="btn btn-primary paper-shadow relative" ng-click="alterar()"> Alterar</a>
+						</div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="row" ng-if="isHabilitarBlocoCRUD">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h5 class="text-headline margin-none">{{title}}</h5>
+                        </div>
+                        <div class="panel-body">
+							<div class="row">
+								<div class="form-group col-md-6">
+							        <label>Descrição</label>
+						        	<input type="text" ng-model="perfil.descricao" placeholder="Descrição" class="form-control"/>
+							    </div>
+							</div>
+							
+							<div class="row">
+								<div class="col-md-6" ng-if="perfil.id == null">
+	                        	 	<label>Empresa</label>
+									<select id="selectEmpresa" class="form-control" ng-model="perfil.projetoEmpresa.empresa" ng-options="empresa.nomeFantasia for empresa in empresas" ng-change="filtrarProjetos()">
+							            <option value="">: : SELECIONE : :</option>
+							        </select>
+							    </div>
+							    
+							    <div class="col-md-6" ng-if="perfil.id != null">
+	                        	 	<label>Empresa</label>
+									<input type="text" value="{{perfil.projetoEmpresa.empresa.nomeFantasia}}" disabled="disabled" class="form-control"/>
+							    </div>
+							</div>
+							
+							<div class="row">
+								<div class="col-md-6" ng-if="perfil.id == null">
+	                        	 	<label>Projeto</label>
+									<select id="selectProjeto" class="form-control" ng-model="perfil.projetoEmpresa.projeto" ng-options="projeto.nome for projeto in projetos" ng-change="filtrarModulos()">
+							            <option value="">: : SELECIONE : :</option>
+							        </select>
+							    </div>
+							    
+							    <div class="col-md-6" ng-if="perfil.id != null">
+	                        	 	<label>Projeto</label>
+									<input type="text" value="{{perfil.projetoEmpresa.projeto.nome}}" disabled="disabled" class="form-control"/>
+							    </div>
+							</div>
+							
+							<br/>
+							<fieldset>
+								<legend>Configurações</legend>
+								<div class="row">
+							        <div class="col-md-6">
+							        	<label>Modulo</label>
+										<select id="selectModulo" class="form-control" ng-model="moduloFiltro" ng-options="modulo.descricao for modulo in modulos" ng-change="changeModulo()">
+								            <option value="">: : SELECIONE : :</option>
+								        </select>
+							        </div>
+								</div>
+								
+								<br/>
+								<div class="row" ng-if="configuracoes.length > 0">
+									<div class="form-group col-md-12">
+										<table class="table v-middle">
+											<thead>
+												<tr class="bg-blue-800 text-white">
+													<th>Modulo</th>
+													<th>Descrição</th>
+													<th>Selecionar</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="configuracao in configuracoes">
+													<td>{{configuracao.modulo.descricao}}</td>
+													<td>{{configuracao.descricao}}</td>
+													<td>
+														<input type="checkbox" ng-model="configuracao.selecionado" />
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								
+								<div class="row" ng-if="configuracoes.length > 0">
+									<div class="form-group col-md-1">
+								    	<button type="button" class="btn btn-primary" ng-click="adicionarConfiguracoes()">Adcionar</button>
+								    </div>
+								</div>
+							</fieldset>
+							
+							<div class="row" ng-if="perfil.configuracoes.length > 0">
+								<div class="form-group col-md-12">
+									<table class="table v-middle">
+										<thead>
+											<tr class="bg-blue-800 text-white">
+												<th>Projeto</th>
+												<th>Modulo</th>
+												<th>Descrição</th>
+												<th>Ações</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="configuracao in perfil.configuracoes">
+												<td>{{configuracao.modulo.projeto.nome}}</td>
+												<td>{{configuracao.modulo.descricao}}</td>
+												<td>{{configuracao.descricao}}</td>
+												<td>
+													<a class="btn btn-danger btn-xs" ng-click="removerConfiguracao($index)">Excluir</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>				
+							<div class="row">
+								<div class="col-sm-12">
+									<button type="button" class="btn btn-primary" ng-click="salvar(perfil)" ng-if="ativarBtnSalvar">Salvar</button>
+									<button type="button" class="btn btn-default" ng-click="limpar()">Cancelar</button>	
+								</div>
+							</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>						
+	</div>
+</div>
+

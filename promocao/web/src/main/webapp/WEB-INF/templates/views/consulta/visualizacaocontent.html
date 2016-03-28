@@ -1,0 +1,468 @@
+	<div class="container"  th:fragment="termConsulta"  >
+         <div class="page-section">
+            <div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h5 class="text-headline margin-none">Terminologia</h5>
+                        </div>
+                        <div class="panel-body">
+                            <div class="dados-terminologia">
+                                <div class="row">
+                                    <div class="col-md-1"><label>Código</label></div>
+                                    <div class="col-md-2"><span>{{terminologia.codigo}}</span></div>
+
+                                    <div class="col-md-1"><label>Tabela</label></div>
+                                    <div class="col-md-2"><span>{{terminologia.tabela.nome}}</span></div>
+
+                                    <div class="col-md-1"><label>Versão</label></div>
+                                    <div class="col-md-2"><span>{{terminologia.tabela.versao}}</span></div>
+                                    
+									<span ng-if="terminologia.competencia">
+	                                    <div class="col-md-1"><label>Competência</label></div>
+	                                    <div class="col-md-2"><span>{{terminologia.competencia}}</span></div>
+                                    </span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2"><label>Tipo Compartilhamento</label></div>
+                                    <div class="col-md-10"><span>{{terminologia.tabela.tipoCompartilhamento}}</span></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2"><label>Termo</label></div>
+                                    <div class="col-md-10"><span>{{terminologia.termo}}</span></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2"><label>Descrição</label></div>
+                                    <div class="col-md-10"><span>{{terminologia.definicao}}</span></div>
+                                </div>
+                                
+                                 <div class="row">
+                                    <div class="col-md-2"><label>Inicio de Vigência</label></div>
+                                    <div class="col-md-4"><span>{{terminologia.inicioVigenciaFormatada}}</span></div>
+                                    
+                                    <span ng-if="terminologia.fimVigenciaFormatada">
+	                                    <div class="col-md-2"><label>Fim de Vigência</label></div>
+	                                    <div class="col-md-4"><span>{{terminologia.fimVigenciaFormatada}}</span></div>
+                                    </span>
+                                </div>
+                            </div>
+                            <div ng-if="terminologia.allTerminologiasRef != null" class="table-responsive">
+                                <table class="table v-middle">
+                                    <thead>
+                                        <tr class="bg-blue-800 text-white">
+                                            <th>Código</th>
+                                            <th>Termo</th>
+                                            <th>Tabela</th>
+                                            <th>Versão</th>
+                                            <th>Início de Vigência</th>
+                                            <th>Fim de Vigência</th>
+                                            <th>Competência</th>
+                                            <th>Tipo de Mapeamento</th>
+                                            <th>Grau de Equivalência</th>
+                                            <th>Tipo de Compartilhamento</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="ref in meta['paginationAllMapeamentosRef']" ng-if="ref.selecionado">
+                                            <td>{{ref.this.codigo}}</td>
+                                            <td>{{ref.this.termo}}</td>
+                                            <td>{{ref.this.tabela.nome}}</td>
+                                            <td>{{ref.this.tabela.versao}}</td>
+                                            <td>{{ref.this.inicioVigenciaFormatada}}</td>
+                                            <td>{{ref.this.fimVigenciaFormatada}}</td>
+                                            <td>{{ref.this.competencia}}</td>
+                                            <td>{{ref.tipoMapeamento.descricao}}</td>
+                                            <td class="text-center">{{ref.equivalencia.replace('GRAU_', '')}}</td>
+                                            <td>{{ref.this.tabela.tipoCompartilhamento}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="padding-none text-center">
+                                <div class="paginationAllMapeamentosRef">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="terminologia.detalhes.length > 0">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default curriculum open paper-shadow">
+                        <div data-target="#atributo-1" data-toggle="collapse" class="panel-heading panel-heading-gray">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h4 class="text-headline">Atributos</h4>
+                                </div>
+                            </div>
+                            <!-- 
+                            <span class="collapse-status collapse-open">Abrir </span>
+                            <span class="collapse-status collapse-close">Fechar</span>
+                             -->
+                        </div>
+                        <div id="atributo-1" class="list-group collapse">
+                            <div class="panel-body">
+                                <div class="row col-md-4" ng-repeat="metadado in terminologia.detalhes" ng-if="metadado.metadado.visivel">
+                                    <div class=""><label>{{metadado.metadado.apresentacao}}</label></div>
+                                    <div class=""><span>{{metadado.informacao}}</span></div>
+                                    <br/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="terminologia.mapOcupacoes != null">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default curriculum open paper-shadow">
+                        <div data-target="#ocupacao-1" data-toggle="collapse" class="panel-heading panel-heading-gray">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h4 class="text-headline">Ocupação Autorizada</h4>
+                                </div>
+                            </div>
+                            <!-- 
+                            <span class="collapse-status collapse-open">Abrir </span>
+                            <span class="collapse-status collapse-close">Fechar</span>
+                             -->
+                        </div>
+                        <div id="ocupacao-1" class="list-group collapse ">
+                            <div class="tabbable tabs-primary">
+                                <ul class="nav nav-tabs" style="overflow: hidden;" tabindex="2">
+                                    <li ng-class="ocupActive == regChave ? 'active' : ''" ng-repeat="(regChave, reg) in terminologia.mapOcupacoes">
+                                        <a data-toggle="tab" href="#tabOcup{{regChave}}">{{replaced(regChave)}}</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane" ng-class="ocupActive == regChave ? 'active' : ''" id="tabOcup{{regChave}}" ng-repeat="(regChave, reg) in terminologia.mapOcupacoes">
+                                        <div class="table-responsive">
+                                            <table class="table v-middle">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Código</th>
+                                                        <th>Termo</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="responsive-table-body">
+                                                    <tr ng-repeat="r in meta['ocup' + regChave]">
+                                                        <td>{{r.terminologiaPara.codigo}}</td>
+                                                        <td>{{r.terminologiaPara.termo}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="padding-none text-center">
+                                            <div class="paginationOcupacao{{regChave}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="terminologia.mapDiagnosticos != null">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default curriculum open paper-shadow">
+                        <div data-target="#diagnostico-1" data-toggle="collapse" class="panel-heading panel-heading-gray">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h4 class="text-headline">Associação com Diagnóstico</h4>
+                                </div>
+                            </div>
+                            <!-- 
+                            <span class="collapse-status collapse-open">Abrir </span>
+                            <span class="collapse-status collapse-close">Fechar</span>
+                             -->
+                        </div>
+                        <div id="diagnostico-1" class="list-group collapse">
+                            <div class="tabbable tabs-primary">
+                                <ul class="nav nav-tabs" style="overflow: hidden;" tabindex="2">
+                                    <li ng-class="diagActive == regChave ? 'active' : ''" ng-repeat="(regChave, reg) in terminologia.mapDiagnosticos">
+                                        <a data-toggle="tab" href="#tabDiag{{regChave}}">{{replaced(regChave)}}</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane" ng-class="diagActive == regChave ? 'active' : ''" id="tabDiag{{regChave}}" ng-repeat="(regChave, reg) in terminologia.mapDiagnosticos">
+                                        <div class="table-responsive">
+                                            <table class="table v-middle">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Código</th>
+                                                        <th>Termo</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="responsive-table-body">
+                                                    <tr ng-repeat="r in meta['diag' + regChave]">
+                                                        <td>{{r.terminologiaPara.codigo}}</td>
+                                                        <td>{{r.terminologiaPara.termo}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="padding-none text-center">
+                                            <div class="paginationDiagnostico{{regChave}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="terminologia.mapReferencias != null">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default curriculum open paper-shadow">
+                        <div data-target="#referencia-1" data-toggle="collapse" class="panel-heading panel-heading-gray">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h4 class="text-headline">Referência</h4>
+                                </div>
+                            </div>
+                            <!-- 
+                            <span class="collapse-status collapse-open">Abrir </span>
+                            <span class="collapse-status collapse-close">Fechar</span>
+                             -->
+                        </div>
+                        <div id="referencia-1" class="list-group collapse">
+                            <div class="tabbable tabs-primary">
+                                <ul class="nav nav-tabs" style="overflow: hidden;" tabindex="2">
+                                    <li ng-repeat="(regChave, reg) in terminologia.mapReferencias" ng-class="refActive == regChave ? 'active' : ''">
+                                        <a data-toggle="tab" href="#tabRef{{regChave}}" ng-click="selecionaReferencia(reg)">{{replaced(regChave)}}</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane" id="tabRef{{regChave}}" ng-repeat="(regChave, reg) in terminologia.mapReferencias" ng-class="refActive == regChave ? 'active' : ''">
+                                        <div class="table-responsive">
+                                            <table class="table v-middle">
+                                                <thead>
+                                                    <tr class="bg-blue-800 text-white">
+                                                        <th>Código</th>
+                                                        <th>Termo</th>
+                                                        <th>Início de Vigência</th>
+                                                        <th>Fim de Vigência</th>
+                                                        <th>Competência</th>
+                                                        <th>Tipo de Compartilhamento</th>
+                                                        <th>Ação</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="responsive-table-body">
+                                                    <tr ng-repeat="ref in reg">
+                                                        <td>{{ref.this.codigo}}</td>
+                                                        <td>{{ref.this.termo}}</td>
+                                                        <td>{{ref.this.inicioVigenciaFormatada}}</td>
+                                                        <td>{{ref.this.fimVigenciaFormatada}}</td>
+                                                        <td>{{ref.this.competencia}}</td>
+                                                        <td>{{ref.this.tabela.tipoCompartilhamento}}</td>
+                                                        <td><a class="btn btn-default btn-xs" ng-click="buscarReferencia(ref.this.id)"><i class="fa fa-check"></i> Selecionar</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="referencia != null"  class="panel-body">
+                                <div class="dados-terminologia">
+                                    <fieldset>
+                                        <legend>Terminologia</legend>
+                                    </fieldset>
+                                    <div class="row">
+                                        <div class="col-md-1"><label>Código</label></div>
+                                        <div class="col-md-2"><span>{{referencia.codigo}}</span></div>
+    
+                                        <div class="col-md-1"><label>Tabela</label></div>
+                                        <div class="col-md-2"><span>{{referencia.tabela.nome}}</span></div>
+    
+                                        <div class="col-md-1"><label>Versão</label></div>
+                                        <div class="col-md-2"><span>{{referencia.tabela.versao}}</span></div>
+    
+    									<span ng-if="referencia.competencia">
+                                        	<div class="col-md-1"><label>Competência</label></div>
+                                        	<div class="col-md-2"><span>{{referencia.competencia}}</span></div>
+                                        </span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2"><label>Tipo de Compartilhamento</label></div>
+                                        <div class="col-md-10"><span>{{referencia.tabela.tipoCompartilhamento}}</span></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2"><label>Termo</label></div>
+                                        <div class="col-md-10"><span>{{referencia.termo}}</span></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2"><label>Descrição</label></div>
+                                        <div class="col-md-10"><span>{{referencia.definicao}}</span></div>
+                                    </div>
+                                    
+                                    <div class="row">
+	                                    <div class="col-md-2"><label>Inicio de Vigência</label></div>
+	                                    <div class="col-md-4"><span>{{referencia.inicioVigenciaFormatada}}</span></div>
+	                                    
+	                                    <span ng-if="referencia.fimVigenciaFormatada">
+		                                    <div class="col-md-2"><label>Fim de Vigência</label></div>
+		                                    <div class="col-md-4"><span>{{referencia.fimVigenciaFormatada}}</span></div>
+	                                    </span>
+	                                </div>
+                                </div>
+                                <div class="row" ng-if="referencia.detalhes.length > 0">
+					                <div class="item col-xs-12 col-lg-12">
+					                    <div data-z="0.5" class="panel panel-default curriculum open paper-shadow">
+					                        <div data-target="#atributo-1" data-toggle="collapse" class="panel-heading panel-heading-gray">
+					                            <div class="media">
+					                                <div class="media-body">
+					                                    <h6 class="text-headline">Atributos</h6>
+					                                </div>
+					                            </div>
+					                            <!-- 
+					                            <span class="collapse-status collapse-open">Abrir </span>
+					                            <span class="collapse-status collapse-close">Fechar</span>
+					                             -->
+					                        </div>
+					                        <div id="atributo-1" class="list-group collapse">
+					                            <div class="panel-body">
+					                                <div class="row col-md-4" ng-repeat="metadado in referencia.detalhes" ng-if="metadado.metadado.visivel">
+					                                    <div class=""><label>{{metadado.metadado.apresentacao}}</label></div>
+					                                    <div class=""><span>{{metadado.informacao}}</span></div>
+					                                    <br/>
+					                                </div>
+					                            </div>
+					                        </div>
+					                    </div>
+					                </div>
+					            </div>
+                                <div ng-show="referencia.allTerminologiasRef != null" class="table-responsive">
+	                                <table class="table v-middle">
+	                                    <thead>
+	                                        <tr class="bg-blue-800 text-white">
+	                                            <th>Código</th>
+	                                            <th>Termo</th>
+	                                            <th>Tabela</th>
+	                                            <th>Versão</th>
+	                                            <th>Início de Vigência</th>
+	                                            <th>Fim de Vigência</th>
+	                                            <th>Competência</th>
+	                                            <th>Tipo de Mapeamento</th>
+	                                            <th>Grau de Equivalência</th>
+	                                            <th>Tipo de Compartilhamento</th>
+	                                        </tr>
+	                                    </thead>
+	                                    <tbody>
+	                                        <tr ng-repeat="ref in meta['paginationAllMapeamentosRefRef' + referencia.id]" ng-if="ref.selecionado">
+	                                            <td>{{ref.this.codigo}}</td>
+	                                            <td>{{ref.this.termo}}</td>
+	                                            <td>{{ref.this.tabela.nome}}</td>
+	                                            <td>{{ref.this.tabela.versao}}</td>
+	                                            <td>{{ref.this.inicioVigenciaFormatada}}</td>
+	                                            <td>{{ref.this.fimVigenciaFormatada}}</td>
+	                                            <td>{{ref.this.competencia}}</td>
+	                                            <td>{{ref.tipoMapeamento.descricao}}</td>
+	                                            <td class="text-center">{{ref.equivalencia.replace('GRAU_', '')}}</td>
+	                                            <td>{{ref.this.tabela.tipoCompartilhamento}}</td>
+	                                        </tr>
+	                                    </tbody>
+	                                </table>
+	                            </div>
+	                            <div class="padding-none text-center">
+	                                <div class="paginationAllMapeamentosRefRef" />
+	                            </div>
+                                <br/><br/>
+                                <div class="row" ng-show="referencia.mapOcupacoes != null">
+                                    <div class="col-xs-12 col-lg-12">
+                                        <div class="panel panel-default" data-toggle="panel-collapse" data-open="true">
+                                            <div class="panel-heading panel-collapse-trigger">
+                                                <h4 class="panel-title">Ocupação Autorizada</h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="tabbable tabs-primary">
+                                                    <ul tabindex="2" style="overflow: hidden;" class="nav nav-tabs">
+                                                        <li ng-repeat="(regChave, reg) in referencia.mapOcupacoes" class="ng-scope active">
+                                                            <a href="#refTabOcup{{regChave}}" data-toggle="tab" class="ng-binding">{{replaced(regChave)}}</a>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="tab-content">
+                                                        <div ng-repeat="(regChave, reg) in referencia.mapOcupacoes" id="refTabOcup{{regChave.replaceAll(' ', '_')}}" class="tab-pane ng-scope active">
+                                                            <div class="table-responsive">
+                                                                <table class="table v-middle">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Código</th>
+                                                                            <th>Termo</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="responsive-table-body">
+                                                                        <tr ng-repeat="r in meta['refOcup' + regChave]" class="ng-scope">
+                                                                            <td class="ng-binding">{{r.terminologiaPara.codigo}}</td>
+                                                                            <td class="ng-binding">{{r.terminologiaPara.termo}}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="padding-none text-center">
+                                                                <div class="paginationRefOcup{{regChave}}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" ng-show="referencia.mapDiagnosticos != null">
+                                    <div class="col-xs-12 col-lg-12">
+                                        <div class="panel panel-default" data-toggle="panel-collapse" data-open="true">
+                                            <div class="panel-heading panel-collapse-trigger">
+                                                <h4 class="panel-title">Associação com Diagnóstico</h4>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="tabbable tabs-primary">
+                                                    <ul tabindex="2" style="overflow: hidden;" class="nav nav-tabs">
+                                                        <li ng-repeat="(regChave, reg) in referencia.mapDiagnosticos" class="ng-scope active">
+                                                            <a href="#refTabDiag{{regChave}}" data-toggle="tab" class="ng-binding">{{replaced(regChave)}}</a>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="tab-content">
+                                                        <div ng-repeat="(regChave, reg) in referencia.mapDiagnosticos" id="refTabDiag{{regChave}}" class="tab-pane ng-scope active">
+                                                            <div class="table-responsive">
+                                                                <table class="table v-middle">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Código</th>
+                                                                            <th>Termo</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="responsive-table-body">
+                                                                        <tr ng-repeat="r in meta['refDiag' + regChave]" class="ng-scope">
+                                                                            <td class="ng-binding">{{r.terminologiaPara.codigo}}</td>
+                                                                            <td class="ng-binding">{{r.terminologiaPara.termo}}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="padding-none text-center">
+                                                                <div class="paginationRefDiag{{regChave}}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <a th:if="${ehInativar == true}" class="btn btn-danger paper-shadow relative" ng-click="alterarStatus()"> Inativar</a>
+                <a th:if="${ehInativar == true}" id="cancelar" class="btn btn-white paper-shadow relative" th:href="@{/consulta/alterar-inativar}"> Cancelar</a>
+                
+                <a th:if="${ehInativar == false}" class="btn btn-white paper-shadow relative" th:href="@{/consulta/}"> Voltar</a>
+            </div>
+        </div>
+    </div>

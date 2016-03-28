@@ -1,0 +1,71 @@
+<div th:fragment="content" ng-controller="AtributoCadastroController">
+	<eterm-cabecalho icon="fa-cogs" title="Cadastro de Atributo"></eterm-cabecalho>
+	<div class="container"  th:attr="ng-init='initController(\''+${id}+'\');'">
+        <div class="page-section">
+            <div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h4 class="text-headline margin-none">Cadastro</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                               <div class="col-md-6">
+                                    <div class="form-group" ng-class="{ 'has-error' : form.apresentacaoRequired }">
+                                        <label for="apresentacao">Apresentação</label>
+                                        <input type="text" placeholder="Apresentação" id="apresentacao" class="form-control" ng-model="atributo.apresentacao"/>
+                                        <p ng-show="form.apresentacaoRequired" class="help-block">Apresentação é obrigatório.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" ng-class="{ 'has-error' : form.nomeRequired || form.nomeExistente }">
+                                        <label for="nome">Nome</label>
+                                        <input type="text" esb-chave="" placeholder="Nome" id="nome" class="form-control" ng-model="atributo.nome"/>
+                                        <p ng-show="form.nomeRequired" class="help-block">Nome é obrigatório.</p>
+                                        <p ng-show="form.nomeExistente" class="help-block">Já existe o Atributo com o nome informado.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group" ng-class="{ 'has-error' : form.tipoRequired }">
+                                        <label for="tipo">Tipo</label>
+                                        <select id="tipo" name="select" class="form-control" ng-model="atributo.tipo" ng-options="tipo for tipo in tipos" ng-change="selectTipoMetadado()">
+											<option value="">: : TODOS OS TIPOS : :</option>
+										</select>
+										<p ng-show="form.tipoRequired" class="help-block">Tipo é obrigatório.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="tamanho">Tamanho</label>
+                                        <input type="text" placeholder="Tamanho" id="tamanho" class="form-control" ng-model="atributo.tamanho"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="numerosDecimais">Números Decimais</label>
+                                        <input type="text" placeholder="Números Decimais" id="numerosDecimais" class="form-control" ng-model="atributo.numerosDecimais" ng-disabled="!isNumber"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 
+                            <div class="row">
+                            	<div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="descricao">Validação do Campo</label><br/>
+                                        <small>Passar um REGEX para a validação.</small>
+                                        <input type="text" placeholder="Validação do Campo" id="regex" class="form-control" ng-model="atributo.regex"/>
+                                    </div>
+                                </div>
+                            </div>
+                             -->
+                        </div>
+                        <div class="panel-footer text-center">
+                            <a class="btn btn-blue-800 paper-shadow relative" ng-click="salvar(atributo)"> Salvar</a>
+                            <a id="cancelar" class="btn btn-white paper-shadow relative" th:href="@{/atributo/}"> Cancelar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

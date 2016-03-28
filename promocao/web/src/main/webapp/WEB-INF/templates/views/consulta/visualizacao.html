@@ -1,0 +1,4 @@
+<div th:fragment="content" ng-controller="ConsultaVisualizacaoController" th:attr="ng-init='initController(\''+${id}+'\');'">
+    <eterm-cabecalho th:icon="${icon}" th:title="${title}"></eterm-cabecalho>
+    <div th:replace="views/consulta/visualizacaocontent :: termConsulta"></div>
+</div>

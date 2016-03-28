@@ -1,0 +1,75 @@
+<div th:fragment="content" ng-controller="GerenciarEmpresaController">
+	<eterm-cabecalho icon="fa-search" title="Gerênciar Empresa"></eterm-cabecalho>
+	<div class="container"  ng-init="initController()">
+		<div class="page-section">
+			<div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h5 class="text-headline margin-none">Empresa</h5>
+                        </div>
+                        <div class="panel-body">
+                        	 <div class="row col-md-6">
+								<select name="select" class="form-control" ng-model="emp" data-toggle="select2" ng-options="empresa.nomeFantasia for empresa in empresas">
+						            <option value="">: : SELECIONE : :</option>
+						        </select>
+							</div>
+                        </div>
+                        <div class="panel-footer">
+							<a class="btn btn-primary paper-shadow relative" ng-click="incluir()">Nova Empresa</a>					
+							<a class="btn btn-primary paper-shadow relative" ng-click="alterar()"> Alterar</a>
+							<!-- a class="btn btn-danger paper-shadow relative" ng-click="excluir()"> Excluir</a -->	
+							<a class="btn btn-primary paper-shadow relative" ng-click="ativarOrDesativar()"> Ativar / Desativar</a>				
+						</div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="row" ng-if="isHabilitarBlocoCRUD">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h5 class="text-headline margin-none">{{title}}</h5>
+                        </div>
+                        <div class="panel-body">
+                        	 <div class="row">
+								<div class="form-group col-md-6">
+							        <label>Razão Social</label>
+						        	<input type="text" ng-model="empresa.razaoSocial" placeholder="Razão Social" class="form-control"/>
+							    </div>
+							</div>	
+							<div class="row">
+								<div class="form-group col-md-6">
+							        <label>Nome Fantasia</label>
+						        	<input type="text" ng-model="empresa.nomeFantasia" placeholder="Nome Fantasia" class="form-control"/>
+							    </div>
+							</div>
+							<div class="row">
+								<div class="form-group col-md-6">
+							        <label>CNPJ</label>
+						        	<input type="text" ng-model="empresa.cnpj" placeholder="CNPJ" class="form-control"/>
+							    </div>
+							</div>
+							<div class="row" ng-if="empresa.status != null">
+								<div class="form-group col-md-6">
+							        <label>Status</label>
+						        	<label>{{empresa.status}}</label>
+							    </div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<button type="button" class="btn btn-primary" ng-click="salvar(empresa)" ng-if="ativarBtnSalvar">Salvar</button>
+									<button type="button" class="btn btn-danger" ng-click="deletar(empresa)" ng-if="ativarBtnExcluir">Excluir</button>
+									<button type="button" class="btn btn-primary" ng-click="alternarStatus(empresa)" ng-if="ativarBtnAlterarStatus">{{status}}</button>
+									<button type="button" class="btn btn-default" ng-click="limpar()">Cancelar</button>	
+								</div>
+							</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>						
+	</div>
+</div>
+

@@ -1,0 +1,113 @@
+<div th:fragment="content" ng-controller="GerenciarModuloController">
+	<eterm-cabecalho icon="fa-search" title="Gerênciar Modulo"></eterm-cabecalho>
+	<div class="container"  ng-init="initController()">
+		<div class="page-section">
+			<div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h5 class="text-headline margin-none">Modulo</h5>
+                        </div>
+                        <div class="panel-body">
+                        	 <div class="row col-md-6">
+								<select id="selectModulo" ng-model="emp" class="form-control" data-toggle="select2" ng-options="modulo.descricao for modulo in modulos">
+						            <option value="">: : SELECIONE : :</option>
+						        </select>
+							</div>
+                        </div>
+                        <div class="panel-footer">
+							<a class="btn btn-primary paper-shadow relative" ng-click="incluir()"> Novo Modulo</a>					
+							<a class="btn btn-primary paper-shadow relative" ng-click="alterar()"> Alterar</a>
+						</div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="row" ng-show="isHabilitarBlocoCRUD">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h5 class="text-headline margin-none">{{title}}</h5>
+                        </div>
+                        <div class="panel-body">
+                        	 <div class="row">
+								<div class="form-group col-md-6">
+							        <label>Descrição</label>
+						        	<input type="text" ng-model="modulo.descricao" placeholder="Descrição" class="form-control"/>
+							    </div>
+							</div>	
+							<div class="row">
+								<div class="form-group col-md-6">
+							        <label>Chave de Identificação</label>
+						        	<input type="text" ng-model="modulo.chave" placeholder="Chave de Identificação" class="form-control"/>
+							    </div>
+							</div>
+							<div class="row">
+								<div class="form-group col-md-6" ng-show="modulo.projeto == null">
+									<label>Projetos</label>
+						        	<select id="selectProjeto" name="select" ng-model="modulo.projeto" class="form-control" data-toggle="select2" ng-options="projeto.nome for projeto in projetos">
+							            <option value="">: : SELECIONE : :</option>
+							        </select>
+							    </div>
+							    
+							    <div class="form-group col-md-6" ng-if="modulo.projeto != null">
+						        	<label>Projetos</label>
+						        	<input type="text" value="{{modulo.projeto.nome}}" disabled="disabled" class="form-control"/>
+							    </div>
+							</div>
+							<fieldset>
+								<legend>Permissões do Modulo</legend>
+								
+								<div class="row">
+									<div class="form-group col-md-5">
+								        <label>Descrição</label>
+							        	<input type="text" ng-model="permissao.descricao" placeholder="Descrição" class="form-control"/>
+								    </div>
+								    <div class="form-group col-md-5">
+								        <label>Chave</label>
+										<input type="text" ng-model="permissao.chave" class="form-control" placeholder="Chave"/>
+								    </div>
+								    <div class="form-group col-md-1">
+								    	<label></label>
+								    	<button class="btn btn-primary" type="button" ng-click="adicionarPermissao(permissao)"><i class="fa fa-plus"></i> Adicionar</button>
+								    </div>
+								</div>
+							
+								<div class="row">
+									<div class="form-group col-md-12">
+										<table class="table v-middle">
+											<thead>
+												<tr class="bg-blue-800 text-white">
+													<th>Descrição</th>
+													<th>Chave</th>
+													<th>Ações</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="permissao in modulo.permissoes">
+													<td>{{permissao.descricao}}</td>
+													<td>{{permissao.chave}}</td>
+													<td><button type="button" class="btn btn-danger btn-xs" ng-click="excluirAcao($index)">Excluir</button></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</fieldset>
+							<div class="row">
+								<div class="col-sm-12">
+									<button type="button" class="btn btn-primary" ng-click="salvar(modulo)" ng-if="ativarBtnSalvar">Salvar</button>
+									<button type="button" class="btn btn-danger" ng-click="deletar(modulo)" ng-if="ativarBtnExcluir">Excluir</button>
+									<button type="button" class="btn btn-primary" ng-click="alternarStatus(modulo)" ng-if="ativarBtnAlterarStatus">{{status}}</button>
+									<button type="button" class="btn btn-default" ng-click="limpar()">Cancelar</button>	
+								</div>
+							</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>						
+	</div>
+</div>
+

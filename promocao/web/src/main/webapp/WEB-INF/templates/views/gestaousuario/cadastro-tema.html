@@ -1,0 +1,59 @@
+<div th:fragment="content" ng-controller="GerenciarTemaController">
+	<eterm-cabecalho icon="fa-search" title="Gerênciar Tema"></eterm-cabecalho>
+	<div class="container">
+		<div class="page-section">
+			<div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h5 class="text-headline margin-none">Tema</h5>
+                        </div>
+                        <div class="panel-body">
+                        	 <div class="row col-md-6">
+                        	 	<input type="hidden" ng-model="model" style="width:300px" class="data-tema"  />
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<a data-animated="" data-hover-z="1" data-z="0" class="btn btn-primary paper-shadow relative" href="#"> Novo Tema</a>					
+									<a data-animated="" data-hover-z="1" data-z="0" class="btn btn-primary paper-shadow relative" href="#"> Alterar</a>
+									<a data-animated="" data-hover-z="1" data-z="0" class="btn btn-primary paper-shadow relative" href="#"> Excluir</a>	
+									<a data-animated="" data-hover-z="1" data-z="0" class="btn btn-primary paper-shadow relative" href="#"> Ativar / Desativar</a>				
+								</div>	
+							</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h5 class="text-headline margin-none">Adicionar / Alterar / Visualizar</h5>
+                        </div>
+                        <div class="panel-body">
+                        	 <div class="row">
+								<div class="form-group col-md-6">
+							        <label>Descrição</label>
+						        	<input type="text" ng-model="model" placeholder="Descricao" class="form-control"/>
+							    </div>
+							</div>	
+							<div class="row">
+								<div class="form-group col-md-6">
+							        <label>Caminho do Tema</label>
+						        	<input type="text" ng-model="model" placeholder="Caminho do Tema" class="form-control"/>
+							    </div>
+							</div>			
+							<div class="row">
+								<div class="col-sm-12">				
+									<a class="btn btn-primary paper-shadow relative" href="#"> Salvar</a>				
+								</div>
+							</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>						
+	</div>
+</div>

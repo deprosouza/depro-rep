@@ -1,0 +1,399 @@
+<div th:fragment="content" ng-controller="MapeamentoCadastroController">
+    <eterm-cabecalho icon="fa-sitemap" title="Mapeamento"></eterm-cabecalho>
+    <div class="container" th:attr="ng-init='initControllerMapeamento(\''+${idTerm}+'\');'" >
+        <div class="page-section">
+            <div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h5 class="text-headline margin-none">Terminologia</h5>
+                        </div>
+                        <div class="panel-body">
+                            <div class="dados-terminologia">
+                                <div class="row">
+                                    <div class="col-md-1"><label>Código</label></div>
+                                    <div class="col-md-2"><span>{{terminologiaBase.codigo}}</span></div>
+
+                                    <div class="col-md-1"><label>Tabela</label></div>
+                                    <div class="col-md-2"><span>{{terminologiaBase.tabela.nome}}</span></div>
+
+                                    <div class="col-md-1"><label>Versão</label></div>
+                                    <div class="col-md-2"><span>{{terminologiaBase.tabela.versao}}</span></div>
+
+									<span ng-if="terminologiaBase.competencia">
+                                    	<div class="col-md-1"><label>Competência</label></div>
+                                    	<div class="col-md-2"><span>{{terminologiaBase.competencia}}</span></div>
+                                    </span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2"><label>Tipo Compartilhamento</label></div>
+                                    <div class="col-md-10"><span>{{terminologiaBase.tabela.tipoCompartilhamento}}</span></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2"><label>Termo</label></div>
+                                    <div class="col-md-10"><span>{{terminologiaBase.termo}}</span></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2"><label>Descrição</label></div>
+                                    <div class="col-md-10"><span>{{terminologiaBase.definicao}}</span></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2"><label>Inicio de Vigência</label></div>
+                                    <div class="col-md-4"><span>{{terminologiaBase.inicioVigenciaFormatada}}</span></div>
+                                    
+                                    <span ng-if="terminologiaBase.fimVigenciaFormatada">
+	                                    <div class="col-md-2"><label>Fim de Vigência</label></div>
+	                                    <div class="col-md-4"><span>{{terminologiaBase.fimVigenciaFormatada}}</span></div>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="terminologiaBase.detalhes.length > 0">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default curriculum open paper-shadow">
+                        <div data-target="#atributo-0" data-toggle="collapse" class="panel-heading panel-heading-gray">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h4 class="text-headline">Atributos</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="atributo-0" class="list-group collapse">
+                            <div class="panel-body">
+                                <div class="row col-md-4" ng-repeat="metadado in terminologiaBase.detalhes" ng-if="metadado.metadado.visivel">
+                                    <div class=""><label>{{metadado.metadado.apresentacao}}</label></div>
+                                    <div class=""><span>{{metadado.informacao}}</span></div>
+                                    <br/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h5 class="text-headline margin-none">Mapeamento</h5>
+                        </div>
+                        <div class="panel-body">
+                            <fieldset>
+                                <legend>Busca de Terminologia</legend>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="tipoCompartilhamento">Tipo de Compartilhamento</label>
+                                            <select name="select" id="" class="form-control" ng-model="busca.tipoCompartilhamento" ng-options="tipo for tipo in tiposCompartilhamentos">
+                                                <option value="">: : TODOS OS TIPOS : :</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="tabela">Tabela</label>
+                                            <select name="select" class="form-control" id="tabela" ng-model="busca.tabela" ng-options="tabela.nome for tabela in tabelas">
+                                                <option value="">: : TODAS AS TABELAS : :</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="versao">Versão</label>
+                                            <input type="text"  placeholder="Versão" ng-model="busca.versao" class="form-control"/>
+                                        </div>
+                                    </div>
+                                     <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="codigo">Código</label>
+                                            <input type="text" placeholder="Código" ng-model="busca.codigo" class="form-control"/>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="atributo">Início de Vigência</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="icon-inicio-vigenca"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                <input type="text" esb-mask-date="" class="form-control" ng-model="busca.inicioVigencia" id="buscaInicioVigencia" placeholder="Início de Vigência" aria-describedby="icon-inicio-vigenca"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="atributo">Fim de Vigência</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" id="icon-fim-vigenca"><i class="glyphicon glyphicon-calendar"></i></span>
+                                                <input type="text" esb-mask-date="" class="form-control" ng-model="busca.fimVigencia" id="buscaFimVigencia" placeholder="Fim de Vigência" aria-describedby="icon-inicio-vigenca"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="termo">Termo</label>
+                                            <input type="text" placeholder="Termo" ng-model="busca.termo" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="descricao">Descrição</label>
+                                            <input type="text" placeholder="Descrição" ng-model="busca.descricao" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <a data-animated="" data-hover-z="1" data-z="0" class="btn btn-blue-800 paper-shadow relative" ng-click="buscar(busca)"> Buscar</a>
+                                    <a data-animated="" data-hover-z="1" data-z="0" class="btn btn-white paper-shadow relative" ng-click="reset()"> Limpar</a>
+                                </div>
+                                <br/>
+                                <div class="table-responsive">
+                                    <table class="table v-middle">
+                                        <thead>
+                                            <tr>
+                                                <th>Código</th>
+                                                <th>Termo</th>
+                                                <th>Descrição</th>
+                                                <th>Tabela</th>
+                                                <th>Versão</th>
+                                                <th>Início de Vigência</th>
+                                                <th>Fim de Vigência</th>
+                                                <th>Competência</th>
+                                                <th>Tipo de Compartilhamento</th>
+                                                <th class="text-right">Ação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="term in terminologias">
+                                                <td>{{term.codigo}}</td>
+                                                <td>
+                                                    <span ng-if="term.termoSort.length == term.termo.length">{{term.termo}}</span>
+                                                    <a ng-if="term.termoSort.length != term.termo.length" class="tooltipCompleto" data-toggle="tooltip" title="{{term.termo}}" data-placement="right">{{term.termoSort}} <i class="fa fa-exclamation-circle"></i></a>
+                                                </td>
+                                                <td>
+                                                    <div ng-if="term.definicaoSort.length > 0">
+                                                        <span ng-if="term.definicaoSort.length == term.definicao.length">{{term.definicao}}</span>
+                                                        <a ng-if="term.definicaoSort.length != term.definicao.length" class="tooltipCompleto" data-toggle="tooltip" title="{{term.definicao}}" data-placement="right">{{term.definicaoSort}} <i class="fa fa-exclamation-circle"></i></a>
+                                                    </div>
+                                                </td>
+                                                <td>{{term.tabela.nome}}</td>
+                                                <td>{{term.tabela.versao}}</td>
+                                                <td>{{term.inicioVigenciaFormatada}}</td>
+                                                <td>{{term.fimVigenciaFormatada}}</td>
+                                                <td>{{term.competencia}}</td>
+                                                <td>{{term.tabela.tipoCompartilhamento}}</td>
+                                                <td class="text-right">
+                                                    <a title="Mapear" data-placement="top" class="btn btn-default btn-xs" ng-if="!term.selecionado" ng-click="selecionar($index)" data-toggle="modal" data-target="#myModal">
+                                                        <i class="fa fa-plus"></i> Selecionar
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="text-center">
+                                    <div class="pagination"></div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- Progress table -->
+                        <div class="table-responsive">
+                            <table class="table v-middle">
+                                <thead>
+                                    <tr class="bg-blue-800 text-white">
+                                        <th>Código</th>
+                                        <th>Termo</th>
+                                        <th>Descrição</th>
+                                        <th>Tabela</th>
+                                        <th>Versão</th>
+                                        <th>Início de Vigência</th>
+                                        <th>Fim de Vigência</th>
+                                        <th>Competência</th>
+                                        <th>Grau de Equivalência</th>
+                                        <th>Tipo de Mapeamento</th>
+                                        <th class="text-right">Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="responsive-table-body">
+                                    <tr ng-repeat="map in terminologiaBase.terminologiasPara">
+                                        <td>{{map.terminologiaPara.codigo}}</td>
+                                        <td>
+                                            <span ng-if="map.terminologiaPara.termoSort.length == map.terminologiaPara.termo.length">{{map.terminologiaPara.termo}}</span>
+                                            <a ng-if="map.terminologiaPara.termoSort.length != map.terminologiaPara.termo.length" class="tooltipCompleto" data-toggle="tooltip" title="{{map.terminologiaPara.termo}}" data-placement="right">{{map.terminologiaPara.termoSort}} <i class="fa fa-exclamation-circle"></i></a>
+                                        </td>
+                                        <td>
+                                            <div ng-if="map.terminologiaPara.definicaoSort.length > 0">
+                                                <span ng-if="map.terminologiaPara.definicaoSort.length == map.terminologiaPara.definicao.length">{{map.terminologiaPara.definicao}}</span>
+                                                <a ng-if="map.terminologiaPara.definicaoSort.length != map.terminologiaPara.definicao.length" data-toggle="tooltip" title="{{map.terminologiaPara.definicao}}" data-placement="right">{{map.terminologiaPara.definicaoSort}} <i class="fa fa-exclamation-circle"></i></a>
+                                            </div>
+                                        </td>
+                                        <td>{{map.terminologiaPara.tabela.nome}}</td>
+                                        <td>{{map.terminologiaPara.tabela.versao}}</td>
+                                        <td>{{map.terminologiaPara.inicioVigenciaFormatada}}</td>
+                                        <td>{{map.terminologiaPara.fimVigenciaFormatada}}</td>
+                                        <td>{{map.terminologiaPara.competencia}}</td>
+                                        <td class="text-center" data-toggle="tooltip" title="{{map.equivalenciaDescricao}}" data-placement="right">
+                                        	{{map.equivalencia.replace('GRAU_', '')}}
+                                        </td>
+                                        <td>{{map.tipoMapeamento.descricao}}</td>
+                                        <td class="text-right">
+                                            <a title="Excluir" data-placement="top" class="btn btn-danger btn-xs" data-original-title="Delete" ng-click="excluirMapeamento($index)" ng-if="!map.tipoMapeamento.oficial">
+                                                <i class="fa fa-times"></i> Excluir
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- // Progress table -->
+                        <div class="panel-footer padding-none text-center">
+                            <div class="paginationMapped"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h5 class="text-headline margin-none">Histórico de Mudanças</h5>
+                        </div>
+                        <div class="panel-body">
+                            <!-- Progress table -->
+                            <div class="table-responsive">
+                                <table class="table v-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Usuário</th>
+                                            <th>Motivo</th>
+                                            <th>Descrição</th>
+                                            <th class="text-right">Ação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="hist in terminologiaBase.historicoMudancas">
+                                        <tr>
+                                            <td>{{hist.dataEventoFormatado}}</td>
+                                            <td>{{hist.usuario.nome}}</td>
+                                            <td>{{hist.motivo.descricao}}</td>
+                                            <td>{{hist.descricao}}</td>
+                                            <td class="text-right">
+                                                <a title="Ver Histórico" data-toggle="modal" data-placement="top" class="btn btn-default btn-sm" data-target="#modalHistoricoMudancaDetalhe" ng-click="initControllerViaMapeamento(hist.id)" ><i class="fa fa-eye"></i> Ver Histórico</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <a data-placement="top" class="btn btn-blue-800 paper-shadow relative" data-toggle="modal" data-target="#modalHistoricoMudanca">Salvar</a>
+                <a id="cancelar" class="btn btn-white paper-shadow relative" th:href="@{/mapeamento/}"> Cancelar</a>
+            </div>
+            
+            <!-- ############################################################################################################################################################################## -->
+            <!-- MODAL SELECIONAR TERMINOLOGIA -->
+            <!-- ############################################################################################################################################################################## -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancelarMapeamento()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title">Mapeamento</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="tipoMapeamento">Tipo Mapeamento</label>
+                                        <select name="select" class="form-control" id="tipoMapeamento" ng-model="mapTipoMapeamento" ng-options="tipo.descricao for tipo in tiposMapeamentos">
+                                            <option value="">: : SELECIONE : :</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="equivalencia">Grau de Equivalência</label>
+                                        <select name="select" class="form-control" id="equivalencia" ng-model="mapEquivalencia" ng-options="k as v for (k, v) in equivalencias">
+                                            <option value="">: : SELECIONE : :</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancelarMapeamento()">Cancelar</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="adicionarMapeamento()">Adicionar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ############################################################################################################################################################################## -->
+            <!-- MODAL HISTORICO -->
+            <!-- ############################################################################################################################################################################## -->
+            <div class="modal fade" id="modalHistoricoMudanca" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title">Histórico de Mudança</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="equivalencia">Descricao alteração</label>
+                                        <textarea placeholder="Descricao " ng-model="historicoMudanca.descricao" rows="3" cols="160" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-blue-800 paper-shadow relative" data-dismiss="modal" ng-click="salvar(historicoMudanca)">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ############################################################################################################################################################################## -->
+            <!-- MODAL VER HISTORICO -->
+            <!-- ############################################################################################################################################################################## -->
+            <div class="modal fade" id="modalHistoricoMudancaDetalhe" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title">Histórico de Mudança</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div th:replace="views/consulta/visualizacaocontent :: termConsulta"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>

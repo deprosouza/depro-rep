@@ -1,0 +1,38 @@
+<div th:fragment="content" ng-controller="IndexController">
+	<div id="content">
+		<div class="container-fluid" th:attr="ng-init='initController(\''+${error}+'\');'">
+			<div class="lock-container">
+				<div class="panel panel-default text-center paper-shadow" data-z="0.5">
+					<br/>
+					<img th:src="@{__${URL_RESOURCES}__/e-saudebrasil/img/logo.png}" alt="Logo"/>
+					<br/><br/>
+					<img th:src="@{__${URL_RESOURCES}__/e-saudebrasil/img/avatar.png}" class="img-circle width-80"/>
+					<div class="panel-body">
+						<div class="alert alert-danger" role="alert" ng-if="isError">
+							Usuário e ou senha incorretos!
+						</div>
+						<form name='login' th:action="@{/login}" method='post'>
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+							<div class="form-group">
+								<div class="form-control-material">
+									<input class="form-control" id="login" name="login" type="text" placeholder="Usuário"/>
+									<label for="username">Usuário</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="form-control-material">
+									<input class="form-control" id="senha" name="senha" type="password" placeholder="Senha"/>
+									<label for="password">Senha</label>
+								</div>
+							</div>
+							<input type="submit" class="btn btn-primary" name="bto" value="Entrar"/>
+						</form>
+						<div class="row pull-right" style="margin-top: 30px;">
+							<a th:href="@{/recupera-senha}">Esqueceu a sua senha?</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,143 @@
+<div th:fragment="content" ng-controller="GerenciarConfiguracaoModuloController">
+	<eterm-cabecalho icon="fa-search" title="Gerênciar Configuração de Modulo"></eterm-cabecalho>
+	<div class="container"  ng-init="initController()">
+		<div class="page-section">
+			<div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h5 class="text-headline margin-none">Configuração de Modulo</h5>
+                        </div>
+                        <div class="panel-body">
+                        	 <div class="row">
+                        	 	<div class="col-md-6">
+	                        	 	<label>Projeto</label>
+									<select id="selectProjeto" class="form-control" ng-model="projtoFiltro" ng-options="projeto.nome for projeto in projetosView" ng-change="filtrarModulos()">
+							            <option value="">: : SELECIONE : :</option>
+							        </select>
+							    </div>
+						     
+						        <div class="col-md-6">
+						        	<label>Modulo</label>
+									<select id="selectModulo" class="form-control" ng-model="moduloFiltro" ng-options="modulo.descricao for modulo in modulosView">
+							            <option value="">: : SELECIONE : :</option>
+							        </select>
+						        </div>
+							</div>
+							<br/>
+							<div class="row" ng-if="moduloFiltro != null">
+								<div class="form-group col-md-12">
+									<table class="table v-middle">
+										<thead>
+											<tr class="bg-blue-800 text-white">
+												<th>Modulo</th>
+												<th>Descrição</th>
+												<th>Ações</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="configuracao in moduloFiltro.configuracoes">
+												<td>{{configuracao.modulo.descricao}}</td>
+												<td>{{configuracao.descricao}}</td>
+												<td>
+													<a class="btn btn-default btn-xs" ng-click="alterar(configuracao)">Editar</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<button type="button" class="btn btn-primary" ng-click="incluir()">Nova Configuracao</button>
+								</div>
+							</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="row" ng-if="isHabilitarBlocoCRUD">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h5 class="text-headline margin-none">{{title}}</h5>
+                        </div>
+                        <div class="panel-body">
+                        	 <div class="row">
+                        	 	<div class="col-md-6" ng-if="configuracao.id == null">
+	                        	 	<label>Projeto</label>
+									<select id="selectProjetoForm" class="form-control" ng-model="projetoFormSelecionado" ng-options="projeto.nome for projeto in projetos" ng-change="filtrarModulosForm()">
+							            <option value="">: : SELECIONE : :</option>
+							        </select>
+							    </div>
+							    
+							    <div class="col-md-6" ng-if="configuracao.id != null">
+	                        	 	<label>Projeto</label>
+	                        	 	<input type="text" value="{{configuracao.modulo.projeto.nome}}" disabled="disabled" class="form-control"/>
+							    </div>
+							</div>
+							
+							<div>
+								<div class="row">
+							        <div class="col-md-6" ng-if="configuracao.id == null">
+							        	<label>Modulo</label>
+										<select id="selectModuloForm" class="form-control" ng-model="configuracao.modulo" ng-options="modulo.descricao for modulo in modulosFormView">
+								            <option value="">: : SELECIONE : :</option>
+								        </select>
+							        </div>
+							        
+							        <div class="col-md-6" ng-if="configuracao.id != null">
+							        	<label>Modulo</label>
+										<input type="text" value="{{configuracao.modulo.descricao}}" disabled="disabled" class="form-control"/>
+							        </div>
+								</div>
+								
+								<div class="row">
+									<div class="form-group col-md-6">
+								        <label>Descrição</label>
+							        	<input type="text" ng-model="configuracao.descricao" placeholder="Descrição" class="form-control"/>
+								    </div>
+								</div>
+								
+								<fieldset>
+									<legend>Permissões do Modulo</legend>
+									<div class="row">
+										<div class="form-group col-md-12">
+											<table class="table v-middle">
+												<thead>
+													<tr class="bg-blue-800 text-white">
+														<th>Descrição</th>
+														<th>Chave</th>
+														<th>Selecionar</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat="permissao in configuracao.modulo.permissoes">
+														<td>{{permissao.descricao}}</td>
+														<td>{{permissao.chave}}</td>
+														<td><input type="checkbox" ng-model="permissao.selecionado" /></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</fieldset>
+							</div>
+														
+							<div class="row">
+								<div class="col-sm-12">
+									<button type="button" class="btn btn-primary" ng-click="salvar()" ng-if="ativarBtnSalvar">Salvar</button>
+									<button type="button" class="btn btn-default" ng-click="limpar()">Cancelar</button>	
+								</div>
+							</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>						
+	</div>
+</div>
+

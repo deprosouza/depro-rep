@@ -1,0 +1,150 @@
+<div th:fragment="content" ng-controller="ManutencaoController">
+	<eterm-cabecalho icon="fa-cogs" title="Manutenção"></eterm-cabecalho>
+	<div class="container">
+		<div class="page-section">
+			<div class="row">
+			
+				<div th:if="${user.contains('ACCESS_ATTR')}" class="item col-xs-4 col-lg-4">
+	               <div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated="">
+	                   <div class="panel-body">
+	                       <div class="media media-clearfix-xs">
+	                           <div class="media-left">
+	                               <div class="cover width-90 width-100pc-xs overlay cover-image-full hover">
+	                                   <span class="img icon-block s90 bg-primary"></span>
+	                                   <span class="overlay overlay-full padding-none icon-block s90 bg-primary">
+	                                       <span class="v-center">
+	                                           <i class="fa fa-cogs"></i>
+	                                       </span>
+	                                   </span>
+	                                   <a th:href="@{/tipo-mapeamento/}" class="overlay overlay-full overlay-hover overlay-bg-white">
+	                                       <span class="v-center">
+	                                           <span class="btn btn-circle btn-primary btn-lg"><i class="fa fa-cogs"></i></span>
+	                                       </span>
+	                                   </a>
+	                               </div>
+	                           </div>
+	                           <div class="media-body">
+	                               <h3 class="media-heading margin-v-15-5"><a th:href="@{/atributo/}">Atributo</a></h3>
+	                               <p class="text-subhead text-light"></p>
+	                           </div>
+	                       </div>
+	                   </div>
+	               </div>
+	           </div>
+	           
+	           <div th:if="${user.contains('ACCESS_TABLE')}" class="item col-xs-4 col-lg-4">
+	               <div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated="">
+	                   <div class="panel-body">
+	                       <div class="media media-clearfix-xs">
+	                           <div class="media-left">
+	                               <div class="cover width-90 width-100pc-xs overlay cover-image-full hover">
+	                                   <span class="img icon-block s90 bg-primary"></span>
+	                                   <span class="overlay overlay-full padding-none icon-block s90 bg-primary">
+	                                       <span class="v-center">
+	                                           <i class="fa fa-cogs"></i>
+	                                       </span>
+	                                   </span>
+	                                   <a th:href="@{/tipo-mapeamento/}" class="overlay overlay-full overlay-hover overlay-bg-white">
+	                                       <span class="v-center">
+	                                           <span class="btn btn-circle btn-primary btn-lg"><i class="fa fa-cogs"></i></span>
+	                                       </span>
+	                                   </a>
+	                               </div>
+	                           </div>
+	                           <div class="media-body">
+	                               <h3 class="media-heading margin-v-15-5"><a th:href="@{/tabela/}">Tabela</a></h3>
+	                               <p class="text-subhead text-light"></p>
+	                           </div>
+	                       </div>
+	                   </div>
+	               </div>
+	           </div>
+			
+	           <div th:if="${user.contains('ACCESS_TIPO_MAP')}" class="item col-xs-4 col-lg-4">
+	               <div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated="">
+	                   <div class="panel-body">
+	                       <div class="media media-clearfix-xs">
+	                           <div class="media-left">
+	                               <div class="cover width-90 width-100pc-xs overlay cover-image-full hover">
+	                                   <span class="img icon-block s90 bg-primary"></span>
+	                                   <span class="overlay overlay-full padding-none icon-block s90 bg-primary">
+	                                       <span class="v-center">
+	                                           <i class="fa fa-cogs"></i>
+	                                       </span>
+	                                   </span>
+	                                   <a th:href="@{/tipo-mapeamento/}" class="overlay overlay-full overlay-hover overlay-bg-white">
+	                                       <span class="v-center">
+	                                           <span class="btn btn-circle btn-primary btn-lg"><i class="fa fa-cogs"></i></span>
+	                                       </span>
+	                                   </a>
+	                               </div>
+	                           </div>
+	                           <div class="media-body">
+	                               <h3 class="media-heading margin-v-15-5"><a th:href="@{/tipo-mapeamento/}">Tipo de Mapeamento</a></h3>
+	                               <p class="text-subhead text-light"></p>
+	                           </div>
+	                       </div>
+	                   </div>
+	               </div>
+	           </div>
+	           
+	           <div th:if="${user.contains('ACCESS_ADD_TERMO')}" class="item col-xs-4 col-lg-4">
+	               <div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated="">
+	                   <div class="panel-body">
+	                       <div class="media media-clearfix-xs">
+	                           <div class="media-left">
+	                               <div class="cover width-90 width-100pc-xs overlay cover-image-full hover">
+	                                   <span class="img icon-block s90 bg-primary"></span>
+	                                   <span class="overlay overlay-full padding-none icon-block s90 bg-primary">
+	                                       <span class="v-center">
+	                                           <i class="fa fa-cogs"></i>
+	                                       </span>
+	                                   </span>
+	                                   <a th:href="@{/consulta/inclusao/}" class="overlay overlay-full overlay-hover overlay-bg-white">
+	                                       <span class="v-center">
+	                                           <span class="btn btn-circle btn-primary btn-lg"><i class="fa fa-cogs"></i></span>
+	                                       </span>
+	                                   </a>
+	                               </div>
+	                           </div>
+	                           <div class="media-body">
+	                               <h3 class="media-heading margin-v-15-5"><a th:href="@{/consulta/inclusao/}">Incluir Registro</a></h3>
+	                               <p class="text-subhead text-light"></p>
+	                           </div>
+	                       </div>
+	                   </div>
+	               </div>
+	           </div>
+	           
+	           <div th:if="${user.contains('ACCESS_EDIT_TERMO')}" class="item col-xs-4 col-lg-4">
+	               <div class="panel panel-default paper-shadow" data-z="0.5" data-hover-z="1" data-animated="">
+	                   <div class="panel-body">
+	                       <div class="media media-clearfix-xs">
+	                           <div class="media-left">
+	                               <div class="cover width-90 width-100pc-xs overlay cover-image-full hover">
+	                                   <span class="img icon-block s90 bg-primary"></span>
+	                                   <span class="overlay overlay-full padding-none icon-block s90 bg-primary">
+	                                       <span class="v-center">
+	                                           <i class="fa fa-cogs"></i>
+	                                       </span>
+	                                   </span>
+	                                   <a th:href="@{/consulta/alterar-inativar/}" class="overlay overlay-full overlay-hover overlay-bg-white">
+	                                       <span class="v-center">
+	                                           <span class="btn btn-circle btn-primary btn-lg"><i class="fa fa-cogs"></i></span>
+	                                       </span>
+	                                   </a>
+	                               </div>
+	                           </div>
+	                           <div class="media-body">
+	                               <h3 class="media-heading margin-v-15-5"><a th:href="@{/consulta/alterar-inativar/}">Alterar / Inativar Registro</a></h3>
+	                               <p class="text-subhead text-light"></p>
+	                           </div>
+	                       </div>
+	                   </div>
+	               </div>
+	           </div>
+	           
+	       </div>
+	    </div>
+	</div>
+</div>

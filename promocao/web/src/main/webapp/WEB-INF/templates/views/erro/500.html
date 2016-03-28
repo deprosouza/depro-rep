@@ -1,0 +1,14 @@
+<div th:fragment="content">
+	<eterm-cabecalho title="Internal Server Erro"></eterm-cabecalho>
+	<div class="container" th:attr="ng-init='initController(\''+${id}+'\');'">
+		<h1>Serviço temporariamente indisponivel, tente novamente mais tarde</h1>
+		
+		<div style="display: none">
+			<p th:text="${url}" />
+			<br/>
+			<p th:text="${erro.message}" />
+			<br/>	
+			<p th:each="line : ${erro.stackTrace}" th:text="${line}" />
+		</div> 
+	</div>
+</div>

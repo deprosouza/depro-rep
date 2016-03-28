@@ -1,0 +1,131 @@
+<div th:fragment="content" ng-controller="TabelaBuscaController">
+	<eterm-cabecalho icon="fa-cogs" title="Tabela"></eterm-cabecalho>
+	<div class="container" ng-init="initController()">
+        <div class="page-section">
+            <div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h4 class="text-headline margin-none">Filtro de Busca</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                            	<div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="tipoCompartilhamento">Tipo de Compartilhamento</label>
+                                        <select id="status" name="select" class="form-control" ng-model="filtro.tipoCompartilhamento" ng-options="tipoCompartilhamento for tipoCompartilhamento in tipoCompartilhamentos">
+											<option value="">: : TODOS OS TIPOS DE COMPARTILHAMENTOS : :</option>
+										</select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="nome">Nome</label>
+                                        <input type="text" placeholder="Nome" id="nome" ng-model="filtro.nome" class="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="versao">Versão</label>
+                                        <input type="text" placeholder="Versão" id="versao" ng-model="filtro.versao" class="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+										<label for="atributo">Início de Vigência</label>
+										<div class="input-group">
+											<span class="input-group-addon" id="icon-inicio-vigenca"><i class="glyphicon glyphicon-calendar"></i></span> 
+											<input type="text"
+												esb-mask-date=""
+												class="form-control"
+												ng-model="filtro.inicioVigencia" id="buscaInicioVigencia"
+												placeholder="Início de Vigência"
+												aria-describedby="icon-inicio-vigenca" />
+										</div>
+									</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+										<label for="atributo">Fim de Vigência</label>
+										<div class="input-group">
+											<span class="input-group-addon" id="icon-inicio-vigenca"><i class="glyphicon glyphicon-calendar"></i></span> 
+											<input type="text"
+												esb-mask-date=""
+												class="form-control"
+												ng-model="filtro.fimVigencia" id="buscaFimVigencia"
+												placeholder="Fim de Vigência"
+												aria-describedby="icon-inicio-vigenca" />
+										</div>
+									</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <select id="status" name="select" class="form-control" ng-model="filtro.status" ng-options="status for status in statuss">
+											<option value="">: : TODOS OS STATUS : :</option>
+										</select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-1 text-left">
+                                    <a data-animated="" data-hover-z="1" data-z="0" class="btn btn-blue-800 paper-shadow relative" th:href="@{/tabela/cadastro}"> Adicionar</a>
+                                </div>
+                                <div class="col-md-10 text-center">
+                                    <a class="btn btn-blue-800 paper-shadow relative" ng-Click="buscar(filtro)"> Buscar</a>
+                                <a class="btn btn-white paper-shadow relative" ng-click="reset()"> Limpar</a>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- Progress table -->
+                        <div class="table-responsive">
+                            <table class="table v-middle">
+                                <thead>
+                                    <tr class="bg-blue-800 text-white">
+                                        <th>Nome</th>
+                                        <th>Versão</th>
+                                        <th>Tipo de Compartilhamento</th>
+                                        <th>Início de Vigência</th>
+                                        <th>Fim de Vigência</th>
+                                        <th>Status</th>
+                                        <th class="text-right">Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="responsive-table-body">
+                                    <tr ng-repeat="tabela in tabelas">
+                                        <td>{{tabela.nome}}</td>
+                                        <td>{{tabela.versao}}</td>
+                                        <td>{{tabela.tipoCompartilhamento}}</td>
+                                        <td>{{tabela.inicioVigenciaFormatada}}</td>
+                                        <td>{{tabela.fimVigenciaFormatada}}</td>
+                                        <td>{{tabela.status}}</td>
+                                        <td class="text-right">
+                                        	<a title="Editar Tabela" data-placement="top" class="btn btn-default btn-xs" th:href="@{/tabela/editar/{{tabela.id}}}"> Editar</a>
+                                        	<span ng-if="!tabela.oficial">
+	                                            <a ng-click="trocarStatus($index)" class="btn btn-danger btn-xs" ng-if="tabela.status == 'ATIVO'"> Inativar</a>
+	                                            <a ng-click="trocarStatus($index)" class="btn btn-success btn-xs" ng-if="tabela.status == 'INATIVO' || tabela.status == null"> Ativar</a>
+	                                        </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- // Progress table -->
+                        <div class="panel-footer padding-none text-center">
+                            <div class="pagination"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

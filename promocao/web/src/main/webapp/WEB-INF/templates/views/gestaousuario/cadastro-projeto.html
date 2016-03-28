@@ -1,0 +1,107 @@
+<div th:fragment="content" ng-controller="GerenciarProjetoController">
+	<eterm-cabecalho icon="fa-search" title="Gerênciar Projeto"></eterm-cabecalho>
+	<div class="container"  ng-init="initController()">
+		<div class="page-section">
+			<div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h5 class="text-headline margin-none">Projeto</h5>
+                        </div>
+                        <div class="panel-body">
+                        	 <div class="row col-md-6">
+								<select id="selectProjeto" ng-model="proj" class="form-control" data-toggle="select2" ng-options="projeto.nome for projeto in projetos">
+						            <option value="">: : SELECIONE : :</option>
+						        </select>
+							</div>
+                        </div>
+                        <div class="panel-footer">
+							<a class="btn btn-primary paper-shadow relative" ng-click="incluir()"> Novo Projeto</a>					
+							<a class="btn btn-primary paper-shadow relative" ng-click="alterar()"> Alterar</a>
+							<a class="btn btn-danger paper-shadow relative" ng-click="excluir()"> Excluir</a>	
+							<a class="btn btn-primary paper-shadow relative" ng-click="ativarOrDesativar()"> Ativar / Desativar</a>				
+						</div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="row" ng-show="isHabilitarBlocoCRUD">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h5 class="text-headline margin-none">{{title}}</h5>
+                        </div>
+                        <div class="panel-body">
+                        	 <div class="row">
+								<div class="form-group col-md-8">
+							        <label>Nome</label>
+						        	<input type="text" ng-model="projeto.nome" placeholder="Nome" class="form-control"/>
+							    </div>
+							</div>	
+							<div class="row">
+								<div class="form-group col-md-8">
+							        <label>Escopo</label>
+						        	<textarea placeholder="Escopo" ng-model="projeto.escopo" rows="3" cols="80" class="form-control"></textarea>
+							    </div>
+							</div>
+							<div class="row">
+								<div class="form-group col-md-4">
+							        <label>Data Inicio</label>
+						        	<input esb-mask-date="" type="text" class="form-control" ng-model="projeto.dataInicioFormatada" placeholder="Data Inicio" aria-describedby="icon-inicio-vigenca" />
+							    </div>
+							    <div class="form-group col-md-4">
+							        <label>Data Fim</label>
+						        	<input esb-mask-date="" type="text" class="form-control" ng-model="projeto.dataFimFormatada" placeholder="Data Fim" aria-describedby="icon-inicio-vigenca" />
+							    </div>
+							</div>
+							<h5>Empresa</h5>
+							<div class="row">
+								<div class="form-group col-md-6">
+							        <select id="selectEmpresa" ng-model="emp" class="form-control" data-toggle="select2" ng-options="empresa.nomeFantasia for empresa in empresas">
+							            <option value="">: : SELECIONE : :</option>
+							        </select>
+							        
+							    </div>
+							    <div class="form-group col-md-1">
+							    	<button type="button" class="btn btn-primary" ng-click="selecionarEmpresa()">Selecionar</button>
+							    </div>
+							</div>
+							<div class="row">
+						    	<div class="form-group col-md-12">
+									<table class="table v-middle">
+	                                    <thead>
+	                                        <tr class="bg-blue-800 text-white">
+	                                            <th>Razão Social</th>
+	                                            <th>Nome Fantasia</th>
+	                                            <th>Status</th>
+	                                            <th>Ações</th>
+	                                        </tr>
+	                                    </thead>
+	                                    <tbody id="responsive-table-body">
+	                                        <tr ng-repeat="empresa in projeto.empresas">
+	                                            <td>{{empresa.razaoSocial}}</td>
+	                                            <td>{{empresa.nomeFantasia}}</td>
+	                                            <td>{{empresa.status}}</td>
+	                                            <td><button type="button" class="btn btn-danger btn-xs" ng-click="excluirEmpresa($index)">Excluir</button></td>
+	                                        </tr>
+	                                    </tbody>
+	                                </table>
+							    </div>
+						    </div>
+							<div class="row">
+								<div class="col-sm-12">
+									<button type="button" class="btn btn-primary" ng-click="salvar(projeto)" ng-if="ativarBtnSalvar">Salvar</button>
+									<button type="button" class="btn btn-danger" ng-click="deletar(projeto)" ng-if="ativarBtnExcluir">Excluir</button>
+									<button type="button" class="btn btn-primary" ng-click="alternarStatus(projeto)" ng-if="ativarBtnAlterarStatus">{{status}}</button>
+									<button type="button" class="btn btn-default" ng-click="limpar()">Cancelar</button>	
+								</div>
+							</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>						
+	</div>
+</div>
+

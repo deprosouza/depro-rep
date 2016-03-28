@@ -1,0 +1,167 @@
+<div th:fragment="content" ng-controller="ConsultaBuscaController">
+	<eterm-cabecalho th:icon="${icon}" th:title="${title}"></eterm-cabecalho>
+	<div class="container" th:attr="ng-init='initController(\''+${tipoCompartilhamento}+'\');'">
+		<div class="page-section">
+			<div class="row">
+				<div class="item col-xs-12 col-lg-12">
+					<div data-z="0.5" class="panel panel-default paper-shadow">
+						<div class="panel-heading">
+							<h4 class="text-headline margin-none">Filtro de Busca</h4>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-4" ng-if="!isTipoCompartilhamentoTravado">
+									<div class="form-group">
+										<label for="tabela">Tipo de Compartilhamento</label> 
+										<select name="select" class="form-control" ng-model="filtro.tipoCompartilhamento" ng-options="tipo for tipo in tiposCompartilhamentos">
+											<option value="">: : TODOS OS TIPOS : :</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="tabela">Tabela</label> 
+										<select name="select" class="form-control" id="tabela" ng-model="filtro.tabela" ng-options="tabela.nome for tabela in tabelas">
+											<option value="">: : TODAS AS TABELAS : :</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="versao">Versão</label>
+										<input type="text" placeholder="Versão" id="versao" ng-model="filtro.versao" class="form-control" />
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="codigo">Código</label> 
+										<input type="text" placeholder="Código" ng-model="filtro.codigo" class="form-control" />
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="form-group">
+										<label for="atributo">Início de Vigência</label>
+										<div class="input-group">
+											<span class="input-group-addon" id="icon-inicio-vigenca"><i class="glyphicon glyphicon-calendar"></i></span> 
+											<input type="text"
+												esb-mask-date=""
+												class="form-control"
+												ng-model="filtro.inicioVigencia" id="buscaInicioVigencia"
+												placeholder="Início de Vigência"
+												aria-describedby="icon-inicio-vigenca" />
+										</div>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="form-group">
+										<label for="atributo">Fim de Vigência</label>
+										<div class="input-group">
+											<span class="input-group-addon" id="icon-fim-vigenca"><i class="glyphicon glyphicon-calendar"></i></span>
+											<input type="text"
+												esb-mask-date=""
+												class="form-control" ng-model="filtro.fimVigencia"
+												id="buscaFimVigencia"
+												placeholder="Fim de Vigência"
+												aria-describedby="icon-inicio-vigenca" />
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="tabela">Status</label>
+										<select name="select" class="form-control" ng-model="filtro.status" ng-options="status for status in statuss">
+											<option value="">: : TODOS OS STATUS : :</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="termo">Termo</label> 
+										<input type="text" placeholder="Termo" ng-model="filtro.termo" class="form-control" />
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="descricao">Descrição</label>
+										<input type="text" placeholder="Descrição" ng-model="filtro.descricao" class="form-control" />
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer text-center">
+							<a data-animated="" data-hover-z="1" data-z="0"
+								class="btn btn-blue-800 paper-shadow relative"
+								ng-click="buscar(filtro)"> Buscar</a> 
+							<a data-animated=""
+								data-hover-z="1" data-z="0"
+								class="btn btn-white paper-shadow relative" ng-click="reset()">
+								Limpar</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row" >
+                <div class="item col-xs-12 col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- Progress table -->
+                        <div class="table-responsive">
+                            <table class="table v-middle">
+                                <thead>
+                                    <tr class="bg-blue-800 text-white">
+                                        <th>Código</th>
+                                        <th>Termo</th>
+                                        <th>Descrição</th>
+                                        <th>Tabela</th>
+                                        <th>Versão</th>
+                                        <th>Início de Vigência</th>
+                                        <th>Fim de Vigência</th>
+                                        <th>Competência</th>
+                                        <th>Status</th>
+                                        <th>Tipo de Compartilhamento</th>
+                                        <th class="text-right">Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="responsive-table-body">
+                                    <tr ng-repeat="terminologia in terminologias">
+                                        <td>{{terminologia.codigo}}</td>
+                                        <td>
+                                        	<span ng-if="terminologia.termoSort.length == terminologia.termo.length">{{terminologia.termo}}</span>
+                                        	<a ng-if="terminologia.termoSort.length != terminologia.termo.length" class="tooltipCompleto" data-toggle="tooltip" title="{{terminologia.termo}}" data-placement="right">{{terminologia.termoSort}} <i class="fa fa-exclamation-circle"></i></a>
+                                        </td>
+                                        <td>
+                                        	<div ng-if="terminologia.definicaoSort.length > 0">
+                                        		<span ng-if="terminologia.definicaoSort.length == terminologia.definicao.length">{{terminologia.definicao}}</span>
+                                        		<a ng-if="terminologia.definicaoSort.length != terminologia.definicao.length" class="tooltipCompleto" data-toggle="tooltip" title="{{terminologia.definicao}}" data-placement="right">{{terminologia.definicaoSort}} <i class="fa fa-exclamation-circle"></i></a>
+                                        	</div>
+                                        </td>
+                                        <td>{{terminologia.tabela.nome}}</td>
+                                        <td>{{terminologia.tabela.versao}}</td>
+                                        <td>{{terminologia.inicioVigenciaFormatada}}</td>
+                                        <td>{{terminologia.fimVigenciaFormatada}}</td>
+                                        <td>{{terminologia.competencia}}</td>
+                                        <td>{{terminologia.status}}</td>
+                                        <td>{{terminologia.tabela.tipoCompartilhamento}}</td>
+                                        <td class="text-right">
+                                            <a th:if="${isAlterInativarView == false}" data-placement="top" class="btn btn-default btn-xs" th:href="@{/consulta/visualizacao/{{terminologia.id}}}"><i class="fa fa-check"></i> Visualizar</a>
+                                            <a th:if="${isAlterInativarView == true}" ng-if="terminologia.status != 'INATIVO'" class="btn btn-default btn-xs" data-original-title="Editar" th:href="@{/consulta/edicao/{{terminologia.id}}}"><i class="fa fa-pencil"></i> Editar</a>
+                                            <a th:if="${isAlterInativarView == true}" ng-if="terminologia.status != 'INATIVO'" class="btn btn-danger btn-xs" data-original-title="Excluir" th:href="@{/consulta/inativar/{{terminologia.id}}}"><i class="fa fa-times"></i> Inativar</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="panel-footer padding-none text-center">
+                        	<div class="paginador"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			
+		</div>
+	</div>
+</div>

@@ -1,0 +1,65 @@
+ 	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top navbar-size-large navbar-size-xlarge paper-shadow" data-z="0" data-animated="" role="navigation" th:fragment="menuContent">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div class="navbar-brand navbar-brand-logo">
+                    <a class="svg" th:href="@{/home}">
+                        <img class="img-responsive" th:src="@{__${URL_RESOURCES}__/e-saudebrasil/img/logo.png}" alt="e-Terminologia" />
+                    </a>
+                </div>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="main-nav">
+                <ul class="nav navbar-nav navbar-nav-margin-left">
+                    <li class="active"><a th:href="@{/home}">Home</a></li>
+                    <li th:if="${user.contains('ACCESS_CONSULTA')}"><a th:href="@{/consulta/}">Consulta</a></li>
+                    <li th:if="${user.contains('ACCESS_MAP_TERMO')}"><a th:href="@{/mapeamento/}">Mapeamento</a></li>
+                    
+                    <li th:if="${user.contains('MANAGER_ETERM')}" class="dropdown">
+                        <a th:href="@{/manutencao/}" class="dropdown-toggle" data-toggle="dropdown">Manutenção <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li th:if="${user.contains('ACCESS_ATTR')}"><a th:href="@{/atributo/}">Atributo</a></li>
+                            <li th:if="${user.contains('ACCESS_TABLE')}"><a th:href="@{/tabela/}">Tabela</a></li>
+                            <li th:if="${user.contains('ACCESS_TIPO_MAP')}"><a th:href="@{/tipo-mapeamento/}">Tipo de Mapeamento</a></li>
+                            <li th:if="${user.contains('ACCESS_ADD_TERMO')}"><a th:href="@{/consulta/inclusao}">Incluir Registro</a></li>
+                            <li th:if="${user.contains('ACCESS_EDIT_TERMO')}"><a th:href="@{/consulta/alterar-inativar}">Alterar / Inativar Registro</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li th:if="${user.contains('MANAGER_USER')}" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown">Gestão de Usuário <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li th:if="${user.contains('ACCESS_EMPRESA')}"><a th:href="@{/gestao-usuario/empresa}">Empresa</a></li>
+                            <li th:if="${user.contains('ACCESS_USUARIO')}"><a th:href="@{/gestao-usuario/usuario}">Usuário</a></li>
+                            <li th:if="${user.contains('ACCESS_PROJETO')}"><a th:href="@{/gestao-usuario/projeto}">Projeto</a></li>
+                            <li th:if="${user.contains('ACCESS_MODULO')}"><a th:href="@{/gestao-usuario/modulo}">Modulo</a></li>
+                            <li th:if="${user.contains('ACCESS_CONFIG_MODULO')}"><a th:href="@{/gestao-usuario/modulo/configuracao}">Configuração de Modulo</a></li>
+                            <li th:if="${user.contains('ACCESS_PERFIL')}"><a th:href="@{/gestao-usuario/perfil}">Perfil</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="navbar-right">
+                    <ul class="nav navbar-nav ">
+                        <!-- user -->
+                        <li class="dropdown user active">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img th:src="@{__${URL_RESOURCES}__/e-saudebrasil/img/avatar.png}" alt="" class="img-circle" /> 
+                                <label th:text="${user.usuario.nome}" /><span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a th:href="@{/logout}"><i class="fa fa-sign-out"></i>Sair</a></li>
+                            </ul>
+                        </li>
+                        <!-- // END user -->
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+    </div>

@@ -1,0 +1,30 @@
+<div th:fragment="content" ng-controller="TipoMapeamentoCadastroController">
+	<eterm-cabecalho icon="fa-cogs" title="Cadastro Tipo Mapeamentoto"></eterm-cabecalho>
+	<div class="container">
+        <div class="page-section">
+            <div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h4 class="text-headline margin-none">Cadastro</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="descricao">Descrição</label>
+                                        <input type="text" placeholder="Descrição" id="descricao" class="form-control" ng-model="descricao"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer text-center">
+                            <a data-animated="" data-hover-z="1" data-z="0" class="btn btn-blue-800 paper-shadow relative" th:href="@{/tipo-mapeamento/}" ng-click="salvar(descricao)"> Salvar</a>
+                            <a data-animated="" data-hover-z="1" data-z="0" class="btn btn-white paper-shadow relative" th:href="@{/tipo-mapeamento/}"> Cancelar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

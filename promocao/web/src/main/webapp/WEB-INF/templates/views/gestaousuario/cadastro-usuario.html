@@ -1,0 +1,133 @@
+<div th:fragment="content" ng-controller="GerenciarUsuarioController">
+	<eterm-cabecalho icon="fa-search" title="Gerênciar Usuário"></eterm-cabecalho>
+	<div class="container"  ng-init="initController()">
+		<div class="page-section">
+			<div class="row">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h5 class="text-headline margin-none">Usuário</h5>
+                        </div>
+                        <div class="panel-body">
+                        	 <div class="row col-md-6">
+								<select id="selectUsuario" ng-model="emp" class="form-control" data-toggle="select2" ng-options="usuario.nome for usuario in usuarios">
+						            <option value="">: : SELECIONE : :</option>
+						        </select>
+							</div>
+                        </div>
+                        <div class="panel-footer">
+							<a class="btn btn-primary paper-shadow relative" ng-click="incluir()"> Novo Usuário</a>					
+							<a class="btn btn-primary paper-shadow relative" ng-click="alterar()"> Alterar</a>
+							<a class="btn btn-primary paper-shadow relative" ng-click="ativarOrDesativar()"> Ativar / Desativar</a>				
+						</div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="row" ng-show="isHabilitarBlocoCRUD">
+                <div class="item col-xs-12 col-lg-12">
+                    <div data-z="0.5" class="panel panel-default paper-shadow">
+                        <div class="panel-heading">
+                            <h5 class="text-headline margin-none">{{title}}</h5>
+                        </div>
+                        <div class="panel-body">
+                        	<div class="row">
+								<div class="form-group col-md-8">
+							        <label>Nome</label>
+						        	<input type="text" ng-model="usuario.nome" placeholder="Nome" class="form-control"/>
+							    </div>
+							</div>	
+                        	 <div class="row">
+								<div class="form-group col-md-4">
+							        <label>Login</label>
+						        	<input type="text" ng-model="usuario.login" placeholder="Login" class="form-control"/>
+							    </div>
+							    <div class="form-group col-md-4">
+							        <label>Email</label>
+						        	<input type="text" ng-model="usuario.email" placeholder="Email" class="form-control"/>
+							    </div>
+							</div>	
+							<div class="row">
+								<div class="form-group col-md-4">
+							        <label>Aniversário</label>
+						        	<input type="text" class="form-control" esb-mask-date="" ng-model="usuario.nascimentoFormatado" placeholder="Aniversário" aria-describedby="icon-inicio-vigenca" />
+							    </div>
+							    <div class="form-group col-md-4">
+							        <label>Sexo</label>
+						        	<select name="select" ng-model="usuario.sexo" class="form-control"  ng-options="sexo for sexo in sexos">
+							            <option value="">: : SELECIONE : :</option>
+							        </select>
+							    </div>
+							</div>
+							
+							<div class="row">
+								<div class="form-group col-md-4">
+									<label>Empresa</label>
+							    </div>
+							    
+							    <div class="form-group col-md-4">
+									<label>Perfil</label>
+							    </div>
+							</div>
+							
+							<div class="row">
+								<div class="form-group col-md-4">
+							        <select id="selectEmpresa" ng-model="empresaFiltro" class="form-control" ng-options="empresa.nomeFantasia for empresa in empresas" ng-change="selecionarEmpresa()">
+							            <option value="">: : SELECIONE : :</option>
+							        </select>
+							    </div>
+							    
+							    <div class="form-group col-md-4">
+							        <select id="selectEmpresa" ng-model="perfilFiltro" class="form-control" ng-options="perfil.descricao for perfil in perfis" ng-change="selecionarPerfil()">
+							            <option value="">: : SELECIONE : :</option>
+							        </select>
+							    </div>
+							    
+							    <div class="form-group col-md-2">
+							        <button type="button" class="btn btn-primary" ng-click="adicionarPerfil()">Adicionar</button>
+							    </div>
+							</div>
+							
+							<div class="row" ng-if="usuario.perfis != null">
+								<div class="form-group col-md-12">
+									<table class="table v-middle">
+										<thead>
+											<tr class="bg-blue-800 text-white">
+												<th>Empresa</th>
+												<th>Perfil</th>
+												<th>Ações</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="perfil in usuario.perfis">
+												<td>{{perfil.projetoEmpresa.empresa.nomeFantasia}}</td>
+												<td>{{perfil.descricao}}</td>
+												<td>
+													<a class="btn btn-danger btn-xs" ng-click="alterar(configuracao)">Excluir</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							
+							<div class="row" ng-if="usuario.status != null">
+								<div class="form-group col-md-8">
+							        <label>Status</label>
+							        <input type="text" class="form-control" value="{{usuario.status}}" disabled="disabled" aria-describedby="icon-inicio-vigenca" />
+							    </div>
+							</div>
+                        </div>
+                        <div class="panel-footer">
+                        	<button type="button" class="btn btn-primary" ng-click="salvar(usuario)" ng-if="ativarBtnSalvar">Salvar</button>
+							<button type="button" class="btn" ng-class="usuario.status == 'ATIVO' ? 'btn-danger' : 'btn-primary'" ng-click="alternarStatus(usuario)" ng-if="ativarBtnAlterarStatus">{{status}}</button>
+							<button type="button" class="btn btn-default" ng-click="limpar()">Cancelar</button>	
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>						
+	</div>
+</div>
+
