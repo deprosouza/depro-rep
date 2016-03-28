@@ -177,7 +177,7 @@ public abstract class TypezeroGenericJPADAO<T extends EntidadeBase> implements G
                 criteria.setProjection(projections);
             }
             criteria.setResultTransformer(resultTransformer);
-            addParameters(criteria, dcriteria);
+            configureCriteria(criteria, dcriteria);
             typeList = new TypezeroPagedList<T>(count, criteria.list());
             break;
         }
@@ -212,13 +212,13 @@ public abstract class TypezeroGenericJPADAO<T extends EntidadeBase> implements G
         return criteria;
     }
 
-    private void addParameters(Criteria criteria, TypezeroCriteria dcriteria) {
-        if (StringUtils.isNotBlank(dcriteria.getSort())) {
-            if (constainsField(dcriteria.getSort())) {
-                if ("DESC".equalsIgnoreCase(dcriteria.getOrder())) {
-                    criteria.addOrder(Order.desc(dcriteria.getSort()));
+    private void configureCriteria(Criteria criteria, TypezeroCriteria dcriteria) {
+        for (Map.Entry<String, String> entry : dcriteria.getMapOrdenacao().entrySet()) {
+            if (constainsField(entry.getKey())) {
+                if ("DESC".equalsIgnoreCase(entry.getValue())) {
+                    criteria.addOrder(Order.desc(entry.getKey()));
                 } else {
-                    criteria.addOrder(Order.asc(dcriteria.getSort()));
+                    criteria.addOrder(Order.asc(entry.getKey()));
                 }
             }
         }
@@ -277,13 +277,13 @@ public abstract class TypezeroGenericJPADAO<T extends EntidadeBase> implements G
     public EntityManager getEntityManager() {
         return entityManager;
     }
-
+    
     /**
      * Retorna a sessao do Hibernate
      *
      * @return
      */
-    private Session getSession() {
+    protected Session getSession() {
         return (Session) this.getEntityManager().getDelegate();
     }
 }
