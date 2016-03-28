@@ -1,5 +1,6 @@
 package br.com.depro.mugetsu.model.media;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -29,8 +30,8 @@ public class Conteudo extends EntidadeBase {
 	private String nomePrincipal;
 	private String sequencia;
 	private Integer paginas;
-	private List<AlternativeName> nomes;
-	private List<Broadcast> broadcasts;
+	private List<AlternativeName> nomes = new ArrayList<AlternativeName>();
+	private List<Broadcast> broadcasts = new ArrayList<Broadcast>();
 
 	@Id
 	@Override

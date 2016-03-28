@@ -36,6 +36,7 @@ import br.com.depro.mugetsu.model.Anexo.TipoAnexo;
 import br.com.depro.mugetsu.model.LocaleEnum;
 import br.com.depro.mugetsu.model.media.AlternativeName;
 import br.com.depro.mugetsu.model.media.Broadcast;
+import br.com.depro.mugetsu.model.media.Broadcast.TipoBroadcastEnum;
 import br.com.depro.mugetsu.model.media.Conteudo;
 import br.com.depro.mugetsu.model.media.Genero;
 import br.com.depro.mugetsu.model.media.Media;
@@ -93,7 +94,7 @@ public class ImportarANNServiceImpl implements ImportarANNService {
 	            media = ImportacaoUtils.mergeMedia(media, mediaNova);
 	            compararImagens(media, mediaNova);
 	            
-	            mediaService.salvar(media);
+//	            mediaService.salvar(media);
 			}
 			
 		} catch (ApplicationException e) {
@@ -105,7 +106,7 @@ public class ImportarANNServiceImpl implements ImportarANNService {
     public void extrairHTML(int quantidadeInteracao) throws ApplicationException {
         propConfig = (PropConfig) TypezeroSpringUtils.getBean(PropConfig.class);
         ExtracaoUtils importacao = new ExtracaoUtils(propConfig, PATH_OUTPUT_TXT, "animenewsnetwork", false);
-        for (long i = 1; i <= quantidadeInteracao; i++) {
+        for (long i = 4880; i <= quantidadeInteracao; i++) {
             try {
                 importacao.doRequest(URL_ENCYCLOPEDIA + i, i, false);
             } catch (ApplicationException e) {
@@ -121,7 +122,7 @@ public class ImportarANNServiceImpl implements ImportarANNService {
      * @throws ApplicationException
      */
     public void importarFromCarga(int quantidadeInteracao) throws ApplicationException {
-        for (long i = 0; i <= quantidadeInteracao; i++) {
+        for (long i = 4882; i <= quantidadeInteracao; i++) {
             Media media = null;
             try {
             	ExtracaoUtils importacao = new ExtracaoUtils(propConfig, PATH_OUTPUT_TXT, + i + PREFIXO_ANN, false);
@@ -158,11 +159,11 @@ public class ImportarANNServiceImpl implements ImportarANNService {
                     
                     media.setBroadcasts(extrairBroadcast(linhas));
                     extrairImagem(linhas, media);
-                    this.mediaService.salvar(media);
-                    
-                    for (Tag tag : media.getTags()) {
-                    	mapTags.put(tag.getKey().toLowerCase(), tag);
-                    }
+//                    Media mediaSalva = this.mediaService.salvar(media);
+//                    
+//                    for (Tag tag : mediaSalva.getTags()) {
+//                    	mapTags.put(tag.getKey().toLowerCase(), tag);
+//                    }
                 }
             } catch (Exception e) {
                 if (media != null) {
@@ -203,13 +204,15 @@ public class ImportarANNServiceImpl implements ImportarANNService {
         		}
         		
         		Matcher matcher = null;
+        		
         		switch (tipoConteudo) {
         			case BROADCAST:
         				matcher = Pattern.compile("<div>(.*.)</div>").matcher(linha);
         				if (matcher.find()) {
         					Broadcast broadcast = new Broadcast();
         					broadcast.setLacamento(new SimpleDateFormat("yyyy-MM-dd").parse(matcher.group(1)));
-        					broadcast.setLocalidade(obterLocalidadeTitulo(IdiomaANNEnum.Japanese.name()));
+//        					broadcast.setLocalidade(obterLocalidadeTitulo(IdiomaANNEnum.Japanese.name()));
+        					broadcast.setTipo(TipoBroadcastEnum.CONTEUDO);
         					conteudo.getBroadcasts().add(broadcast);
         					tipoConteudo = NADA;
         				}
@@ -226,9 +229,21 @@ public class ImportarANNServiceImpl implements ImportarANNService {
         				if (matcher.find()) {
         					AlternativeName nome = new AlternativeName();
         					nome.setPrincipal(conteudo.getNomes().isEmpty());
-        					nome.setNome(matcher.group(1));
+        					nome.setNome(matcher.group(1).trim());
+        					switch(conteudo.getNomes().size()) {
+        					case 0:
+        						nome.setLocale(LocaleEnum.EN_US);
+        						break;
+        					case 1:
+        						nome.setLocale(LocaleEnum.JA_JP);
+        						break;
+        					case 2:
+        						nome.setLocale(LocaleEnum.JA_JP_ROMAJI);
+        						break;
+        					}
         					conteudo.getNomes().add(nome);
         				}
+        				break;
         			case NADA:
         				matcher = Pattern.compile("</tr>|</table>").matcher(linha);
         				if (matcher.find()) {
@@ -302,7 +317,7 @@ public class ImportarANNServiceImpl implements ImportarANNService {
                 AlternativeName mediaNome = new AlternativeName();
                 mediaNome.setPrincipal(true);
                 mediaNome.setNome(matcher.group(1).trim());
-                media.getNomes().add(mediaNome);
+                media.setNomePrincipal(mediaNome);
                 String formato = matcher.group(2).trim().replaceAll("\\.", "_").replaceAll(" ", "").replaceAll("/", "").replaceAll("-", "").replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("&", "").replaceAll("'", "").replaceAll(",", "").replaceAll("\\?", "").replaceAll("\\+", "_");
                 formato = ImportacaoUtils.normalizer(formato);
                 FormatoANN formatoANN = FormatoANN.valueOf(formato);
@@ -466,16 +481,30 @@ public class ImportarANNServiceImpl implements ImportarANNService {
         return numero;
     }
     
-    public List<Broadcast> extrairBroadcast(List<String> linhas) {
+    public List<Broadcast> extrairBroadcast(List<String> linhas) throws ParseException {
     	List<Broadcast> broadcasts = new ArrayList<Broadcast>();
     	boolean find = false;
     	for (String linha : linhas) {
     		if (linha.contains("infotype-7")) {
     			find = true;
     		} else if (find) {
-    			Matcher matcher = executeRegex("<(.*.)>(.*|to.)<(.*.)>", linha);
+    			Matcher matcher = executeRegex("<.*>([\\d]{4}-[\\d]{2}-[\\d]{2})((?= to ([\\d]{4}-[\\d]{2}-[\\d]{2}(?= \\((.*)\\)))|(?= to ([\\d]{4}-[\\d]{2}-[\\d]{2}))|(?= \\((.*)\\))|<.*>))", linha);
     			if (matcher.find()) {
+    				Broadcast broadcast = new Broadcast();
+    				broadcast.setLacamento(new SimpleDateFormat("yyyy-MM-dd").parse(matcher.group(1)));
+    				broadcast.setTipo(TipoBroadcastEnum.MEDIA);
+    				broadcast.setEmissora(null);
     				
+    				if (matcher.group(4) != null) {
+    					broadcast.setEncerramento(new SimpleDateFormat("yyyy-MM-dd").parse(matcher.group(3)));
+    					broadcast.setComentario(matcher.group(4));
+    				} else if (matcher.group(5) != null) {
+    					broadcast.setEncerramento(new SimpleDateFormat("yyyy-MM-dd").parse(matcher.group(5)));
+    				} else if (matcher.group(6) != null) {
+    					broadcast.setComentario(matcher.group(6));
+    				}
+    				
+    				broadcasts.add(broadcast);
     			}
     		}
     	}
@@ -599,7 +628,7 @@ public class ImportarANNServiceImpl implements ImportarANNService {
 		if (mapTags == null) {
 			mapTags = new HashMap<String, Tag>();
 			for (Tag tag : tagService.buscarTodos()) {
-				mapTags.put(tag.getNome().toLowerCase(), tag);
+				mapTags.put(tag.getKey().toLowerCase(), tag);
 			}
 		}
 		return mapTags;

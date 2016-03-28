@@ -47,7 +47,7 @@ public class TypezeroCriteria extends NoEntidadeBase implements Serializable {
 	}
 
 	public boolean containsKey(String key) {
-		return criterios.containsKey(key) && StringUtils.isNotBlank(criterios.get(key).toString());
+		return criterios.containsKey(key) && criterios.get(key) != null && StringUtils.isNotBlank(criterios.get(key).toString());
 	}
 	
 	public Object getObject(String key) {

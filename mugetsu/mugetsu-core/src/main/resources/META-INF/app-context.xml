@@ -21,7 +21,7 @@
 	</bean>  
 	
 	<bean id="propConfig" class="br.com.depro.fw.typezero.infrastructure.utils.PropConfig">
-		<property name="path" value="${user.home}/depro/app-config.properties" />
+		<property name="path" value="${user.home}/depro/mugetsu.properties" />
 	</bean> 
 	
 	<import resource="classpath:META-INF/fw-context.xml"/>

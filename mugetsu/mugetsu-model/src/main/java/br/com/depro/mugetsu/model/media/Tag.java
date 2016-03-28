@@ -21,7 +21,6 @@ public class Tag  extends EntidadeBase  {
 	/** Numero serial da classe */
 	private static final long serialVersionUID = -2039656547676677956L;
 	private String key;
-	private String nome;
 
 	@Id
 	@Override
@@ -32,7 +31,7 @@ public class Tag  extends EntidadeBase  {
 		return id;
 	}
 
-	@Column(name = "KEY")
+	@Column(name = "CHAVE")
 	public String getKey() {
 		return key;
 	}
@@ -41,13 +40,4 @@ public class Tag  extends EntidadeBase  {
 		this.key = key;
 	}
 
-	@Column(name = "NOME")
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-	
 }

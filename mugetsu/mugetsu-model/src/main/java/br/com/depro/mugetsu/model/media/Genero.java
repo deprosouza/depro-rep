@@ -23,7 +23,6 @@ public class Genero extends EntidadeBase  {
 	private String key;
 
 	@Id
-	@Override
 	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "SEQ_GENERO")
 	@SequenceGenerator(name = "SEQ_GENERO", sequenceName = "SEQ_GENERO")
@@ -31,7 +30,7 @@ public class Genero extends EntidadeBase  {
 		return id;
 	}
 
-	@Column(name = "KEY")
+	@Column(name = "CHAVE")
 	public String getKey() {
 		return key;
 	}

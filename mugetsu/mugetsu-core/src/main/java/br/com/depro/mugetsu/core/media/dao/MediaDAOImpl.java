@@ -32,7 +32,7 @@ public class MediaDAOImpl extends TypezeroGenericJPADAO<Media> implements MediaD
 		Map<String, String> alias = new HashMap<String, String>();
 		alias.put("nomes", "alternativeName");
 
-		CriterionHelper.createCriterionStringBlock(criterions, criteria, "alternativeName.nome", true, MatchMode.ANYWHERE);
+		CriterionHelper.createCriterionStringBlock(criterions, criteria, "alternativeName.nome", true, MatchMode.EXACT);
 		CriterionHelper.createCriterionFormatoMediaBlock(criterions, criteria, "formatoMedia");
 		CriterionHelper.createCriterionFormatoAnimeBlock(criterions, criteria, "formatoAnime");
 		CriterionHelper.createCriterionFormatoDoramaBlock(criterions, criteria, "formatoDorama");

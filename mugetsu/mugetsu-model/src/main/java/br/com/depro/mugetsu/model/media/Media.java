@@ -1,6 +1,7 @@
 package br.com.depro.mugetsu.model.media;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -52,12 +53,12 @@ public class Media extends EntidadeBase {
 	private FormatoAnime formatoAnime;
 	private FormatoDorama formatoDorama;
 	private OrigemEnum origem;
-	private Set<Tag> tags;
-	private Set<Genero> generos;
-	private List<AlternativeName> nomes;
-	private List<Anexo> anexos;
-	private List<Conteudo> conteudos;
-	private List<Broadcast> broadcasts;
+	private Set<Tag> tags = new HashSet<Tag>();
+	private Set<Genero> generos = new HashSet<Genero>();
+	private List<AlternativeName> nomes = new ArrayList<AlternativeName>();
+	private List<Anexo> anexos = new ArrayList<Anexo>();
+	private List<Conteudo> conteudos = new ArrayList<Conteudo>();
+	private List<Broadcast> broadcasts = new ArrayList<Broadcast>();
 
 	@Id
 	@Override
@@ -137,7 +138,7 @@ public class Media extends EntidadeBase {
 		return origem;
 	}
 
-	@ManyToMany
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinTable(name = "MEDIA_TAGS", joinColumns = @JoinColumn(name = "FK_MEDIA"), inverseJoinColumns = @JoinColumn(name = "FK_TAG"))
 	public Set<Tag> getTags() {
 		return tags;
@@ -206,6 +207,13 @@ public class Media extends EntidadeBase {
 
 	public void setNomePrincipal(String nomePrincipal) {
 		this.nomePrincipal = nomePrincipal;
+	}
+	
+	public void setNomePrincipal(AlternativeName alternativeName) {
+		getNomes().add(alternativeName);
+		if (alternativeName.getPrincipal()) {
+			this.nomePrincipal = alternativeName.getNome();
+		}
 	}
 
 	public void setDuracao(Integer duracao) {

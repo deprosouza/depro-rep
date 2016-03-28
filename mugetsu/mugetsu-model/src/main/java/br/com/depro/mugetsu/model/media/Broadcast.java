@@ -32,8 +32,7 @@ public class Broadcast extends EntidadeBase {
 	private Date encerramento;
 	private LocaleEnum localidade;
 	private String emissora;
-	private String patternLancamento;
-	private String patternEncerramento;
+	private String comentario;
 	private TipoBroadcastEnum tipo;
 
 	@Id
@@ -66,14 +65,9 @@ public class Broadcast extends EntidadeBase {
 		return emissora;
 	}
 
-	@Column(name = "PATTERN_LACAMENTO")
-	public String getPatternLancamento() {
-		return patternLancamento;
-	}
-
-	@Column(name = "PATTERN_ENCERRAMENTO")
-	public String getPatternEncerramento() {
-		return patternEncerramento;
+	@Column(name = "COMENTARIO")
+	public String getComentario() {
+		return comentario;
 	}
 
 	@Column(name = "TIPO")
@@ -98,12 +92,8 @@ public class Broadcast extends EntidadeBase {
 		this.emissora = emissora;
 	}
 
-	public void setPatternLancamento(String patternLancamento) {
-		this.patternLancamento = patternLancamento;
-	}
-
-	public void setPatternEncerramento(String patternEncerramento) {
-		this.patternEncerramento = patternEncerramento;
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
 	}
 
 	public void setTipo(TipoBroadcastEnum tipo) {
