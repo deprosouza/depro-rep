@@ -18,9 +18,9 @@ public class App extends BaseTest {
 
 	@Test
 	public void basicTest() throws ApplicationException {
-		int quantidadeInteracoes = 4885;
-//		service.extrairHTML(quantidadeInteracoes);
-//		service.extrairFormatosMediasANN(quantidadeInteracoes);
+		int quantidadeInteracoes = 200;
+		service.extrairHTML(quantidadeInteracoes);
+		service.extrairFormatosMediasANN(quantidadeInteracoes);
 		service.importarFromCarga(quantidadeInteracoes);
 	}
 }

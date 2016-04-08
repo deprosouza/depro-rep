@@ -106,7 +106,7 @@ public class ImportarANNServiceImpl implements ImportarANNService {
     public void extrairHTML(int quantidadeInteracao) throws ApplicationException {
         propConfig = (PropConfig) TypezeroSpringUtils.getBean(PropConfig.class);
         ExtracaoUtils importacao = new ExtracaoUtils(propConfig, PATH_OUTPUT_TXT, "animenewsnetwork", false);
-        for (long i = 4880; i <= quantidadeInteracao; i++) {
+        for (long i = 0; i <= quantidadeInteracao; i++) {
             try {
                 importacao.doRequest(URL_ENCYCLOPEDIA + i, i, false);
             } catch (ApplicationException e) {

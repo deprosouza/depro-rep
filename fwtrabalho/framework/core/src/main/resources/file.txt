@@ -1,0 +1,8 @@
+svn add common/trunk/model/src/main/java/br/com/esb/spa/common/model/coletadados/tabela
+svn add        common/trunk/ws/src/main/java/br/com/esb/spa/common/ws/controller/SPAWSControllerSimplified.java
+svn add        common/trunk/ws/src/main/java/br/com/esb/spa/common/ws/controller/protocolo
+svn add        contas-medicas/trunk/web/src/main/java/br/com/esb/spa
+svn add        contas-medicas/trunk/web/src/main/resources/META-INF
+svn add        contas-medicas/trunk/web/src/main/resources/log4j.xml
+svn add        contas-medicas/trunk/web/src/main/webapp/WEB-INF/templates/default.html
+svn add        contas-medicas/trunk/web/src/main/webapp/public/angularjs/controller/digitacao-faturamento
