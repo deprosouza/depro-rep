@@ -16,6 +16,12 @@ import br.com.depro.fw.typezero.infrastructure.bean.utils.DateUtils;
  */
 public class TypezeroCriterionUtils {
 
+	public static final String IN = "-in";
+	public static final String NOT_IN = "-notin";
+	
+	public static final String IS_NULL = "-isnull";
+	public static final String NOT_NULL = "-notnull";
+	
 	public static void createLongBlock(List<Criterion> criterions, TypezeroCriteria criteria, String slong) {
 		if (criteria.containsKey(slong)) {
 			criterions.add(Restrictions.eq(slong, criteria.getLong(slong)));
@@ -29,14 +35,18 @@ public class TypezeroCriterionUtils {
 	}
 	
 	public static void createIsNotNullBlock(List<Criterion> criterions, TypezeroCriteria criteria, String string) {
-		if (criteria.containsKey(string + "-notnull")) {
+		if (criteria.containsKey(string + NOT_NULL)) {
 			criterions.add(Restrictions.isNotNull(string));
 		}
 	}
 	
-	public static void createIsNullBlock(List<Criterion> criterions, TypezeroCriteria criteria, String string) {
-		if (criteria.containsKey(string + "-isnull")) {
+	public static void createIsNullOrNotNullBlock(List<Criterion> criterions, TypezeroCriteria criteria, String string) {
+		if (criteria.containsKey(string + IS_NULL)) {
 			criterions.add(Restrictions.isNull(string));
+		}
+		
+		if (criteria.containsKey(string + NOT_NULL)) {
+			criterions.add(Restrictions.isNotNull(string));
 		}
 	}
 
@@ -84,7 +94,7 @@ public class TypezeroCriterionUtils {
 
 		} else if (criteria.containsKey(fim)) {
 			criterions.add(Restrictions.le(fim, DateUtils.getDataComUltimoHorario(criteria.getDate(fim))));
-		} else if (criteria.containsKey(fim + "-isnull")) {
+		} else if (criteria.containsKey(fim + IS_NULL)) {
 			criterions.add(Restrictions.isNull(fim));
 		}
 	}
@@ -110,18 +120,27 @@ public class TypezeroCriterionUtils {
 
 		} else if (criteria.containsKey(fim)) {
 			criterions.add(Restrictions.le(field, DateUtils.getDataComUltimoHorario(criteria.getDate(fim))));
-		} else if (criteria.containsKey(fim + "-isnull")) {
+		} else if (criteria.containsKey(fim + IS_NULL)) {
 			criterions.add(Restrictions.isNull(field));
 		}
 	}
 	
-	public static void createInBlock(List<Criterion> criterions, TypezeroCriteria criteria, String slong) {
-		if (criteria.containsKey(slong)) {
-			criterions.add(Restrictions.in(slong, criteria.getListObject(slong)));
+	public static void createInOrNotInBlock(List<Criterion> criterions, TypezeroCriteria criteria, String string) {
+		if (criteria.containsKey(string + IN)) {
+			criterions.add(Restrictions.in(string, criteria.getListObject(string)));
 		}
+		if (criteria.containsKey(string + NOT_IN)) {
+			criterions.add(Restrictions.not(Restrictions.in(string, criteria.getListObject(string))));
+		}
+		
 	}
+
 	
 	public static void createEqPropertiesBlock(DetachedCriteria dc, String propertyDC, String propertyMain) {
 		dc.add(Restrictions.eqProperty(propertyDC, propertyMain));
+	}
+	
+	public static void createEqPropertiesBlock(List<Criterion> criterions, String propertyDC, String propertyMain) {
+		criterions.add(Restrictions.eqProperty(propertyDC, propertyMain));
 	}
 }

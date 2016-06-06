@@ -9,6 +9,8 @@ import br.com.depro.fw.typezero.infrastructure.bean.utils.MessageUtil;
 public enum FWCode {
 
     FW0000,
+    FW0001,//TypezeroCriteria
+    FW0002,//TypezeroCriteria
     FW0004,
     FW0005,
     FW0006,

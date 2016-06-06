@@ -85,8 +85,9 @@
 			<tx:method name="extrai*" read-only="false" propagation="SUPPORTS" rollback-for="java.lang.Exception" />
 
 			<tx:method name="busca*" read-only="true" propagation="SUPPORTS" />
-			<tx:method name="lista*" read-only="true" propagation="NEVER" />
-			<tx:method name="obte*" read-only="true" propagation="NEVER" />
+			<tx:method name="lista*" read-only="true" propagation="SUPPORTS" />
+			<tx:method name="obte*" read-only="true" propagation="SUPPORTS" />
+			<tx:method name="*" read-only="true" propagation="SUPPORTS" />
 		</tx:attributes>
 	</tx:advice>
 

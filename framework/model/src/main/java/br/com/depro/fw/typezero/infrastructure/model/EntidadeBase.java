@@ -25,7 +25,16 @@ public abstract class EntidadeBase implements Serializable {
     protected Long id;
     private boolean selecionado = false;
 
-    /**
+    public EntidadeBase() {
+		super();
+	}
+
+	public EntidadeBase(Long id) {
+		super();
+		this.id = id;
+	}
+
+	/**
      * @return the id
      */
     public abstract Long getId();
@@ -60,20 +69,20 @@ public abstract class EntidadeBase implements Serializable {
 		this.selecionado = selecionado;
 	}
 	
-	public void merge(EntidadeBase entidade) {
-		merge(entidade, false);
-	}
-	
-	public EntidadeBase merge(EntidadeBase entidade, boolean isAllFields) {
+	public EntidadeBase merge(EntidadeBase entidade) {
 		try {
 			for (Field field : this.getClass().getDeclaredFields()) {
 				field.setAccessible(true);
 				if (!field.toGenericString().contains("serialVersionUID") && !field.getType().isArray() && !field.getType().isPrimitive()) {
-					Object valueRequest = field.get(this);
-					Object valueAtual = field.get(entidade);
+					Object thisValue = field.get(this);
+					Object valorOrigem = field.get(entidade);
 					
-					if (valueRequest == null && valueAtual != null && (Collection.class.isAssignableFrom(field.getType()) || isAllFields)) {
-						field.set(this, valueAtual);
+					if ((thisValue == null && valorOrigem == null) || Collection.class.isAssignableFrom(field.getType())) {
+						continue;
+					}
+					
+					if (thisValue == null && valorOrigem != null) {
+						field.set(this, valorOrigem);
 					}
 				}
 			}

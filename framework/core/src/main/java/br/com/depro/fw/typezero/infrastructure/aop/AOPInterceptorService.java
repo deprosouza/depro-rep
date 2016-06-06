@@ -169,7 +169,7 @@ public class AOPInterceptorService {
 			if (!field.toGenericString().contains("serialVersionUID") && !Collection.class.isAssignableFrom(field.getType())) {
 				Object valueRequest = field.get(entidadeRequest);
 				if (valueRequest instanceof EntidadeBase && nivel < 1) {
-					//genereteAuditoriaDetalhes(detalhes, entidadeRequest, entidadeResponse, nivel++, field.getName() + ".", isSalvar);
+//					genereteAuditoriaDetalhes(detalhes, entidadeRequest, entidadeResponse, nivel++, field.getName() + ".", isSalvar);
 				} else {
 					Object valueResponse = null;
 					if (entidadeResponse != null) { 

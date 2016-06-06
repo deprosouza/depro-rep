@@ -15,7 +15,7 @@ import br.com.depro.fw.typezero.infrastructure.model.EntidadeBase;
  */
 public interface GenericDAO<T extends EntidadeBase> {
 
-    T findById(Long id) throws ApplicationException;
+    T findById(Long id);
 
     List<T> findAll();
 

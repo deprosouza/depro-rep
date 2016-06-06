@@ -3,8 +3,6 @@ package br.com.depro.fw.typezero.infrastructure.dao;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,15 +23,14 @@ import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.transform.ResultTransformer;
 
+import br.com.depro.fw.typezero.infrastructure.dao.helper.QueryHelper;
 import br.com.depro.fw.typezero.infrastructure.dao.helper.TypezeroCriteria;
 import br.com.depro.fw.typezero.infrastructure.dao.helper.TypezeroCriterionUtils;
 import br.com.depro.fw.typezero.infrastructure.exception.ApplicationException;
 import br.com.depro.fw.typezero.infrastructure.model.EntidadeBase;
-import br.com.depro.fw.typezero.infrastructure.utils.BeanUtils;
 import br.com.depro.fw.typezero.infrastructure.utils.TypezeroPagedList;
 
 /**
@@ -48,40 +45,37 @@ public abstract class TypezeroGenericJPADAO<T extends EntidadeBase> implements G
     protected static final int MODE_SELECT = 2;
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     private EntityManager entityManager;
-    private Class<T> perssitentClass;
+    private Class<T> persistentClass;
 
     public List<T> findByAttrs(TypezeroCriteria criteriaRaw) {
-    	List<Criterion> criterions = new ArrayList<Criterion>();
-        Map<String, String> alias = new HashMap<String, String>();
-        Disjunction disjunction = Restrictions.disjunction();
-        ProjectionList projections = Projections.projectionList();
-        
-        ResultTransformer resultTransformer = generateQuery(criteriaRaw, criterions, projections, alias, disjunction);
-        return executeCriteria(criteriaRaw, criterions, projections, alias, disjunction, resultTransformer);
+    	QueryHelper helper = QueryHelper.newInstance(criteriaRaw);
+    	helper.transformer = generateQuery(helper);
+        return executeCriteria(helper);
     }
     
 	public T findOneByAttrs(TypezeroCriteria criteriaRaw) {
-		List<Criterion> criterions = new ArrayList<Criterion>();
-        Map<String, String> alias = new HashMap<String, String>();
-        Disjunction disjunction = Restrictions.disjunction();
-        ProjectionList projections = Projections.projectionList();
-        
-        generateQuery(criteriaRaw, criterions, projections, alias, disjunction);
-		return executeCriteriaUnique(criterions, projections, alias, disjunction);
+		QueryHelper helper = QueryHelper.newInstance(criteriaRaw);
+        generateQuery(helper);
+		return executeCriteriaUnique(helper);
 	}
+	
+	public ResultTransformer generateQuery(QueryHelper helper) {
+		helper.setPersistentClass(getPersistentClass());
+    	return generateQuery(helper.criteriaRaw, helper.criterions, helper.projections, helper.alias, helper.disjunction);
+    }
     
     public ResultTransformer generateQuery(TypezeroCriteria criteriaRaw, List<Criterion> criterions, ProjectionList projections, Map<String, String> mapAlias, Disjunction disjunction ) {
     	TypezeroCriterionUtils.createLongBlock(criterions, criteriaRaw, "id");
     	return Criteria.DISTINCT_ROOT_ENTITY;
     }
-
+    
     /**
      * Construtor padrao da classes
      */
     @SuppressWarnings("unchecked")
     public TypezeroGenericJPADAO() {
         super();
-        this.perssitentClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        this.persistentClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
     /**
@@ -127,8 +121,8 @@ public abstract class TypezeroGenericJPADAO<T extends EntidadeBase> implements G
     public void deleteById(Long id) throws ApplicationException {
         try {
             CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-            CriteriaDelete<T> delete = cb.createCriteriaDelete(getPerssitentClass());
-            Root<T> root = delete.from(getPerssitentClass());
+            CriteriaDelete<T> delete = cb.createCriteriaDelete(getPersistentClass());
+            Root<T> root = delete.from(getPersistentClass());
             delete.where(cb.equal(root.get("id"), id));
 
             getEntityManager().createQuery(delete).executeUpdate();
@@ -152,7 +146,7 @@ public abstract class TypezeroGenericJPADAO<T extends EntidadeBase> implements G
      * @see GenericDAO#findById(Serializable)
      */
     public T findById(Long id) {
-        return getEntityManager().find(this.getPerssitentClass(), id);
+        return getEntityManager().find(this.getPersistentClass(), id);
     }
 
     /**
@@ -186,7 +180,7 @@ public abstract class TypezeroGenericJPADAO<T extends EntidadeBase> implements G
      * @return
      */
     public List<T> executeCriteria(TypezeroCriteria criteriaRaw, List<Criterion> criterions, ProjectionList projections, Map<String, String> mapAlias, Disjunction disjunction, ResultTransformer resultTransformer) {
-    	return executeCriteria(criteriaRaw, criterions, projections, mapAlias, disjunction, resultTransformer, getPerssitentClass());
+    	return executeCriteria(criteriaRaw, criterions, projections, mapAlias, disjunction, resultTransformer, getPersistentClass());
     }
     
     /**
@@ -199,18 +193,34 @@ public abstract class TypezeroGenericJPADAO<T extends EntidadeBase> implements G
      * @return
      */
     public <E extends Object> List<E> executeCriteria(TypezeroCriteria criteriaRaw, List<Criterion> criterions, ProjectionList projections, Map<String, String> mapAlias, Disjunction disjunction, ResultTransformer resultTransformer, Class<E> type) {
-    	if (criteriaRaw == null) {
-    		criteriaRaw = new TypezeroCriteria();
+    	QueryHelper helper = QueryHelper.newInstance();
+    	helper.alias = mapAlias;
+    	helper.criteriaRaw = criteriaRaw;
+    	helper.criterions = criterions;
+    	helper.projections = projections;
+    	helper.disjunction = disjunction;
+    	helper.transformer = resultTransformer;
+    	
+    	return executeCriteria(helper, type);
+    }
+    
+    public List<T> executeCriteria(QueryHelper helper) {
+    	return executeCriteria(helper, getPersistentClass());
+    }
+    
+    public <E extends Object> List<E> executeCriteria(QueryHelper helper, Class<E> type) {
+    	if (helper.criteriaRaw == null) {
+    		helper.criteriaRaw = new TypezeroCriteria();
     	}
     	
     	int count = 0;
-        int mode = criteriaRaw.isPaged() ? MODE_COUNT : MODE_SELECT;
+        int mode = helper.criteriaRaw.isPaged() ? MODE_COUNT : MODE_SELECT;
         TypezeroPagedList<E> typeList = null;
 
         Criteria criteria = null;
         switch (mode) {
         case MODE_COUNT:
-        	criteria = createCriteria(criterions, mapAlias, disjunction, criteriaRaw);
+        	criteria = createCriteria(helper.criterions, helper.alias, helper.disjunction, helper.criteriaRaw);
             criteria.setProjection(Projections.rowCount());
             count = ((Number) criteria.uniqueResult()).intValue();
             if (count == 0) {
@@ -218,13 +228,13 @@ public abstract class TypezeroGenericJPADAO<T extends EntidadeBase> implements G
                 break;
             }
         case MODE_SELECT:
-        	criteria = createCriteria(criterions, mapAlias, disjunction, criteriaRaw);
-            if (projections != null && projections.getLength() > 0) {
-                criteria.setProjection(projections);
+        	criteria = createCriteria(helper.criterions, helper.alias, helper.disjunction, helper.criteriaRaw);
+            if (helper.projections != null && helper.projections.getLength() > 0) {
+                criteria.setProjection(helper.projections);
             }
             
-        	criteria.setResultTransformer(resultTransformer);
-            configureCriteria(criteria, criteriaRaw);
+        	criteria.setResultTransformer(helper.transformer);
+            configureCriteria(criteria, helper.criteriaRaw);
             typeList = new TypezeroPagedList<E>(count, criteria.list());
             break;
         }
@@ -236,18 +246,33 @@ public abstract class TypezeroGenericJPADAO<T extends EntidadeBase> implements G
     }
 
     public T executeCriteriaUnique(List<Criterion> criterions, ProjectionList projections, Map<String, String> mapAlias, Disjunction disjunction, ResultTransformer resultTransformer) {
+    	QueryHelper helper = QueryHelper.newInstance();
+    	helper.alias = mapAlias;
+    	helper.criterions = criterions;
+    	helper.projections = projections;
+    	helper.disjunction = disjunction;
+    	helper.transformer = resultTransformer;
+        return (T) executeCriteriaUnique(helper, getPersistentClass());
+    }
+    
+    public T executeCriteriaUnique(QueryHelper helper) {
+    	return executeCriteriaUnique(helper, getPersistentClass());
+    }
+    
+    public <E extends Object> E executeCriteriaUnique(QueryHelper helper, Class<E> type) {
         Criteria criteria = null;
-        criteria = createCriteria(criterions, mapAlias, disjunction, new TypezeroCriteria());
-        if (projections != null && projections.getLength() > 0) {
-            criteria.setProjection(projections);
+        criteria = createCriteria(helper.criterions, helper.alias, helper.disjunction, helper.criteriaRaw);
+        if (helper.projections != null && helper.projections.getLength() > 0) {
+            criteria.setProjection(helper.projections);
         }
-        criteria.setResultTransformer(resultTransformer);
-        return (T) criteria.uniqueResult();
+        configureCriteria(criteria, helper.criteriaRaw);
+        criteria.setResultTransformer(helper.transformer);
+        return (E) criteria.uniqueResult();
     }
 
     private Criteria createCriteria(List<Criterion> criterions, Map<String, String> mapAlias, Disjunction disjunction, TypezeroCriteria criteriaRaw) {
-        Criteria criteria = getSession().createCriteria(criteriaRaw.getPersistenceClass() != null ? criteriaRaw.getPersistenceClass() : this.getPerssitentClass(), 
-        		StringUtils.isNotBlank(criteriaRaw.getAlias()) ? criteriaRaw.getAlias() : getPerssitentClass().getSimpleName().toLowerCase());
+        Criteria criteria = getSession().createCriteria(criteriaRaw.getPersistenceClass() != null ? criteriaRaw.getPersistenceClass() : this.getPersistentClass(), 
+        		StringUtils.isNotBlank(criteriaRaw.getAlias()) ? criteriaRaw.getAlias() : getPersistentClassAlias());
         if (mapAlias != null) {
             for (Map.Entry<String, String> entry : mapAlias.entrySet()) {
                 criteria.createAlias(entry.getKey(), entry.getValue());
@@ -260,21 +285,22 @@ public abstract class TypezeroGenericJPADAO<T extends EntidadeBase> implements G
         return criteria;
     }
 
-    private void configureCriteria(Criteria criteria, TypezeroCriteria dcriteria) {
-        for (Map.Entry<String, String> entry : dcriteria.getMapOrdenacao().entrySet()) {
+    private void configureCriteria(Criteria criteria, TypezeroCriteria criteriaRaw) {
+        for (Map.Entry<String, String> entry : criteriaRaw.getMapOrdenacao().entrySet()) {
             if ("DESC".equalsIgnoreCase(entry.getValue())) {
-                criteria.addOrder(Order.desc(entry.getKey()));
+            	criteria.addOrder(Order.desc(entry.getKey()));
             } else {
-                criteria.addOrder(Order.asc(entry.getKey()));
+            	criteria.addOrder(Order.asc(entry.getKey()));
             }
         }
-        if (dcriteria.isPaged()) {
-            if (dcriteria.getLimit() > 0) {
-                criteria.setMaxResults(dcriteria.getLimit());
+        if (criteriaRaw.isPaged()) {
+            if (criteriaRaw.getOffset() >= 0) {
+            	criteria.setFirstResult(criteriaRaw.getOffset() * criteriaRaw.getLimit());
             }
-            if (dcriteria.getOffset() >= 0) {
-                criteria.setFirstResult(dcriteria.getOffset() * dcriteria.getLimit());
-            }
+        }
+        
+        if (criteriaRaw.getLimit() > 0) {
+        	criteria.setMaxResults(criteriaRaw.getLimit());
         }
     }
 
@@ -292,7 +318,7 @@ public abstract class TypezeroGenericJPADAO<T extends EntidadeBase> implements G
      */
     private boolean constainsField(String sort) {
         if (StringUtils.isNotBlank(sort)) {
-            for (Field field : getPerssitentClass().getDeclaredFields()) {
+            for (Field field : getPersistentClass().getDeclaredFields()) {
                 if (field.getName().contains(sort)) {
                     return true;
                 }
@@ -307,14 +333,21 @@ public abstract class TypezeroGenericJPADAO<T extends EntidadeBase> implements G
      * @return
      */
     public String getEntity() {
-        return getPerssitentClass().getSimpleName();
+        return getPersistentClass().getSimpleName();
     }
 
     /**
-     * @return the perssitentClass
+     * @return the persistentClass
      */
-    public Class<T> getPerssitentClass() {
-        return perssitentClass;
+    public Class<T> getPersistentClass() {
+        return persistentClass;
+    }
+    
+    /**
+     * @return the alias
+     */
+    public String getPersistentClassAlias() {
+        return getPersistentClass().getSimpleName().toLowerCase();
     }
 
     /**
@@ -332,4 +365,5 @@ public abstract class TypezeroGenericJPADAO<T extends EntidadeBase> implements G
     protected Session getSession() {
         return (Session) this.getEntityManager().getDelegate();
     }
+    
 }

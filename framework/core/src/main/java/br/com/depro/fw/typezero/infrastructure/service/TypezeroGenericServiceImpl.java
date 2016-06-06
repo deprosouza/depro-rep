@@ -5,6 +5,8 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.depro.fw.typezero.infrastructure.annotation.Audit;
 import br.com.depro.fw.typezero.infrastructure.dao.GenericDAO;
@@ -97,7 +99,8 @@ public abstract class TypezeroGenericServiceImpl<T extends EntidadeBase, DAO ext
      * @see TypezeroGenericService#findById(Serializable)
      */
     @Audit(eventAudit = EventAudit.BUSCAR)
-    public T buscarPorIdSimples(Long id) throws ApplicationException {
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = ApplicationException.class)
+    public T buscarPorIdSimples(Long id) {
         return getDAO().findById(id);
     }
 

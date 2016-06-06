@@ -1,6 +1,8 @@
 package br.com.depro.fw.typezero.infrastructure.dao.helper;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.text.Normalizer;
 import java.text.ParseException;
@@ -15,8 +17,13 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.com.depro.fw.typezero.infrastructure.exception.ApplicationException;
 import br.com.depro.fw.typezero.infrastructure.model.NoEntidadeBase;
+import br.com.depro.fw.typezero.infrastructure.utils.FWCode;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TypezeroCriteria extends NoEntidadeBase implements Serializable {
@@ -107,6 +114,10 @@ public class TypezeroCriteria extends NoEntidadeBase implements Serializable {
 	
 	public void addCriterio(String chave, Object valor) {
 		criterios.put(chave, valor);
+	}
+	
+	public void addCriterioIsNullOrNotNull(String chave, boolean isNull) {
+		criterios.put(chave + (isNull ? TypezeroCriterionUtils.IS_NULL : TypezeroCriterionUtils.NOT_NULL), true);
 	}
 	
 	public void removeCriterio(String chave) {
@@ -215,4 +226,18 @@ public class TypezeroCriteria extends NoEntidadeBase implements Serializable {
 		this.alias = alias;
 	}
 
+	public <E extends Object> E getAsClass(String chave, Class<E> clazz) throws ApplicationException {
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			StringWriter sw = new StringWriter();
+			mapper.writeValue(sw, criterios.get(chave));
+			return mapper.readValue(sw.toString().getBytes(), clazz);
+		} catch (JsonParseException e) {
+			throw new ApplicationException(e, FWCode.FW0001.name());
+		} catch (JsonMappingException e) {
+			throw new ApplicationException(e, FWCode.FW0002.name());
+		} catch (IOException e) {
+			throw new ApplicationException(e, FWCode.FW0000.name());
+		}
+	}
 }

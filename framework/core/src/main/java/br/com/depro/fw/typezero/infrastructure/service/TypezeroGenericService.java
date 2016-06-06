@@ -73,7 +73,7 @@ public interface TypezeroGenericService<T extends EntidadeBase> {
 	 * @return Entidade
 	 * @throws CoreException Caso algum erro ocorra
 	 */
-	T buscarPorIdSimples(Long id) throws ApplicationException;
+	T buscarPorIdSimples(Long id);
 	
 	/**
 	 * Lista todas as entidades
