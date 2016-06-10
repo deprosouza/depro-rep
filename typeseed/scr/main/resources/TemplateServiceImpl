@@ -1,0 +1,16 @@
+package ${package.name};
+
+import org.springframework.stereotype.Service;
+
+import br.com.depro.fw.typezero.infrastructure.service.TypezeroGenericServiceImpl;
+import ${entity.dao.package}
+import ${entity.package}
+
+/**
+ * @author @Auto-Generateded
+ * @version 2.0 - Versao Incial - ${data.criacao}
+ */
+@Service
+public class ${entity.name}ServiceImpl extends TypezeroGenericServiceImpl<${entity.name}, ${entity.name}DAO> implements  ${entity.name}Service {
+
+}

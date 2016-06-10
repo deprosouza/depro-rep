@@ -1,0 +1,15 @@
+package ${package.name}
+
+import org.springframework.stereotype.Repository;
+
+import br.com.depro.fw.typezero.infrastructure.dao.TypezeroGenericJPADAO;
+import {entity.package}
+
+/**
+ * @author @Auto-Generateded
+ * @version 2.0 - Versao Incial - ${data.criacao}
+ */
+@Repository
+public class ${entity.name}DAOImpl extends TypezeroGenericJPADAO<${entity.name}> implements ${entity.name}DAO {
+
+}

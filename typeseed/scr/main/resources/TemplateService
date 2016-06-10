@@ -1,0 +1,12 @@
+package ${package.name}
+
+import br.com.depro.fw.typezero.infrastructure.service.TypezeroGenericService;
+import ${entity.package}
+
+/**
+ * @author @Auto-Generateded
+ * @version 2.0 - Versao Incial - ${data.criacao}
+ */
+public interface ${entity.name}Service extends TypezeroGenericService<${entity.name}> {
+
+}

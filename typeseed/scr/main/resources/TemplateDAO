@@ -1,0 +1,12 @@
+package ${package.name}
+
+import {entity.package}
+import br.com.depro.fw.typezero.infrastructure.dao.GenericDAO
+
+/**
+ * @author @Auto-Generateded
+ * @version 2.0 - Versao Incial - ${data.criacao}
+ */
+public interface ${entity.name}DAO extends GenericDAO<${entity.name}> {
+
+}
